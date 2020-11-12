@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoBook"
         mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Title="Fotoksiążka" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel Orientation="Vertical">
+            <Label Content="{Binding Test}"/>
+            <Button Content="Zrób fotoksiążkę" Command="{Binding SayHello}"/>
+        </StackPanel>
     </Grid>
 </Window>
