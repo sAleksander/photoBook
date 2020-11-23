@@ -8,9 +8,16 @@
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Title="Fotoksiążka" Height="450" Width="800">
     <Grid>
-        <StackPanel Orientation="Vertical">
-            <Label Content="{Binding Test}"/>
-            <Button Content="Zrób fotoksiążkę" Command="{Binding SayHello}"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Frame Name="Navigator"
+               Grid.Row="1" Grid.Column="1" Margin="0"
+               NavigationUIVisibility="Hidden"
+               Content="{Binding Navigator.CurrentVM}"/>
     </Grid>
 </Window>

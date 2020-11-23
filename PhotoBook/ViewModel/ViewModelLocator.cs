@@ -28,16 +28,15 @@ namespace PhotoBook.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
+
+            SimpleIoc.Default.Register<HomeViewModel>();
+            SimpleIoc.Default.Register<EditorViewModel>();
         }
 
-        public MainViewModel Main
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-        
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
+        public EditorViewModel Editor => ServiceLocator.Current.GetInstance<EditorViewModel>();
+
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

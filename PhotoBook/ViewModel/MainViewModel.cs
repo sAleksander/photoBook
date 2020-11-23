@@ -7,6 +7,8 @@ namespace PhotoBook.ViewModel
     {
         public MainViewModel()
         {
+            Navigator.ChangeCurrentVM<HomeViewModel>();
+
             ////if (IsInDesignMode)
             ////{
             ////    // Code runs in Blend --> create design time data.
@@ -17,32 +19,6 @@ namespace PhotoBook.ViewModel
             ////}
         }
 
-        private string test = "Nie ma fotoksiążki";
-        public string Test
-        {
-            get { return test; }
-            set
-            {
-                Set(ref test, value);
-            }
-        }
-
-        private RelayCommand _sayHello;
-
-        public RelayCommand SayHello
-        {
-            get
-            {
-                if (_sayHello == null)
-                {
-                    _sayHello = new RelayCommand(() =>
-                    {
-                        Test = $"Fotoksiążka zrobiona";
-                    });
-                }
-
-                return _sayHello;
-            }
-        }
+        public static Navigator Navigator { get; private set; } = new Navigator();
     }
 }
