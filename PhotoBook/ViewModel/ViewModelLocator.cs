@@ -31,11 +31,23 @@ namespace PhotoBook.ViewModel
 
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<EditorViewModel>();
+
+            SimpleIoc.Default.Register<FrontCoverSettingsViewModel>();
+            SimpleIoc.Default.Register<BackCoverSettingsViewModel>();
+            SimpleIoc.Default.Register<PagesSettingsViewModel>();
+
+            SimpleIoc.Default.Register<BookViewModel>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public EditorViewModel Editor => ServiceLocator.Current.GetInstance<EditorViewModel>();
+
+        public FrontCoverSettingsViewModel FrontCoverSettings => ServiceLocator.Current.GetInstance<FrontCoverSettingsViewModel>();
+        public BackCoverSettingsViewModel BackCoverSettings => ServiceLocator.Current.GetInstance<BackCoverSettingsViewModel>();
+        public PagesSettingsViewModel PagesSettings => ServiceLocator.Current.GetInstance<PagesSettingsViewModel>();
+
+        public BookViewModel Book => ServiceLocator.Current.GetInstance<BookViewModel>();
 
         public static void Cleanup()
         {

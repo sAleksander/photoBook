@@ -9,8 +9,19 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="EditorView">
 
-    <StackPanel>
-        <Label Content="Photobook in window by developers of curve shaped turn i kasia"/>
-        <Button Content="Zakończ" Command="{Binding Exit}"/>
-    </StackPanel>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <Frame Grid.Column="0" Content="{Binding SettingsViewModel}"/>
+
+        <StackPanel Grid.Column="1">
+            <Frame Content="{Binding BookViewModel}"/>
+            <Button Content="FrontCoverSettings" Command="{Binding ShowFrontCoverSettings}"/>
+            <Button Content="BackCoverSettings" Command="{Binding ShowBackCoverSettings}"/>
+            <Button Content="PagesSettings" Command="{Binding ShowPagesSettings}"/>
+        </StackPanel>
+    </Grid>
 </Page>

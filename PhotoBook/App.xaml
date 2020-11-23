@@ -14,5 +14,19 @@
         <DataTemplate DataType="{x:Type viewModel:EditorViewModel}">
             <view:EditorView/>
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModel:FrontCoverSettingsViewModel}">
+            <view:FrontCoverSettingsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:BackCoverSettingsViewModel}">
+            <view:BackCoverSettingsView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:PagesSettingsViewModel}">
+            <view:PagesSettingsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:BookViewModel}">
+            <view:BookView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>
