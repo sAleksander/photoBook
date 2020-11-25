@@ -70,6 +70,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Graphics\FilterType.cs" />
+    <Compile Include="Model\Graphics\Image.cs" />
+    <Compile Include="Model\Backgrounds\Background.cs" />
+    <Compile Include="Model\Arrangement\Layout.cs" />
+    <Compile Include="Model\Backgrounds\BackgroundColor.cs" />
+    <Compile Include="Model\Backgrounds\BackgroundImage.cs" />
+    <Compile Include="Model\Pages\BackCover.cs" />
+    <Compile Include="Model\Pages\ContentPage.cs" />
+    <Compile Include="Model\Pages\FrontCover.cs" />
+    <Compile Include="Model\Pages\Page.cs" />
+    <Compile Include="Model\PhotoBook.cs" />
+    <Compile Include="Model\Arrangement\Rectangle.cs" />
     <Compile Include="ViewModel\SettingsViewModel\BackCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
