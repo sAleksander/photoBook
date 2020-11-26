@@ -70,7 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Graphics\FilterType.cs" />
+    <Compile Include="Model\Graphics\Filter.cs" />
     <Compile Include="Model\Graphics\Image.cs" />
     <Compile Include="Model\Backgrounds\Background.cs" />
     <Compile Include="Model\Arrangement\Layout.cs" />

@@ -15,9 +15,10 @@ namespace PhotoBook.Model.Graphics
         int Width { get; } // TODO: Think whether it will even be required
         int Height { get; } // TODO: Think whether it will even be required
 
-        FilterType CurrentFilter { get; }
-        void SetFilter(FilterType filterType)
+        Filter.Type CurrentFilter { get; }
+        void SetFilter(Filter.Type filterType)
         {
+            // TODO: Process the original picture and save it as a displayed picture + save it in project resources
 
         }
     }
