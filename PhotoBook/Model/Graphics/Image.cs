@@ -9,6 +9,14 @@ namespace PhotoBook.Model.Graphics
 {
     class Image
     {
+        public Image(string path)
+        {
+            OriginalPath = path;
+            // Save the image somehow in the class
+            // TODO: Make a photo copy in project's folders
+            // TODO: Adjust other properties, settings, etc.
+        }
+
         Rectangle CroppingRectangle { get; set; }
         string OriginalPath { get; }
         string DisplayedPath { get; }
@@ -19,7 +27,6 @@ namespace PhotoBook.Model.Graphics
         void SetFilter(Filter.Type filterType)
         {
             // TODO: Process the original picture and save it as a displayed picture + save it in project resources
-
         }
     }
 }

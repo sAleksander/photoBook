@@ -15,10 +15,15 @@ namespace PhotoBook.Model.Arrangement
         static int CommentFontSize { get; }
         static int CommentOffsetInPixels { get; }
 
+        // String, or enum Type? What is this even for?
+        private string _name;
         string Name { get; }
 
-        int NumOfImages { get; }
-        Rectangle[] ImageConstraints { get; }
+        private int _numOfImages;
+        int NumOfImages { get => _numOfImages; }
+
+        private Rectangle[] _imageConstraints;
+        Rectangle[] ImageConstraints { get => _imageConstraints; }
         
         public enum Type
         {
@@ -32,19 +37,31 @@ namespace PhotoBook.Model.Arrangement
             // TODO: Implement necessary settings
             switch (layoutType)
             {
-                case Layout.Type.OnePicture:                    
+                case Layout.Type.OnePicture:
+                    _numOfImages = 1;
+                    // TODO: Set image constraints
+                    // TODO: Set layout name
                     break;
 
-                case Layout.Type.TwoPictures:                    
+                case Layout.Type.TwoPictures:
+                    _numOfImages = 2;
+                    // TODO: Set image constraints
+                    // TODO: Set layout name
                     break;
 
-                case Layout.Type.ThreePictures:                    
+                case Layout.Type.ThreePictures:
+                    _numOfImages = 3;
+                    // TODO: Set image constraints
+                    // TODO: Set layout name
                     break;
 
                 default:
                     throw new Exception("Wrong type of layout chosen & settings not implemented!");
             }
         }
-        Type[] AvailableLayouts => new Type[] { Type.OnePicture, Type.TwoPictures, Type.ThreePictures };
+
+        // TODO: Add 'changeLayout' method here?
+
+        static Layout.Type[] AvailableLayouts => new Layout.Type[] { Type.OnePicture, Type.TwoPictures, Type.ThreePictures };
     }
 }

@@ -64,6 +64,7 @@ namespace PhotoBook.Model.Graphics
                     break;
 
                 default:
+                    // Not sure whether it's needed, due to specific enum argument type provided
                     throw new Exception("Wrong type of filter chosen & settings not implemented!");
             }
         }
