@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Shapes;
+using PhotoBook.Model.Arrangement;
 
 namespace PhotoBook.Model.Graphics
 {
@@ -27,6 +27,7 @@ namespace PhotoBook.Model.Graphics
         void SetFilter(Filter.Type filterType)
         {
             // TODO: Process the original picture and save it as a displayed picture + save it in project resources
+            Filter.applyFilter(); // <-- This method should still be adjusted
         }
     }
 }

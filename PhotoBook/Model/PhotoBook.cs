@@ -10,12 +10,12 @@ namespace PhotoBook.Model
 {
     class PhotoBook
     {
-        static string Font { get; } = "Arial";
+        public static string Font { get; } = "Arial";
 
         static int PageWidthInPixels { get; }
         static int PageHeightInPixels { get; }
 
-        // TODO: Think in what way the pages should be stored
+
         private List<Page> _contentPages;
         List<Page> ContentPages
         {
@@ -23,20 +23,16 @@ namespace PhotoBook.Model
             set { _contentPages = value; }
         }
 
-        Page FrontCover { get; }
-        Page BackCover { get; }
+        public Page FrontCover { get; }
+        public Page BackCover { get; }
         int NumOfPages { get => ContentPages.Count; }
 
-        (Page, Page) GetPageAt(int index)
+        Layout[] AvailableLayouts { get; } = Layout.CreateAvailableLayouts;
+
+        public (Page, Page) GetPageAt(int index)
         {
-            // TODO: Think how the coverPages should be returned
-            // (as a pair of ex. coverPage & emptyPage - new type ?)
-            // empty page could be also used when creating new pages
             if (index == -1)
-            {
-                // TODO: Implement this so it return the BackCover and "blank page"
-                return (BackCover, new BackCover());
-            }
+                return (_contentPages[NumOfPages - 2], _contentPages[NumOfPages - 1]);
 
             else if (index <= 0 && index > _contentPages.Count)
             {
@@ -48,14 +44,11 @@ namespace PhotoBook.Model
                 return (_contentPages[adjustedIndex], _contentPages[adjustedIndex + 1]);
             }
 
-            else if (index == int.MinValue)
-                return (new FrontCover(), FrontCover);
-
             else
                 throw new Exception("Wrong page index chosen!");
         }
 
-        void CreateNewPages(int index = -1)
+        public void CreateNewPages(int index = -1)
         {
             if (index == -1){
                 _contentPages.Add(new ContentPage());

@@ -13,7 +13,6 @@ namespace PhotoBook.Model.Pages
     {
         // TODO: Provide appropriate constructors
 
-
         Layout Layout { get; set; }
 
         private Image[] _images;
@@ -38,7 +37,7 @@ namespace PhotoBook.Model.Pages
         {
             if (layoutImageIndex < 0 || layoutImageIndex > _images.Length)
                 throw new Exception("Getting an image from an index of out range is not possible!");
-            
+
             return _images[layoutImageIndex];
         }
 
@@ -49,11 +48,11 @@ namespace PhotoBook.Model.Pages
 
             return "";
         }
-        void SetComment(int commentIndex, string contents) 
-        {                     
+        void SetComment(int commentIndex, string contents)
+        {
             if (commentIndex< 0 || commentIndex> _comments.Length)
                 throw new Exception("Setting a comment on an index of out range is not possible!");
-            
+
             _comments[commentIndex] = contents;
 
             // TODO: Inform others about changes

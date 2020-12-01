@@ -8,8 +8,11 @@ namespace PhotoBook.Model.Arrangement
 {
     class Layout
     {
-        Layout() => SetLayoutSettings(Layout.Type.OnePicture);
-        Layout(Layout.Type layoutType) => SetLayoutSettings(layoutType);
+        private Layout(Layout.Type layoutType, string nameOfLayout)
+        {
+            _name = nameOfLayout;
+            SetLayoutSettings(layoutType);
+        }
 
 
         static int CommentFontSize { get; }
@@ -17,19 +20,19 @@ namespace PhotoBook.Model.Arrangement
 
         // String, or enum Type? What is this even for?
         private string _name;
-        string Name { get; }
+        public string Name { get; }
 
         private int _numOfImages;
         int NumOfImages { get => _numOfImages; }
 
         private Rectangle[] _imageConstraints;
         Rectangle[] ImageConstraints { get => _imageConstraints; }
-        
+
         public enum Type
         {
             OnePicture,
             TwoPictures,
-            ThreePictures            
+            ThreePictures
         }
 
         void SetLayoutSettings(Layout.Type layoutType)
@@ -40,19 +43,16 @@ namespace PhotoBook.Model.Arrangement
                 case Layout.Type.OnePicture:
                     _numOfImages = 1;
                     // TODO: Set image constraints
-                    // TODO: Set layout name
                     break;
 
                 case Layout.Type.TwoPictures:
                     _numOfImages = 2;
                     // TODO: Set image constraints
-                    // TODO: Set layout name
                     break;
 
                 case Layout.Type.ThreePictures:
                     _numOfImages = 3;
                     // TODO: Set image constraints
-                    // TODO: Set layout name
                     break;
 
                 default:
@@ -60,8 +60,12 @@ namespace PhotoBook.Model.Arrangement
             }
         }
 
-        // TODO: Add 'changeLayout' method here?
 
-        static Layout.Type[] AvailableLayouts => new Layout.Type[] { Type.OnePicture, Type.TwoPictures, Type.ThreePictures };
+        public static Layout[] CreateAvailableLayouts => new Layout[]
+        {
+            new Layout(Layout.Type.OnePicture, "Jedno zdjęcie"),
+            new Layout(Layout.Type.TwoPictures, "Dwa zdjęcia"),
+            new Layout(Layout.Type.ThreePictures, "Trzy zdjęcia")
+        };
     }
 }
