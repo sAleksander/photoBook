@@ -12,8 +12,8 @@ namespace PhotoBook.Model
     {
         public static string Font { get; } = "Arial";
 
-        static int PageWidthInPixels { get; }
-        static int PageHeightInPixels { get; }
+        public static int PageWidthInPixels { get; }
+        public static int PageHeightInPixels { get; }
 
 
         private List<Page> _contentPages;
@@ -25,9 +25,9 @@ namespace PhotoBook.Model
 
         public Page FrontCover { get; }
         public Page BackCover { get; }
-        int NumOfPages { get => ContentPages.Count; }
+        public int NumOfPages { get => ContentPages.Count; }
 
-        Layout[] AvailableLayouts { get; } = Layout.CreateAvailableLayouts;
+        public Layout[] AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
 
         public (Page, Page) GetPageAt(int index)
         {

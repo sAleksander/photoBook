@@ -14,6 +14,6 @@ namespace PhotoBook.Model.Backgrounds
             Image = image;
         }
 
-        Image Image { set; get; }
+        public Image Image { set; get; }
     }
 }

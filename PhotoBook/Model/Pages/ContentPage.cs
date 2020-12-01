@@ -13,14 +13,14 @@ namespace PhotoBook.Model.Pages
     {
         // TODO: Provide appropriate constructors
 
-        Layout Layout { get; set; }
+        public Layout Layout { get; set; }
 
         private Image[] _images;
         Image[] Images { get => _images; }
         private string[] _comments;
         string[] Comments { get; set; }
 
-        void LoadImage(int layoutImageIndex, string imagePath)
+        public void LoadImage(int layoutImageIndex, string imagePath)
         {
             if (layoutImageIndex < 0 || layoutImageIndex >= _images.Length)
                 throw new Exception("Pasting photograph at an index out of range!");
@@ -33,7 +33,7 @@ namespace PhotoBook.Model.Pages
 
             // TODO: Inform the others about the changes
         }
-        Image GetImage(int layoutImageIndex)
+        public Image GetImage(int layoutImageIndex)
         {
             if (layoutImageIndex < 0 || layoutImageIndex > _images.Length)
                 throw new Exception("Getting an image from an index of out range is not possible!");
@@ -41,14 +41,14 @@ namespace PhotoBook.Model.Pages
             return _images[layoutImageIndex];
         }
 
-        string GetComment(int commentIndex)
+        public string GetComment(int commentIndex)
         {
             if (commentIndex < 0 || commentIndex > _comments.Length)
                 throw new Exception("Getting a comment from an index of out range is not possible!");
 
             return "";
         }
-        void SetComment(int commentIndex, string contents)
+        public void SetComment(int commentIndex, string contents)
         {
             if (commentIndex< 0 || commentIndex> _comments.Length)
                 throw new Exception("Setting a comment on an index of out range is not possible!");

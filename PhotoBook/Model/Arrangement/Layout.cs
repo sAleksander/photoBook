@@ -15,18 +15,18 @@ namespace PhotoBook.Model.Arrangement
         }
 
 
-        static int CommentFontSize { get; }
-        static int CommentOffsetInPixels { get; }
+        public static int CommentFontSize { get; }
+        public static int CommentOffsetInPixels { get; }
 
         // String, or enum Type? What is this even for?
         private string _name;
         public string Name { get; }
 
         private int _numOfImages;
-        int NumOfImages { get => _numOfImages; }
+        public int NumOfImages { get => _numOfImages; }
 
         private Rectangle[] _imageConstraints;
-        Rectangle[] ImageConstraints { get => _imageConstraints; }
+        public Rectangle[] ImageConstraints { get => _imageConstraints; }
 
         public enum Type
         {
@@ -61,7 +61,7 @@ namespace PhotoBook.Model.Arrangement
         }
 
 
-        public static Layout[] CreateAvailableLayouts => new Layout[]
+        public static Layout[] CreateAvailableLayouts() => new Layout[]
         {
             new Layout(Layout.Type.OnePicture, "Jedno zdjęcie"),
             new Layout(Layout.Type.TwoPictures, "Dwa zdjęcia"),

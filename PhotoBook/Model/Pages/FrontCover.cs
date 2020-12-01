@@ -10,6 +10,6 @@ namespace PhotoBook.Model.Pages
     {
         // In pixels
         public static int FontSize { get; } = 18;
-        string Title { get; set; }
+        public string Title { get; set; }
     }
 }

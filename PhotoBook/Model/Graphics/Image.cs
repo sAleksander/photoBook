@@ -17,14 +17,14 @@ namespace PhotoBook.Model.Graphics
             // TODO: Adjust other properties, settings, etc.
         }
 
-        Rectangle CroppingRectangle { get; set; }
-        string OriginalPath { get; }
-        string DisplayedPath { get; }
-        int Width { get; } // TODO: Think whether it will even be required
-        int Height { get; } // TODO: Think whether it will even be required
+        public Rectangle CroppingRectangle { get; set; }
+        public string OriginalPath { get; }
+        public string DisplayedPath { get; }
+        public int Width { get; } // TODO: Think whether it will even be required
+        public int Height { get; } // TODO: Think whether it will even be required
 
-        Filter.Type CurrentFilter { get; }
-        void SetFilter(Filter.Type filterType)
+        public Filter.Type CurrentFilter { get; }
+        public void SetFilter(Filter.Type filterType)
         {
             // TODO: Process the original picture and save it as a displayed picture + save it in project resources
             Filter.applyFilter(); // <-- This method should still be adjusted

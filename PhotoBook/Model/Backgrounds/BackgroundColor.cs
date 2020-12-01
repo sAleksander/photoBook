@@ -22,8 +22,8 @@ namespace PhotoBook.Model.Backgrounds
             B = b;
         }
 
-        byte R { get; set; }
-        byte G { get; set; }
-        byte B { get; set; }
+        public byte R { get; set; }
+        public byte G { get; set; }
+        public byte B { get; set; }
     }
 }
