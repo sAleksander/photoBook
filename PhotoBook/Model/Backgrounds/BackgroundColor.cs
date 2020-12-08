@@ -8,14 +8,14 @@ namespace PhotoBook.Model.Backgrounds
 {
     public class BackgroundColor : Background
     {
-        BackgroundColor()
+        public BackgroundColor()
         {
             R = 0;
             G = 0;
             B = 0;
         }
 
-        BackgroundColor(byte r, byte g, byte b)
+        public BackgroundColor(byte r, byte g, byte b)
         {
             R = r;
             G = g;
