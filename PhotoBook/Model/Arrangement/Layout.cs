@@ -8,10 +8,38 @@ namespace PhotoBook.Model.Arrangement
 {
     public class Layout
     {
-        private Layout(Layout.Type layoutType, string nameOfLayout)
+        public enum Type
+        {
+            OnePicture,
+            TwoPictures,
+            ThreePictures
+        }
+
+        public static Dictionary<Type, Layout> CreateAvailableLayouts() => new Dictionary<Type, Layout>
+        {
+            {
+                Layout.Type.OnePicture, new Layout("Jedno zdjęcie")
+                {
+                    // TODO: Set image constaints
+                }
+            },
+            {
+                Layout.Type.TwoPictures, new Layout("Dwa zdjęcia")
+                {
+                    // TODO: Set image constaints
+                }
+            },
+            {
+                Layout.Type.ThreePictures, new Layout("Trzy zdjęcia")
+                {
+                    // TODO: Set image constaints
+                }
+            }
+        };
+
+        private Layout(string nameOfLayout)
         {
             _name = nameOfLayout;
-            SetLayoutSettings(layoutType);
         }
 
 
@@ -27,45 +55,5 @@ namespace PhotoBook.Model.Arrangement
 
         private Rectangle[] _imageConstraints;
         public Rectangle[] ImageConstraints { get => _imageConstraints; }
-
-        public enum Type
-        {
-            OnePicture,
-            TwoPictures,
-            ThreePictures
-        }
-
-        void SetLayoutSettings(Layout.Type layoutType)
-        {
-            // TODO: Implement necessary settings
-            switch (layoutType)
-            {
-                case Layout.Type.OnePicture:
-                    _numOfImages = 1;
-                    // TODO: Set image constraints
-                    break;
-
-                case Layout.Type.TwoPictures:
-                    _numOfImages = 2;
-                    // TODO: Set image constraints
-                    break;
-
-                case Layout.Type.ThreePictures:
-                    _numOfImages = 3;
-                    // TODO: Set image constraints
-                    break;
-
-                default:
-                    throw new Exception("Wrong type of layout chosen & settings not implemented!");
-            }
-        }
-
-
-        public static Layout[] CreateAvailableLayouts() => new Layout[]
-        {
-            new Layout(Layout.Type.OnePicture, "Jedno zdjęcie"),
-            new Layout(Layout.Type.TwoPictures, "Dwa zdjęcia"),
-            new Layout(Layout.Type.ThreePictures, "Trzy zdjęcia")
-        };
     }
 }

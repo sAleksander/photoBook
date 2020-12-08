@@ -22,7 +22,8 @@ namespace PhotoBook.Model
         public BackCover BackCover { get; }
         public int NumOfContentPages { get => _contentPages.Count; }
 
-        public Layout[] AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
+        public Dictionary<Layout.Type, Layout> AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
+
 
         public (ContentPage, ContentPage) GetContentPagesAt(int index)
         {
