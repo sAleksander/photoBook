@@ -49,7 +49,7 @@ namespace PhotoBook.Model.Pages
             if (commentIndex < 0 || commentIndex > _comments.Length)
                 throw new Exception("Getting a comment from an index of out range is not possible!");
 
-            return "";
+            return _comments[commentIndex];
         }
         public void SetComment(int commentIndex, string contents)
         {
