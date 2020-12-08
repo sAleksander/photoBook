@@ -8,7 +8,7 @@ namespace PhotoBook.Model.Arrangement
 {
     public class Rectangle
     {
-        Rectangle(int x, int y, int width, int height)
+        public Rectangle(int x, int y, int width, int height)
         {
             if (width <= 0 || height <= 0)
                 throw new Exception("Width & height of a rectangle must be longer than 0!");
