@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Pages
 {
-    abstract class Page
+    public abstract class Page
     {
         public Background Background { get; }
     }

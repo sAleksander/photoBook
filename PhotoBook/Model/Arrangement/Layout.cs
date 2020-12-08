@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Arrangement
 {
-    class Layout
+    public class Layout
     {
         private Layout(Layout.Type layoutType, string nameOfLayout)
         {

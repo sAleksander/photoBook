@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model
 {
-    class PhotoBook
+    public class PhotoBook
     {
         public static string Font { get; } = "Arial";
 

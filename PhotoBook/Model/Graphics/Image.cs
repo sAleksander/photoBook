@@ -7,7 +7,7 @@ using PhotoBook.Model.Arrangement;
 
 namespace PhotoBook.Model.Graphics
 {
-    class Image
+    public class Image
     {
         public Image(string path)
         {

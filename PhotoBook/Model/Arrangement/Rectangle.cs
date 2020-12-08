@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Arrangement
 {
-    class Rectangle
+    public class Rectangle
     {
         Rectangle(int x, int y, int width, int height)
         {

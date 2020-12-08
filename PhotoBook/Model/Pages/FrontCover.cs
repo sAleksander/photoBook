@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Pages
 {
-    class FrontCover : Page
+    public class FrontCover : Page
     {
         // In pixels
         public static int FontSize { get; } = 18;

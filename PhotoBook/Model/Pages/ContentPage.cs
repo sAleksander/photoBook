@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Pages
 {
-    class ContentPage : Page
+    public class ContentPage : Page
     {
         // TODO: Provide appropriate constructors
 

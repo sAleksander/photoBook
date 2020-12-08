@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Graphics
 {
-    class Filter
+    public class Filter
     {
         Filter() => SetFilterSettings(Filter.Type.None);
         Filter (Filter.Type filterType) => SetFilterSettings(filterType);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Backgrounds
 {
-    class BackgroundImage : Background
+    public class BackgroundImage : Background
     {
         BackgroundImage(Image image)
         {
