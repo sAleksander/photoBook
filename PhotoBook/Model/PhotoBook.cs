@@ -18,8 +18,8 @@ namespace PhotoBook.Model
 
         private List<ContentPage> _contentPages;
 
-        public Page FrontCover { get; }
-        public Page BackCover { get; }
+        public FrontCover FrontCover { get; }
+        public BackCover BackCover { get; }
         public int NumOfContentPages { get => _contentPages.Count; }
 
         public Layout[] AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
