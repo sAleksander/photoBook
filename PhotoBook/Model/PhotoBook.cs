@@ -16,23 +16,18 @@ namespace PhotoBook.Model
         public static int PageHeightInPixels { get; }
 
 
-        private List<Page> _contentPages;
-        List<Page> ContentPages
-        {
-            get => _contentPages;
-            set { _contentPages = value; }
-        }
+        private List<ContentPage> _contentPages;
 
         public Page FrontCover { get; }
         public Page BackCover { get; }
-        public int NumOfPages { get => ContentPages.Count; }
+        public int NumOfContentPages { get => _contentPages.Count; }
 
         public Layout[] AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
 
-        public (Page, Page) GetPageAt(int index)
+        public (ContentPage, ContentPage) GetContentPagesAt(int index)
         {
             if (index == -1)
-                return (_contentPages[NumOfPages - 2], _contentPages[NumOfPages - 1]);
+                return (_contentPages[NumOfContentPages - 2], _contentPages[NumOfContentPages - 1]);
 
             else if (index <= 0 && index > _contentPages.Count)
             {
