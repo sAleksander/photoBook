@@ -20,7 +20,7 @@ namespace PhotoBook.Model.Pages
         private string[] _comments;
         string[] Comments { get; set; }
 
-        public void LoadImage(int layoutImageIndex, string imagePath)
+        public Image LoadImage(int layoutImageIndex, string imagePath)
         {
             if (layoutImageIndex < 0 || layoutImageIndex >= _images.Length)
                 throw new Exception("Pasting photograph at an index out of range!");
@@ -29,9 +29,12 @@ namespace PhotoBook.Model.Pages
 
             // TODO: Add maybe a condition checking the extension of the file?
 
-            _images[layoutImageIndex] = new Image(imagePath);
+            Image newImage = new Image(imagePath);
+            _images[layoutImageIndex] = newImage;
 
             // TODO: Inform the others about the changes
+
+            return newImage;
         }
         public Image GetImage(int layoutImageIndex)
         {
