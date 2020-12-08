@@ -13,6 +13,14 @@ namespace PhotoBook.Model.Pages
     {
         // TODO: Provide appropriate constructors
 
+        #region Mockup
+        public ContentPage()
+        {
+            _images = new Image[2];
+            _comments = new string[2];
+        }
+        #endregion
+
         public Layout Layout { get; set; }
 
         private Image[] _images;
@@ -22,6 +30,12 @@ namespace PhotoBook.Model.Pages
 
         public Image LoadImage(int layoutImageIndex, string imagePath)
         {
+            #region Mockup
+            Image testImage = new Image(imagePath);
+            _images[layoutImageIndex] = testImage;
+            return testImage;
+            #endregion
+
             if (layoutImageIndex < 0 || layoutImageIndex >= _images.Length)
                 throw new Exception("Pasting photograph at an index out of range!");
             if (!File.Exists(imagePath))

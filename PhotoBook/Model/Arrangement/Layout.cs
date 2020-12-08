@@ -17,25 +17,39 @@ namespace PhotoBook.Model.Arrangement
 
         public static Dictionary<Type, Layout> CreateAvailableLayouts() => new Dictionary<Type, Layout>
         {
-            {
-                Layout.Type.OnePicture, new Layout("Jedno zdjęcie")
-                {
-                    // TODO: Set image constaints
-                }
-            },
+            #region Mockup
             {
                 Layout.Type.TwoPictures, new Layout("Dwa zdjęcia")
                 {
-                    // TODO: Set image constaints
+                    _numOfImages = 2,
+                    _imageConstraints = new Rectangle[]
+                    {
+                        new Rectangle(
+                            100,
+                            50,
+                            PhotoBook.PageWidthInPixels - 200, // 600
+                            (PhotoBook.PageHeightInPixels - (50 + 150 + 150)) / 2 // 575
+                        ),
+                        new Rectangle(
+                            100,
+                            50 + (PhotoBook.PageHeightInPixels - (50 + 150 + 150)) / 2 + 150, // 725
+                            PhotoBook.PageWidthInPixels - 200, // 600
+                            (PhotoBook.PageHeightInPixels - (50 + 150 + 150)) / 2 // 575
+                        ),
+                    }
+                    
                 }
             },
-            {
-                Layout.Type.ThreePictures, new Layout("Trzy zdjęcia")
-                {
-                    // TODO: Set image constaints
-                }
-            }
+            #endregion
         };
+
+        #region Mockup
+        static Layout()
+        {
+            CommentFontSize = 15;
+            CommentOffsetInPixels = 50;
+        }
+        #endregion
 
         private Layout(string nameOfLayout)
         {

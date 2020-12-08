@@ -11,7 +11,17 @@ namespace PhotoBook.Model.Graphics
     {
         public Image(string path)
         {
+            #region Mockup
+            DisplayedPath = path;
+
+            Width = 1350;
+            Height = 900;
+
+            CurrentFilter = Filter.Type.None;
+            #endregion
+
             OriginalPath = path;
+
             // Save the image somehow in the class
             // TODO: Make a photo copy in project's folders
             // TODO: Adjust other properties, settings, etc.
@@ -26,6 +36,10 @@ namespace PhotoBook.Model.Graphics
         public Filter.Type CurrentFilter { get; }
         public void SetFilter(Filter.Type filterType)
         {
+            #region Mockup
+            throw new NotImplementedException("Not available in mockup version");
+            #endregion
+
             // TODO: Process the original picture and save it as a displayed picture + save it in project resources
             Filter.applyFilter(); // <-- This method should still be adjusted
         }
