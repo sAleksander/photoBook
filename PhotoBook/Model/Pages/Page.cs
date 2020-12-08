@@ -9,6 +9,6 @@ namespace PhotoBook.Model.Pages
 {
     public abstract class Page
     {
-        public Background Background { get; }
+        public Background Background { get; set; }
     }
 }
