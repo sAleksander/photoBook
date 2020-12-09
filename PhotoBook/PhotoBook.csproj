@@ -168,5 +168,17 @@
   <ItemGroup>
     <Resource Include="View\Images\logo1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\arrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\add.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,21 +7,136 @@
       mc:Ignorable="d"
       DataContext="{Binding Source={StaticResource Locator}, Path=Editor}"
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="EditorView">
+      Title="EditorView" >
 
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="#a6a6a4" Offset="1"/>
+                <GradientStop Color="#94b4a4"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
-        <Frame Grid.Column="0" Content="{Binding SettingsViewModel}"/>
+        <!--Right side - settings-->
+        <StackPanel Grid.Column="0">
+            <Image Source="Images/logo1.png" 
+                   Width="120"
+                   Margin="20"/>
+            <TextBlock Text="FotoKsiążka"
+                       HorizontalAlignment="Center"
+                       FontSize="35" 
+                       FontFamily="Comic Sans MS"
+                       Foreground="White"/>
+            <Frame 
+                   Content="{Binding SettingsViewModel}"/>
 
-        <StackPanel Grid.Column="1">
-            <Frame Content="{Binding BookViewModel}"/>
-            <Button Content="FrontCoverSettings" Command="{Binding ShowFrontCoverSettings}"/>
-            <Button Content="BackCoverSettings" Command="{Binding ShowBackCoverSettings}"/>
-            <Button Content="PagesSettings" Command="{Binding ShowPagesSettings}"/>
         </StackPanel>
+
+        <!--Left side-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <Frame Content="{Binding BookViewModel}"/>
+                <Button Content="FrontCoverSettings" 
+                        Command="{Binding ShowFrontCoverSettings}"/>
+                <Button Content="BackCoverSettings" 
+                        Command="{Binding ShowBackCoverSettings}"/>
+                <Button Content="PagesSettings" 
+                        Command="{Binding ShowPagesSettings}"/>
+            </StackPanel>
+
+
+            <Frame Grid.Row="1" Background="#e8e8e8"
+                   Margin="10,20,20,0"/>
+
+            <Grid Grid.Row="2" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Background="Transparent"
+                        Margin="10,20,0,20"
+                        BorderThickness="0" 
+                        Foreground="White"
+                        FontSize="20"
+                        HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Images/arrow.png"
+                               Width="16px"
+                               HorizontalAlignment="Left"
+                               Margin="10,0,0,0"/>
+                        <Label Content="Poprzednia" 
+                               Foreground="White"
+                               FontSize="20px"
+                               FontFamily="Segoe UI Light"
+                               Margin="10" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="1"
+                        Background="Transparent"
+                        Margin="20"
+                        BorderThickness="0" 
+                        Foreground="White"
+                        FontSize="20"
+                        HorizontalAlignment="Right">
+                    <StackPanel>
+                        <Image Source="Images/delete.png" Width="18px" Height="22"/>
+                        <Label Content="Usuń strony" 
+                               Foreground="White"
+                               FontSize="20px"
+                               FontFamily="Segoe UI Light"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="2"
+                        Background="Transparent"
+                        Margin="20"
+                        BorderThickness="0" 
+                        Foreground="White"
+                        FontSize="20"
+                        HorizontalAlignment="Left">
+                    <StackPanel>
+                        <Image Source="Images/add.png" Width="18px" Height="22"/>
+                        <Label Content="Dodaj strony" 
+                               Foreground="White"
+                               FontSize="20px"
+                               FontFamily="Segoe UI Light"/>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="3"
+                        Background="Transparent"
+                        Margin="20"
+                        BorderThickness="0" 
+                        Foreground="White"
+                        FontSize="20"
+                        HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Następna" 
+                               Foreground="White"
+                               FontSize="20px"
+                               FontFamily="Segoe UI Light"
+                               Margin="10" HorizontalAlignment="Right"/>
+                        <Image Source="Images/arrowRight.png"
+                               Width="16px"
+                               HorizontalAlignment="Right"
+                               Margin="0,0,20,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+        </Grid>
+
+
     </Grid>
 </Page>
