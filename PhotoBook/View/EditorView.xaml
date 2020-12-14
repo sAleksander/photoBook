@@ -23,7 +23,7 @@
 
         <!--Right side - settings-->
         <StackPanel Grid.Column="0">
-            <Image Source="Images/logo1.png" 
+            <Image Source="Images/logoWhite.png" 
                    Width="120"
                    Margin="20"/>
             <TextBlock Text="FotoKsiążka"

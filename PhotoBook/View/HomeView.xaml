@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" VerticalAlignment="Center">
-            <Image Source="Images/logo1.png" 
+            <Image Source="Images/logoWhite.png" 
                    Width="220"
                    Margin="0,40,0,0"/>
             <TextBlock Text="Book of Foto in a Window"
