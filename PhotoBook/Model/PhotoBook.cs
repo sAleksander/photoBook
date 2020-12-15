@@ -74,7 +74,7 @@ namespace PhotoBook.Model
             if (index == -1)
                 return (_contentPages[NumOfContentPages - 2], _contentPages[NumOfContentPages - 1]);
 
-            else if (index <= 0 && index > _contentPages.Count)
+            else if (index >= 0 && index < _contentPages.Count)
             {
                 byte adjustedIndex = (byte)index;
 
@@ -99,7 +99,7 @@ namespace PhotoBook.Model
                 _contentPages.Add(new ContentPage());
             }
 
-            else if (index <= 0 && index > _contentPages.Count){
+            else if (index >= 0 && index < _contentPages.Count){
                 // Provides inserting pages between sheets & not pages
                 byte adjustedIndex = (byte)index;
 
@@ -108,9 +108,51 @@ namespace PhotoBook.Model
 
                 _contentPages.Insert(adjustedIndex, new ContentPage());
                 _contentPages.Insert(adjustedIndex, new ContentPage());
-
-                // Remind about changes here
             }
+
+            else
+                throw new Exception("Wrong insert page index chosen!");
+
+            // Remind about changes here
+        }
+
+        public void DeletePages(int index = -1)
+        {
+            if(index == -1)
+            {
+                _contentPages.RemoveAt(_contentPages.Count - 1);
+                _contentPages.RemoveAt(_contentPages.Count - 1);
+            }
+
+            else if (index >= 0 && index < _contentPages.Count)
+            {
+                byte adjustedIndex = (byte)index;
+
+                if (index % 2 == 1)
+                    adjustedIndex = (byte)(index - 1);
+
+                _contentPages.RemoveAt(adjustedIndex);
+                _contentPages.RemoveAt(adjustedIndex);
+            }
+
+            else
+                throw new Exception("Wrong remove page index chosen!");
+
+            // Remind about changes here
+        }
+
+        public void EditPage(int index, ContentPage editedPage)
+        {
+            if (index == -1)
+                _contentPages[_contentPages.Count - 1] = editedPage;
+
+            else if (index >= 0 && index < _contentPages.Count)
+                _contentPages[index] = editedPage;
+
+            else
+                throw new Exception("Wrong edit page index chosen!");
+
+            // Remind about changes here
         }
     }
 }

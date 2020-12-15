@@ -28,6 +28,7 @@ namespace PhotoBook.Model.Pages
         private string[] _comments;
         string[] Comments { get; set; }
 
+        #region Image functionality
         public Image LoadImage(int layoutImageIndex, string imagePath)
         {
             #region Mockup
@@ -50,6 +51,7 @@ namespace PhotoBook.Model.Pages
 
             return newImage;
         }
+
         public Image GetImage(int layoutImageIndex)
         {
             if (layoutImageIndex < 0 || layoutImageIndex > _images.Length)
@@ -58,6 +60,27 @@ namespace PhotoBook.Model.Pages
             return _images[layoutImageIndex];
         }
 
+        public void EditImage(int layoutImageIndex, Image editedImage)
+        {
+            if (layoutImageIndex < 0 || layoutImageIndex > _images.Length)
+                throw new Exception("Editing an image from an index of out range is not possible!");
+
+            _images[layoutImageIndex] = editedImage;
+
+            // Inform about changes
+        }
+        #endregion
+
+        #region Comments functionality
+        public void AddAndEditComment(int commentIndex, string commentContent)
+        {
+            if (commentIndex < 0 || commentIndex > _comments.Length)
+                throw new Exception("Adding, setting or editing a comment to an index of out range is not possible!");
+
+            _comments[commentIndex] = commentContent;
+
+            // Inform about changes
+        }
         public string GetComment(int commentIndex)
         {
             if (commentIndex < 0 || commentIndex > _comments.Length)
@@ -65,14 +88,6 @@ namespace PhotoBook.Model.Pages
 
             return _comments[commentIndex];
         }
-        public void SetComment(int commentIndex, string contents)
-        {
-            if (commentIndex< 0 || commentIndex> _comments.Length)
-                throw new Exception("Setting a comment on an index of out range is not possible!");
-
-            _comments[commentIndex] = contents;
-
-            // TODO: Inform others about changes
-        }
+        #endregion
     }
 }
