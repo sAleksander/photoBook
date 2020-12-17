@@ -1,0 +1,24 @@
+﻿<Page x:Class="PhotoBook.View.PhotoBookPages.BackPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PhotoBook.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="1300" d:DesignWidth="650"
+      Title="BackPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Canvas Grid.Column="0" Background="White">
+            <Image Source="../Images/logoBlack.png" 
+                   Width="100" Canvas.Left="290" Canvas.Top="1075"/>
+            <TextBlock Text="Wykonali: Katarzyna Pawlus, Wojciech Pisarski, Aleksander Szulc, Bartłomiej Zięba" 
+                       Canvas.Left="128" Canvas.Top="1185"
+                       FontFamily="Comic Sans MS"/>
+        </Canvas>
+    </Grid>
+</Page>

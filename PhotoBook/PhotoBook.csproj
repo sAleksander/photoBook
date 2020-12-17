@@ -95,6 +95,15 @@
     <Compile Include="View\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PhotoBookPages\BackPage.xaml.cs">
+      <DependentUpon>BackPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhotoBookPages\FrontPage.xaml.cs">
+      <DependentUpon>FrontPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhotoBookPages\MiddlePages.xaml.cs">
+      <DependentUpon>MiddlePages.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SettingsView\BackCoverSettingsView.xaml.cs">
       <DependentUpon>BackCoverSettingsView.xaml</DependentUpon>
     </Compile>
@@ -123,6 +132,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\BookView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhotoBookPages\BackPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhotoBookPages\FrontPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhotoBookPages\MiddlePages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -173,6 +194,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\logoBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\logoWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\arrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

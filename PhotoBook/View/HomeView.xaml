@@ -10,6 +10,73 @@
       Title="HomeView">
 
     <Grid>
-        <Button Content="Edytuj" Command="{Binding Edit}"/>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="#a6a6a4" Offset="1"/>
+                <GradientStop Color="#94b4a4"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" VerticalAlignment="Center">
+            <Image Source="Images/logoWhite.png" 
+                   Width="220"
+                   Margin="0,40,0,0"/>
+            <TextBlock Text="Book of Foto in a Window"
+                       HorizontalAlignment="Center"
+                       FontSize="75" 
+                       FontFamily="Comic Sans MS"
+                       Foreground="White"
+                       Margin="0,0,0,10"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button Content="Stwórz nową"
+                Background="Transparent"
+                BorderThickness="1"
+                BorderBrush="White"
+                FontFamily="Segoe UI Light"
+                FontSize="20"
+                Foreground="White"
+                Height="50"
+                Margin="10,-50,0,0"
+                Width="200"
+                Command="{Binding Edit}">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="7"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Otwórz istniejącą"
+                Background="Transparent"
+                BorderThickness="1"
+                BorderBrush="White"
+                FontFamily="Segoe UI Light"
+                FontSize="20"
+                FontWeight="Bold"
+                Foreground="White"
+                Height="50"
+                Margin="10,-50,0,0"
+                Width="200"
+                Command="">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="7"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#59886b"/>
+                                <Setter Property="BorderBrush" Value="#94b4a4"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+
     </Grid>
 </Page>

@@ -6,10 +6,110 @@
       xmlns:local="clr-namespace:PhotoBook.View"
       DataContext="{Binding Source={StaticResource Locator}, Path=PagesSettings}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="500"
       Title="PagesSettingsView">
 
-    <Grid>
-        <Label Content="PagesSettings"/>
+    <Grid Background="Transparent" Margin="10,30,0,0">
+        <StackPanel CanVerticallyScroll="True">
+            <Grid Height="35">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Lewa strona" 
+                    Grid.Column="0"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Background="Transparent"
+                    FontSize="20" Foreground="White" FontFamily="Segoe UI Light" />
+                <Button Content="Prawa strona" 
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Background="Transparent"
+                    FontSize="20" Foreground="White" FontFamily="Segoe UI Light" />
+            </Grid>
+            <Button Content="Układ strony" 
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Background="Transparent"
+                    FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
+                    Height="50">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="2"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <StackPanel Background="Transparent">
+                <Button Content="1 zdjęcie"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="20px"
+                        Height="40"
+                        Margin="40,0,0,0"/>
+                <Button Content="1 zdjęcie"  
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="20px" 
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                <Button Content="2 zdjęcia" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="20px"
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                <Button Content="2 zdjęcia" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="20px"
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+            </StackPanel>
+            <Button Content="Zmień motyw"
+                    VerticalAlignment="Top" 
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
+                    Background="Transparent" 
+                    Height="50"
+                    Margin="0,1,0,1"/>
+            <StackPanel Background="Transparent">
+                <Button Content="Kolor"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="20px"
+                        Height="40"
+                        Margin="40,0,0,0"/>
+                <Button Content="Motyw 1"  
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="20px" 
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                <Button Content="Motyw 2" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="20px"
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                <Button Content="Motyw 3" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="20px"
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>

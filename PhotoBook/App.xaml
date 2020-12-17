@@ -8,6 +8,7 @@
     <Application.Resources>
         <viewModel:ViewModelLocator x:Key="Locator"/>
 
+
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:HomeView/>
         </DataTemplate>
@@ -28,5 +29,6 @@
         <DataTemplate DataType="{x:Type viewModel:BookViewModel}">
             <view:BookView/>
         </DataTemplate>
+        
     </Application.Resources>
 </Application>
