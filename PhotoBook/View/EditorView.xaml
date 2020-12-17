@@ -71,7 +71,8 @@
                         BorderThickness="0" 
                         Foreground="White"
                         FontSize="20"
-                        HorizontalAlignment="Left">
+                        HorizontalAlignment="Left"
+                        Command="{Binding PreviousPage}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="Images/arrow.png"
                                Width="16px"
@@ -120,7 +121,8 @@
                         BorderThickness="0" 
                         Foreground="White"
                         FontSize="20"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Command="{Binding NextPage}">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Następna" 
                                Foreground="White"

@@ -34,6 +34,11 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(SettingsViewModel), ref settingsViewModel, value);
         }
 
+        public EditorViewModel()
+        {
+            NotifyNestedViewModels();
+        }
+
         // Page related commands
         public RelayCommand NextPage => new RelayCommand(() =>
         {
@@ -71,7 +76,7 @@ namespace PhotoBook.ViewModel
                     if (currentContentPageIndex - 2 >= 0)
                         currentContentPageIndex -= 2;
                     else
-                        currentPageType = PageType.BackCover;
+                        currentPageType = PageType.FrontCover;
                     break;
                 case PageType.BackCover:
                     if (model.NumOfContentPages == 0)

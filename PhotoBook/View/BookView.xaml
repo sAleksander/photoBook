@@ -8,8 +8,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BookView">
-
+    
     <Grid>
-        <Label Content="Ładna strona"/>
+        <Label Name="TestLabel" Content="{Binding TestString}" FontSize="20"/>
     </Grid>
 </Page>

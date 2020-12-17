@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using PhotoBook.ViewModel;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace PhotoBook.View
 {
@@ -20,9 +8,41 @@ namespace PhotoBook.View
     /// </summary>
     public partial class BookView : Page
     {
+        private Model.Pages.Page[] pages;
+        private PageType pageType;
+        private BookViewModel viewModel;
+
         public BookView()
         {
             InitializeComponent();
+
+            viewModel = (BookViewModel)DataContext;
+            SetLabelText();
+
+            viewModel.PropertyChanged += (sender, args) =>
+            {
+                if (args.PropertyName.Equals(nameof(viewModel.CurrentPageType)))
+                {
+                    pageType = viewModel.CurrentPageType;
+                    SetLabelText();
+                }
+            };
+        }
+
+        private void SetLabelText()
+        {
+            switch (pageType)
+            {
+                case PageType.FrontCover:
+                    TestLabel.Content = "FrontCover";
+                    break;
+                case PageType.Content:
+                    TestLabel.Content = "ContentPage";
+                    break;
+                case PageType.BackCover:
+                    TestLabel.Content = "BackCover";
+                    break;
+            }
         }
     }
 }
