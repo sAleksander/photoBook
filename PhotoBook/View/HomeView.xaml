@@ -25,7 +25,7 @@
             <Image Source="Images/logoWhite.png" 
                    Width="220"
                    Margin="0,40,0,0"/>
-            <TextBlock Text="Book of Foto in a Window"
+            <TextBlock Text="Fotoksiążka"
                        HorizontalAlignment="Center"
                        FontSize="75" 
                        FontFamily="Comic Sans MS"
