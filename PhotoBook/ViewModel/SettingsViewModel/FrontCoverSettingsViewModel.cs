@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PhotoBook.Model.Pages;
 
 namespace PhotoBook.ViewModel
 {
     public class FrontCoverSettingsViewModel : SettingsViewModel
     {
+        private FrontCover frontCover;
+        public FrontCover FrontCover
+        {
+            get => frontCover;
+            private set => Set(nameof(FrontCover), ref frontCover, value);
+        }
+
+        public FrontCoverSettingsViewModel(FrontCover frontCover)
+        {
+            FrontCover = frontCover;
+        }
     }
 }

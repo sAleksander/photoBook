@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PhotoBook.Model.Pages;
 
 namespace PhotoBook.ViewModel
 {
     public class BackCoverSettingsViewModel : SettingsViewModel
     {
+        private BackCover backCover;
+        public BackCover BackCover
+        {
+            get => backCover;
+            private set => Set(nameof(BackCover), ref backCover, value);
+        }
+
+        public BackCoverSettingsViewModel(BackCover backCover)
+        {
+            BackCover = backCover;
+        }
     }
 }
