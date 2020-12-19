@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace PhotoBook.Model.Graphics
         }
 
         private Type currentType;
-        private int[,] _settings;
-        int[,] Settings { get => _settings; }
+        Dictionary<string, double> _settings = new Dictionary<string, double>();
+        Dictionary<string, double> Settings { get => _settings; }
 
         public enum Type
         {
@@ -31,115 +32,74 @@ namespace PhotoBook.Model.Graphics
             Greyscale
         }
 
-        void SetFilterSettings(Filter.Type filterType)
+        public void SetFilterSettings(Filter.Type filterType)
         {
-            // TODO: Test out those settings
-            // change to double precision if needed
+            if (filterType == currentType)
+                return;
 
-            switch (filterType) {
+            currentType = filterType;
+            _settings.Clear();
+
+            switch (filterType) {                
                 case Filter.Type.Cold:
-                    _settings = new int[3, 3]
-                    {
-                        {2, 0, 0},
-                        {0, 2, 0},
-                        {0, 0, 3}
-                    };
+                    _settings.Add("R", 0.8);
+                    _settings.Add("G", 0.8);
+                    _settings.Add("B", 1);
                     break;
 
                 case Filter.Type.Warm:
-                    _settings = new int[3, 3]
-                    {
-                        {3, 0, 0},
-                        {0, 2, 0},
-                        {0, 0, 2}
-                    };
+                    _settings.Add("R", 1);
+                    _settings.Add("G", 0.8);
+                    _settings.Add("B", 0.8);
                     break;
 
-                default:
-                    _settings = new int[3, 3]
-                    {
-                        {0, 0, 0},
-                        {0, 0, 0},
-                        {0, 0, 0}
-                    };
+                case Filter.Type.Greyscale:
+                    _settings.Clear();
+                    _settings.Add("R", 0.114);
+                    _settings.Add("G", 0.587);
+                    _settings.Add("B", 0.299);
+                    break;
+                case Filter.Type.None:
+                    _settings.Add("R", 1);
+                    _settings.Add("G", 1);
+                    _settings.Add("B", 1);
                     break;
             }
         }
 
         // The method below in the future should return a picture with a filter added as an argument
-        // Arguments & return type should be added/adjusted as well - originalImagePath & Filter.Type?
         public Bitmap applyFilter(Bitmap originalBitmap)
         {
             Bitmap editedBitmap = originalBitmap;
+            BitmapData bitmapData = editedBitmap.LockBits(new Rectangle(0, 0, editedBitmap.Width, editedBitmap.Height),
+            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-            switch (currentType)
+            unsafe
             {
-                case Type.Greyscale:
-                    for (int i = 0; i < editedBitmap.Width; i++)
-                        for (int j = 0; j < editedBitmap.Height; j++)
+                byte* pixelPointer = (byte*)bitmapData.Scan0.ToPointer();
+                int endPixelAddress = (int)pixelPointer + bitmapData.Stride * bitmapData.Height;
+
+                switch (currentType)
+                {
+                    case (Filter.Type.Greyscale):
+                        while ((int)pixelPointer != endPixelAddress)
                         {
-                            Color pixel = editedBitmap.GetPixel(i, j);
+                            pixelPointer[0] = (byte)(_settings["R"] * pixelPointer[2] + _settings["G"] * pixelPointer[1] + _settings["B"] * pixelPointer[0]);
+                            pixelPointer[1] = pixelPointer[0];
+                            pixelPointer[2] = pixelPointer[0];
+                            pixelPointer += 3;
+                        }                        
+                        break;
 
-                            int average = (pixel.R + pixel.G + pixel.B) / 3;
-
-                            editedBitmap.SetPixel(i, j, Color.FromArgb(average, average, average));
-                        }
-                    break;
-
-                default:
-                    int sum = 0;
-                    int R = 0;
-                    int G = 0;
-                    int B = 0;
-
-                    for (int i = 0; i < _settings.GetLength(0); i++)
-                        for (int j = 0; j < editedBitmap.Height; j++)
-                            sum += Convert.ToInt32(Settings[i, j]);
-
-                    if (sum <= 0) sum = 1;
-                    double K = 1.0 / sum;
-
-                    for (int btmW = 0; btmW < originalBitmap.Width; btmW++)
-                    {
-                        for (int btmH = 0; btmH < originalBitmap.Height; btmH++)
+                    default:
+                        while ((int)pixelPointer != endPixelAddress)
                         {
-                            for (int filW = 0; filW < _settings.GetLength(0); filW++)
-                            {
-                                for (int filH = 0; filH < _settings.GetLength(0); filH++)
-                                {
-                                    if (btmW - filW < 0 || btmH - filH < 0) continue;
-                                    else
-                                    {
-                                        Color pixel = originalBitmap.GetPixel(btmW - filW, btmH - filH);
-                                        R += _settings[filW, filH] * pixel.R;
-                                        G += _settings[filW, filH] * pixel.G;
-                                        B += _settings[filW, filH] * pixel.B;
-                                    }
-
-                                }
-                            }
-
-                            R = Convert.ToInt16(K * R);
-                            G = Convert.ToInt16(K * G);
-                            B = Convert.ToInt16(K * B);
-
-                            if (R > 255) R = 255;
-                            else if (R < 0) R = 0;
-
-                            if (G > 255) G = 255;
-                            else if (G < 0) G = 0;
-
-                            if (B > 255) B = 255;
-                            else if (B < 0) B = 0;
-                            
-                            editedBitmap.SetPixel(btmW, btmH, Color.FromArgb(255, R, G, B));
-
-                            R = 0;
-                            G = 0;
-                            B = 0;
-                        }
-                    }
-                    break;
+                            pixelPointer[2] = (byte)(_settings["R"] * pixelPointer[2]);
+                            pixelPointer[1] = (byte)(_settings["G"] * pixelPointer[1]);
+                            pixelPointer[0] = (byte)(_settings["B"] * pixelPointer[0]);
+                        }                        
+                        break;
+                }
             }
             return editedBitmap;
         }

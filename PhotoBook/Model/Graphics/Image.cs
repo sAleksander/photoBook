@@ -60,9 +60,8 @@ namespace PhotoBook.Model.Graphics
             if (filterType == Filter.Type.None) editedBitmap = originalBitmap;            
             else
             {
-                CurrentFilter = new Filter(filterType);
-                // TODO: Process the original picture and save it as a displayed picture + save it in project resources
-                editedBitmap = CurrentFilter.applyFilter(originalBitmap); // <-- This method should still be adjusted
+                CurrentFilter.SetFilterSettings(filterType);
+                editedBitmap = CurrentFilter.applyFilter(originalBitmap);
             }
         }
     }
