@@ -119,6 +119,9 @@
     <Compile Include="View\SettingsView\PagesSettingsView.xaml.cs">
       <DependentUpon>PagesSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SettingsView\PhotoOptions.xaml.cs">
+      <DependentUpon>PhotoOptions.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -167,6 +170,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\SettingsView\PhotoOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -212,6 +219,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="View\Images\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\Motyw1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\Motyw2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
