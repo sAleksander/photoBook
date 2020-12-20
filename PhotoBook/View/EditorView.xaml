@@ -6,9 +6,22 @@
       xmlns:local="clr-namespace:PhotoBook.View"
       mc:Ignorable="d"
       DataContext="{Binding Source={StaticResource Locator}, Path=Editor}"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="900" d:DesignWidth="1800"
       Title="EditorView" >
 
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" 
+              Height="30" 
+              FontSize="18" 
+              FontFamily="Segoe UI Light">
+            <MenuItem Header="Fotoksiążka" Height="25" VerticalAlignment="Center">
+                <MenuItem Header="Utwórz nową"/>
+                <MenuItem Header="Otwórz istniejącą"/>
+                <MenuItem Header="Zapisz"/>
+                <MenuItem Header="Wyjdź"/>
+            </MenuItem>
+        </Menu>   
+        
     <Grid>
         <Grid.Background>
             <LinearGradientBrush>
@@ -23,9 +36,9 @@
 
         <!--Right side - settings-->
         <StackPanel Grid.Column="0">
-            <Image Source="Images/logoWhite.png" 
+            <Image Source="Images/logoWhite.png"
                    Width="120"
-                   Margin="20"/>
+                   Margin="20" />
             <TextBlock Text="FotoKsiążka"
                        HorizontalAlignment="Center"
                        FontSize="35" 
@@ -141,4 +154,5 @@
 
 
     </Grid>
+    </DockPanel>
 </Page>

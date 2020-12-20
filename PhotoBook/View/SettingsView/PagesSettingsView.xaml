@@ -52,17 +52,10 @@
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="20px"
                         Height="40"
                         Margin="40,0,0,0"/>
-                <Button Content="1 zdjęcie"  
+                <Button Content="2 zdjęcia"  
                         Background="Transparent" 
                         BorderBrush="Transparent"
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="20px" 
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                <Button Content="2 zdjęcia" 
-                        VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="20px"
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
                 <Button Content="2 zdjęcia" 
