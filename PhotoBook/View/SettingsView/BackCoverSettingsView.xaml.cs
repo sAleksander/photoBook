@@ -24,5 +24,17 @@ namespace PhotoBook.View
         {
             InitializeComponent();
         }
+
+        public const int defaultWidth = 385;
+
+        public void PageSizeChange(object senser, SizeChangedEventArgs e)
+        {
+            double percentage = (ActualWidth / defaultWidth);
+
+            btnPdf.SetValue(FontSizeProperty, 25 * percentage);
+            btnDocs.SetValue(FontSizeProperty, 25 * percentage);
+            btnHtml.SetValue(FontSizeProperty, 25 * percentage);
+        }
+
     }
 }

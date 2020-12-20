@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="PhotoBook.View.SettingsView.PhotoOptions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PhotoBook.View.SettingsView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500">
+    
+    <Grid Background="Transparent" Margin="10,30,0,0">
+
+        <StackPanel CanVerticallyScroll="True">
+            <!--Photo options-->
+
+            <Button Name="btnPhoto"
+                    Content="Zdjęcie"
+                    VerticalAlignment="Top" 
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
+                    Background="Transparent" 
+                    Height="50"
+                    Margin="0,1,0,1"/>
+            <StackPanel Visibility="Visible" Background="Transparent" Name="photoOptionStackPanel">
+                <Button Name="btnAddPhoto"
+                        Content="Dodaj zdjęcie"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        Height="40"
+                        Margin="40,0,0,0"/>
+
+                <!--Add Description-->
+                <Button Click="addDescription" 
+                        Name="btnAddDesc"
+                        Content="Dodaj opis"  
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                <StackPanel Name="addDescStackPanel" Visibility="Collapsed">
+                    <Label Content="Wpisz opis"
+                               Foreground="White" 
+                               FontFamily="Segoe UI Light" FontSize="14px"
+                                Margin="60,0,0,0"/>
+                    <TextBox Background="#e8e8e8"
+                                Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
+                                Height="70"
+                                Margin="60,0,15,0"/>
+                    <Button Content="Zatwierdź" 
+                                HorizontalAlignment="Right"
+                                Margin="0,0,30,0"
+                                BorderBrush="Transparent"
+                                Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"
+                                Background="Transparent" />
+                </StackPanel>
+
+
+                <!--Add Filter-->
+                <Button Click="addFilter"
+                        Name="btnAddFilter"
+                        Content="Dodaj filtr" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                <StackPanel Visibility="Collapsed" Background="Transparent" Name="filterStackPanel">
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+                        Content="Brak"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        Height="40"
+                        Margin="60,0,0,0"/>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Content="Ciepły"  
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        HorizontalContentAlignment="Left"
+                        Height="40"
+                        Margin="60,0,0,0"/>
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Content="Zimny" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        HorizontalContentAlignment="Left"
+                        Height="40"
+                        Margin="60,0,0,0" />
+                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Content="Czarno-biały" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        HorizontalContentAlignment="Left"
+                        Height="40"
+                        Margin="60,0,0,0"/>
+                </StackPanel>
+
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

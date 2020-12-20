@@ -7,12 +7,13 @@
       mc:Ignorable="d"
       DataContext="{Binding Source={StaticResource Locator}, Path=Editor}"
       d:DesignHeight="900" d:DesignWidth="1800"
-      Title="EditorView" >
+      Title="EditorView"
+      SizeChanged="PageSizeChange">
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top" 
+        <Menu Name="menuTop" DockPanel.Dock="Top" 
               Height="30" 
-              FontSize="18" 
+              FontSize="18"
               FontFamily="Segoe UI Light">
             <MenuItem Header="Fotoksiążka" Height="25" VerticalAlignment="Center">
                 <MenuItem Header="Utwórz nową"/>
@@ -26,7 +27,7 @@
         <Grid.Background>
             <LinearGradientBrush>
                 <GradientStop Color="#a6a6a4" Offset="1"/>
-                <GradientStop Color="#94b4a4"/>
+                    <GradientStop Color="#4e8d7c"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
@@ -36,18 +37,18 @@
 
         <!--Right side - settings-->
         <StackPanel Grid.Column="0">
-            <Image Source="Images/logoWhite.png"
+            <Image Name="logoImage"
+                   Source="Images/logoWhite.png"
                    Width="120"
                    Margin="20" />
-            <TextBlock Text="FotoKsiążka"
+                <TextBlock Name="headerName"
+                       Text="FotoKsiążka"
                        HorizontalAlignment="Center"
                        FontSize="35" 
                        FontFamily="Comic Sans MS"
                        Foreground="White"/>
-            <Frame 
-                   Content="{Binding SettingsViewModel}"/>
-
-        </StackPanel>
+                <Frame Content="{Binding SettingsViewModel}"/>
+            </StackPanel>
 
         <!--Left side-->
         <Grid Grid.Column="1">
@@ -83,14 +84,15 @@
                         Margin="10,20,0,20"
                         BorderThickness="0" 
                         Foreground="White"
-                        FontSize="20"
                         HorizontalAlignment="Left">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="Images/arrow.png"
+                        <Image Name="imagePrev"
+                               Source="Images/arrow.png"
                                Width="16px"
                                HorizontalAlignment="Left"
                                Margin="10,0,0,0"/>
-                        <Label Content="Poprzednia" 
+                        <Label Name="labelPrev"
+                               Content="Poprzednia" 
                                Foreground="White"
                                FontSize="20px"
                                FontFamily="Segoe UI Light"
@@ -102,11 +104,13 @@
                         Margin="20"
                         BorderThickness="0" 
                         Foreground="White"
-                        FontSize="20"
                         HorizontalAlignment="Right">
                     <StackPanel>
-                        <Image Source="Images/delete.png" Width="18px" Height="22"/>
-                        <Label Content="Usuń strony" 
+                        <Image Name="imageDelete"
+                               Source="Images/delete.png" 
+                               Width="18px" Height="22"/>
+                        <Label Name="labelDelete"
+                               Content="Usuń strony" 
                                Foreground="White"
                                FontSize="20px"
                                FontFamily="Segoe UI Light"/>
@@ -117,11 +121,13 @@
                         Margin="20"
                         BorderThickness="0" 
                         Foreground="White"
-                        FontSize="20"
                         HorizontalAlignment="Left">
                     <StackPanel>
-                        <Image Source="Images/add.png" Width="18px" Height="22"/>
-                        <Label Content="Dodaj strony" 
+                        <Image Name="imageAdd"
+                               Source="Images/add.png" 
+                               Width="18px" Height="22"/>
+                        <Label Name="labelAdd"
+                               Content="Dodaj strony" 
                                Foreground="White"
                                FontSize="20px"
                                FontFamily="Segoe UI Light"/>
@@ -132,15 +138,16 @@
                         Margin="20"
                         BorderThickness="0" 
                         Foreground="White"
-                        FontSize="20"
                         HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Następna" 
+                        <Label Name="labelNext"
+                               Content="Następna" 
                                Foreground="White"
                                FontSize="20px"
                                FontFamily="Segoe UI Light"
                                Margin="10" HorizontalAlignment="Right"/>
-                        <Image Source="Images/arrowRight.png"
+                        <Image Name="imageNext"
+                               Source="Images/arrowRight.png"
                                Width="16px"
                                HorizontalAlignment="Right"
                                Margin="0,0,20,0"/>

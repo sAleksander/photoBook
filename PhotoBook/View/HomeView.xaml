@@ -13,7 +13,7 @@
         <Grid.Background>
             <LinearGradientBrush>
                 <GradientStop Color="#a6a6a4" Offset="1"/>
-                <GradientStop Color="#94b4a4"/>
+                <GradientStop Color="#4e8d7c"/>
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.RowDefinitions>
