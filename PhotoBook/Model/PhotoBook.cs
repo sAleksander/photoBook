@@ -3,6 +3,7 @@ using PhotoBook.Model.Graphics;
 using PhotoBook.Model.Pages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,9 @@ namespace PhotoBook.Model
 
         public PhotoBook()
         {
+            if (!Directory.Exists("\\Images"))
+                Directory.CreateDirectory("Images");
+
             FrontCover = new Pages.FrontCover();
             FrontCover.Title = "Moja fotoksiążka";
             FrontCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
@@ -153,6 +157,55 @@ namespace PhotoBook.Model
                 throw new Exception("Wrong edit page index chosen!");
 
             // Remind about changes here
+        }
+
+        public void LoadPhotoBook(string path)
+        {
+            // TODO: Implement
+        }
+
+        public string SavePhotoBook(string path)
+        {
+            List<string> listOfUsedImages = new List<string>();
+
+            // Deleting those images from project directory that aren't used anymore
+
+            if (FrontCover.Background.GetType().Equals(typeof(Backgrounds.BackgroundImage)))
+            {
+                // TODO: Solve below's problem with not being able to reference backgroundimage type fields
+                // listOfUsedImages.Add(FrontCover.Background.Image.OriginalPath);
+            }
+
+            foreach(ContentPage contentPage in _contentPages)
+            {
+                foreach(Image image in contentPage.Images)
+                {
+                    if (!listOfUsedImages.Contains(Path.GetFileName(image.OriginalPath)))
+                        listOfUsedImages.Add(Path.GetFileName(image.OriginalPath));
+                }
+            }
+
+            if (BackCover.Background.GetType().Equals(typeof(Backgrounds.BackgroundImage)))
+            {
+                // TODO: Solve below's problem with not being able to reference backgroundimage type fields
+                // listOfUsedImages.Add(BackCover.Background.Image.OriginalPath);
+            }
+
+            // TODO: Combine below two searches into one
+            string[] listOfSavedJPGImages = Directory.GetFiles("Images", ".jpg");
+            string[] listOfSavedPNGImages = Directory.GetFiles("Images", ".png");
+
+            for (int i = 0; i <= listOfSavedJPGImages.Length; i++)
+                if (!listOfUsedImages.Contains(Path.GetFileName(listOfSavedJPGImages[i])))
+                    File.Delete(listOfSavedJPGImages[i]);
+
+            for (int i = 0; i <= listOfSavedPNGImages.Length; i++)
+                if (!listOfUsedImages.Contains(Path.GetFileName(listOfSavedPNGImages[i])))
+                    File.Delete(listOfSavedPNGImages[i]);
+
+            // TODO: Implement exporting & returning all photobook info
+
+            return "";
         }
     }
 }

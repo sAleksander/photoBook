@@ -21,8 +21,14 @@ namespace PhotoBook.Model.Graphics
             if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
                 throw new Exception("File/image with wrong exception provided");
 
+            if (!Directory.Exists("\\Images"))
+                Directory.CreateDirectory("Images");
+            if (!File.Exists($"\\Images\\{Path.GetFileName(path)}"))
+                File.Copy(path, $"\\Images\\{Path.GetFileName(path)}");
+
             #region Mockup
-            DisplayedPath = path;
+            //DisplayedPath = path;
+            DisplayedPath = $"\\Images\\{Path.GetFileName(path)}";
 
             Width = 1350;
             Height = 900;
@@ -30,7 +36,8 @@ namespace PhotoBook.Model.Graphics
             CurrentFilter = new Filter();
             #endregion
 
-            OriginalPath = path;
+            //OriginalPath = path;
+            OriginalPath = $"\\Images\\{Path.GetFileName(path)}";
             originalBitmap = new Bitmap(path);
             editedBitmap = new Bitmap(path);
 

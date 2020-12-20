@@ -24,7 +24,7 @@ namespace PhotoBook.Model.Pages
         public Layout Layout { get; set; }
 
         private Image[] _images;
-        Image[] Images { get => _images; }
+        public Image[] Images { get => _images; }
         private string[] _comments;
         string[] Comments { get; set; }
 
