@@ -58,7 +58,6 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0">
-                <Frame Content="{Binding BookViewModel}"/>
                 <Button Content="FrontCoverSettings" 
                         Command="{Binding ShowFrontCoverSettings}"/>
                 <Button Content="BackCoverSettings" 
@@ -69,7 +68,7 @@
 
 
             <Frame Grid.Row="1" Background="#e8e8e8"
-                   Margin="10,20,20,0"/>
+                   Content="{Binding BookViewModel}" Margin="10,20,20,0"/>
 
             <Grid Grid.Row="2" >
                 <Grid.ColumnDefinitions>
