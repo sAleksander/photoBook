@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:PhotoBook"
         mc:Ignorable="d"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
-        Title="Book of Foto in a Window"
-        WindowState="Maximized" ResizeMode="CanResize" >
+        Title="Fotoksiążka"
+        WindowState="Maximized" ResizeMode="CanResize" MinWidth="1300" MinHeight="800" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

@@ -24,5 +24,41 @@ namespace PhotoBook.View
         {
             InitializeComponent();
         }
+
+        public void showTheme(object sender, RoutedEventArgs e)
+        {
+            if (themeStackPanel.Visibility == Visibility.Collapsed)
+                themeStackPanel.Visibility = Visibility.Visible;
+            else
+                themeStackPanel.Visibility = Visibility.Collapsed;
+
+        }
+
+        public void changeLayout(object sender, RoutedEventArgs e)
+        {
+            if (layoutStackPanel.Visibility == Visibility.Collapsed)
+                layoutStackPanel.Visibility = Visibility.Visible;
+            else
+                layoutStackPanel.Visibility = Visibility.Collapsed;
+        }
+
+        public void showColorPicker(object sender, RoutedEventArgs e)
+        {
+            colorPickerStackPanel.IsEnabled = true;
+        }
+
+        //Changing font size
+        public const int defaultWidth = 385;
+
+        public void PageSizeChange(object senser, SizeChangedEventArgs e)
+        {
+            double percentage = (ActualWidth / defaultWidth);
+
+            btnLayout.SetValue(FontSizeProperty, 25 * percentage);
+            btnTheme.SetValue(FontSizeProperty, 25 * percentage);
+            btnLeftSide.SetValue(FontSizeProperty, 20 * percentage);
+            btnRightSide.SetValue(FontSizeProperty, 20 * percentage);
+
+        }
     }
 }

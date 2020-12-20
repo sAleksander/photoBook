@@ -7,11 +7,12 @@
       DataContext="{Binding Source={StaticResource Locator}, Path=BackCoverSettings}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="500"
-      Title="BackCoverSettingsView">
+      Title="BackCoverSettingsView" SizeChanged="PageSizeChange">
 
     <Grid Background="Transparent" Margin="10,30,0,0">
         <StackPanel CanVerticallyScroll="True">
-            <Button Content="Eksportuj do PDF" 
+            <Button Name="btnPdf"
+                    Content="Eksportuj do PDF" 
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     BorderBrush="White" 
@@ -24,7 +25,8 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Eksportuj do HTML"
+            <Button Name="btnHtml"
+                    Content="Eksportuj do HTML"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
                     BorderBrush="White" 
@@ -32,7 +34,8 @@
                     Background="Transparent" 
                     Height="50"
                     Margin="0,1,0,1"/>
-            <Button Content="Eksportuj do DOCS" 
+            <Button Name="btnDocs"
+                    Content="Eksportuj do DOCS" 
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
                     BorderBrush="White" 
