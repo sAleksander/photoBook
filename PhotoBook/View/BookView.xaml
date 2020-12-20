@@ -10,6 +10,6 @@
       Title="BookView">
     
     <Grid>
-        <Label Name="TestLabel" Content="{Binding TestString}" FontSize="20"/>
+        <Label Name="TestLabel" FontSize="20"/>
     </Grid>
 </Page>
