@@ -84,14 +84,10 @@
                         Margin="10,20,0,20"
                         BorderThickness="0" 
                         Foreground="White"
-<<<<<<< HEAD
                         FontSize="20"
                         HorizontalAlignment="Left"
                         Command="{Binding PreviousPage}">
-=======
-                        HorizontalAlignment="Left">
->>>>>>> origin/Kasia
-                    <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
                         <Image Name="imagePrev"
                                Source="Images/arrow.png"
                                Width="16px"
@@ -144,14 +140,10 @@
                         Margin="20"
                         BorderThickness="0" 
                         Foreground="White"
-<<<<<<< HEAD
                         FontSize="20"
                         HorizontalAlignment="Right"
                         Command="{Binding NextPage}">
-=======
-                        HorizontalAlignment="Right">
->>>>>>> origin/Kasia
-                    <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
                         <Label Name="labelNext"
                                Content="Następna" 
                                Foreground="White"
