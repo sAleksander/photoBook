@@ -42,8 +42,6 @@ namespace PhotoBook.Model.Pages
             if (!File.Exists(imagePath))
                 throw new Exception("File at a given path doesn't exist!");
 
-            // TODO: Add maybe a condition checking the extension of the file?
-
             Image newImage = new Image(imagePath);
             _images[layoutImageIndex] = newImage;
 
@@ -62,6 +60,8 @@ namespace PhotoBook.Model.Pages
 
         public void EditImage(int layoutImageIndex, Image editedImage)
         {
+            // TODO: This whether this code will be even necessary
+
             if (layoutImageIndex < 0 || layoutImageIndex > _images.Length)
                 throw new Exception("Editing an image from an index of out range is not possible!");
 

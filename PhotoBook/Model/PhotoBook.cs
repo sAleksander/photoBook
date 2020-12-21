@@ -12,6 +12,15 @@ namespace PhotoBook.Model
 {
     public class PhotoBook
     {
+        public PhotoBook(string savePath) {
+            if (!Directory.Exists(savePath))
+                throw new Exception("Provided directory path doesn't exist!");
+
+            SavePath = savePath;
+            Directory.SetCurrentDirectory(savePath);
+        }
+        
+        public string SavePath { get; private set; }
         public static string Font { get; } = "Arial";
 
         public static int PageWidthInPixels { get; }
@@ -161,12 +170,19 @@ namespace PhotoBook.Model
 
         public void LoadPhotoBook(string path)
         {
-            // TODO: Implement
+            if (!Directory.Exists(path))
+                throw new Exception("Provided directory path doesn't exist!");
+
+            SavePath = path;
+            Directory.SetCurrentDirectory(path);
+
+            // TODO: Implement the rest 
         }
 
         public string SavePhotoBook(string path)
         {
-            List<string> listOfUsedImages = new List<string>();
+            // List of turples storing paths of original images and their used counterparts
+            List<(string, string)> usedImagesPaths = new List<(string, string)>();
 
             // Deleting those images from project directory that aren't used anymore
 
@@ -176,14 +192,11 @@ namespace PhotoBook.Model
                 // listOfUsedImages.Add(FrontCover.Background.Image.OriginalPath);
             }
 
-            foreach(ContentPage contentPage in _contentPages)
-            {
-                foreach(Image image in contentPage.Images)
-                {
-                    if (!listOfUsedImages.Contains(Path.GetFileName(image.OriginalPath)))
-                        listOfUsedImages.Add(Path.GetFileName(image.OriginalPath));
-                }
-            }
+            foreach(ContentPage contentPage in _contentPages)            
+                foreach(Image image in contentPage.Images)                
+                    if (!usedImagesPaths.Contains((image.OriginalPath, image.DisplayedPath)))
+                        usedImagesPaths.Add((image.OriginalPath, image.DisplayedPath));                
+            
 
             if (BackCover.Background.GetType().Equals(typeof(Backgrounds.BackgroundImage)))
             {
@@ -192,18 +205,22 @@ namespace PhotoBook.Model
             }
 
             // TODO: Combine below two searches into one
-            string[] listOfSavedJPGImages = Directory.GetFiles("Images", ".jpg");
-            string[] listOfSavedPNGImages = Directory.GetFiles("Images", ".png");
+            List<string> allOriginalImagesPaths = Directory.GetFiles("OriginalImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
+            List<string> allUsedImagesPaths = Directory.GetFiles("UsedImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
 
-            for (int i = 0; i <= listOfSavedJPGImages.Length; i++)
-                if (!listOfUsedImages.Contains(Path.GetFileName(listOfSavedJPGImages[i])))
-                    File.Delete(listOfSavedJPGImages[i]);
 
-            for (int i = 0; i <= listOfSavedPNGImages.Length; i++)
-                if (!listOfUsedImages.Contains(Path.GetFileName(listOfSavedPNGImages[i])))
-                    File.Delete(listOfSavedPNGImages[i]);
+            var firstPaths = usedImagesPaths.Select(t => t.Item1).ToList();
+            var secondPaths = usedImagesPaths.Select(t => t.Item2).ToList();
 
-            // TODO: Implement exporting & returning all photobook info
+            for (int i = 0; i <= allOriginalImagesPaths.Count; i++)            
+                if (!firstPaths.Contains(allOriginalImagesPaths[i]))
+                    File.Delete(allOriginalImagesPaths[i]);
+
+            for (int i = 0; i <= allUsedImagesPaths.Count; i++)
+                if (!secondPaths.Contains(allUsedImagesPaths[i]))
+                    File.Delete(allUsedImagesPaths[i]);
+
+            // TODO: Implement exporting & saving all photobook info
 
             return "";
         }

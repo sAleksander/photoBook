@@ -21,28 +21,28 @@ namespace PhotoBook.Model.Graphics
             if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
                 throw new Exception("File/image with wrong exception provided");
 
-            if (!Directory.Exists("\\Images"))
-                Directory.CreateDirectory("Images");
-            if (!File.Exists($"\\Images\\{Path.GetFileName(path)}"))
-                File.Copy(path, $"\\Images\\{Path.GetFileName(path)}");
+            if (!Directory.Exists("\\OriginalImages"))
+                Directory.CreateDirectory("OriginalImages");
+            if (!File.Exists($"\\OriginalImages\\{Path.GetFileName(path)}"))
+                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
 
-            #region Mockup
-            //DisplayedPath = path;
-            DisplayedPath = $"\\Images\\{Path.GetFileName(path)}";
+            if (!Directory.Exists("\\UsedImages"))
+                Directory.CreateDirectory("UsedImages");
+            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))
+                File.Copy(path, $"\\UsedImages\\{Path.GetFileName(path)}");
+
+            #region Mockup            
+            DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
 
             Width = 1350;
             Height = 900;
 
             CurrentFilter = new Filter();
             #endregion
-
-            //OriginalPath = path;
-            OriginalPath = $"\\Images\\{Path.GetFileName(path)}";
+            
+            OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
             originalBitmap = new Bitmap(path);
             editedBitmap = new Bitmap(path);
-
-            // Save the image somehow in the class
-            // TODO: Think of a folder structure to store images in project repository & make a copy of every picture being loaded (think of deleting as well)
         }
 
         public Bitmap originalBitmap { get; }
@@ -64,12 +64,17 @@ namespace PhotoBook.Model.Graphics
             throw new NotImplementedException("Not available in mockup version");
             #endregion
 
-            if (filterType == Filter.Type.None) editedBitmap = originalBitmap;            
+            if (filterType == Filter.Type.None) editedBitmap = originalBitmap;
             else
             {
                 CurrentFilter.SetFilterSettings(filterType);
                 editedBitmap = CurrentFilter.applyFilter(originalBitmap);
             }
-        }
+
+            if (File.Exists(DisplayedPath))
+                File.Delete(DisplayedPath);
+
+            editedBitmap.Save(DisplayedPath);
+        }        
     }
 }
