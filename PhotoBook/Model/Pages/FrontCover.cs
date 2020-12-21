@@ -9,7 +9,7 @@ namespace PhotoBook.Model.Pages
     public class FrontCover : Page
     {
         // In pixels
-        public static int FontSize { get; } = 18;
+        public static int FontSize { get; } = 64;
         public string Title { get; set; }
     }
 }
