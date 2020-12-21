@@ -3,6 +3,7 @@ using PhotoBook.Model.Graphics;
 using PhotoBook.Model.Pages;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace PhotoBook.Model
 
                 for (int j = 0; j < 2; j++)
                 {
-                    var image = contentPage.LoadImage(j, "placeholder_cropped.png");
+                    var image = contentPage.LoadImage(j, Path.GetFullPath("placeholder_cropped.png"));
                     image.CroppingRectangle = new Rectangle(
                         0, 0, image.Width, image.Height
                     );
