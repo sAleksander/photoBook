@@ -8,8 +8,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BookView">
-    
+
     <Grid>
-        <Label Name="TestLabel" FontSize="20"/>
+        <Viewbox>
+            <Canvas Name="BookCanvas"/>
+        </Viewbox>
     </Grid>
 </Page>

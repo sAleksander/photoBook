@@ -20,7 +20,7 @@ namespace PhotoBook.ViewModel
         private PageType currentPageType = PageType.FrontCover;
 
         // Nested view models
-        private BookViewModel bookViewModel = new BookViewModel();
+        private BookViewModel bookViewModel;
         public BookViewModel BookViewModel
         {
             get => bookViewModel;
@@ -36,6 +36,8 @@ namespace PhotoBook.ViewModel
 
         public EditorViewModel()
         {
+            bookViewModel = new BookViewModel(model);
+
             NotifyNestedViewModels();
         }
 
