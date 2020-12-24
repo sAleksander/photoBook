@@ -12,7 +12,7 @@ namespace PhotoBook.Model.Graphics
 {
     public class Image
     {
-        public Image(string path)
+        public Image(string path, int x, int y, int width, int height)
         {
             System.IO.FileAttributes attr = File.GetAttributes(OriginalPath);
 
@@ -21,16 +21,25 @@ namespace PhotoBook.Model.Graphics
             if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
                 throw new Exception("File/image with wrong exception provided");
 
+            OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
+            originalBitmap = new Bitmap(path);
+
             if (!Directory.Exists("\\OriginalImages"))
                 Directory.CreateDirectory("OriginalImages");
             if (!File.Exists($"\\OriginalImages\\{Path.GetFileName(path)}"))
-                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
+                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");            
+                        
+            CroppingRectangle = new Rectangle(x, y, width, height);
+
+            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(x, y, width, height);
+            System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
+            editedBitmap = originalBitmap.Clone(rectangle, format);
 
             if (!Directory.Exists("\\UsedImages"))
                 Directory.CreateDirectory("UsedImages");
-            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))
-                File.Copy(path, $"\\UsedImages\\{Path.GetFileName(path)}");
-
+            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))            
+                editedBitmap.Save($"\\UsedImages\\{Path.GetFileName(path)}");
+                      
             #region Mockup            
             DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
 
@@ -38,11 +47,12 @@ namespace PhotoBook.Model.Graphics
             Height = 900;
 
             CurrentFilter = new Filter();
-            #endregion
-            
-            OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
-            originalBitmap = new Bitmap(path);
-            editedBitmap = new Bitmap(path);
+            #endregion            
+        }
+
+        private Rectangle Rectangle(int x, int y, int width, int height)
+        {
+            throw new NotImplementedException();
         }
 
         public Bitmap originalBitmap { get; }
@@ -58,13 +68,17 @@ namespace PhotoBook.Model.Graphics
 
         public Filter CurrentFilter { get; private set; } = new Filter();
         public void SetFilter(Filter.Type filterType)
-        {
-            // Not sure whether I should leave it of not
+        {            
             #region Mockup
             throw new NotImplementedException("Not available in mockup version");
             #endregion
 
-            if (filterType == Filter.Type.None) editedBitmap = originalBitmap;
+            if (filterType == Filter.Type.None)
+            {
+                System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(CroppingRectangle.X, CroppingRectangle.Y, CroppingRectangle.Width, CroppingRectangle.Height);
+                System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
+                editedBitmap = originalBitmap.Clone(rectangle, format);
+            }
             else
             {
                 CurrentFilter.SetFilterSettings(filterType);
