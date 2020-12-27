@@ -105,7 +105,7 @@ namespace PhotoBook.ViewModel
                     {
                         model.FrontCover
                     });
-                    SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover);
+                    SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
                     break;
                 case PageType.Content:
                     var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
@@ -133,7 +133,7 @@ namespace PhotoBook.ViewModel
         // Debug commands
         public RelayCommand ShowFrontCoverSettings => new RelayCommand(() =>
         {
-            SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover);
+            SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
         });
 
         public RelayCommand ShowBackCoverSettings => new RelayCommand(() =>

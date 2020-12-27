@@ -1,27 +1,60 @@
-﻿using PhotoBook.Model.Pages;
+﻿using GalaSoft.MvvmLight.Command;
+using PhotoBook.Model.Backgrounds;
+using PhotoBook.Model.Pages;
 
 namespace PhotoBook.ViewModel
 {
     public class PagesSettingsViewModel : SettingsViewModel
     {
         private ContentPage leftPage;
-        public ContentPage LeftPage
+        private ContentPage rightPage;
+
+        private ContentPage selectedPage;
+
+        private BackgroundColor backgroundColor;
+        public BackgroundColor BackgroundColor
         {
-            get => leftPage;
-            private set => Set(nameof(LeftPage), ref leftPage, value);
+            get => backgroundColor;
+            set
+            {
+                Set(nameof(BackgroundColor), ref backgroundColor, value);
+                selectedPage.Background = value;
+            }
         }
 
-        private ContentPage rightPage;
-        public ContentPage RightPage
+        public bool IsLeftPageChecked
         {
-            get => rightPage;
-            private set => Set(nameof(RightPage), ref rightPage, value);
+            get => selectedPage == leftPage;
+            set
+            {
+                if (value) selectedPage = leftPage;
+            }
+        }
+
+        public bool IsRightPageChecked
+        {
+            get => selectedPage == rightPage;
+            set
+            {
+                if (value) selectedPage = rightPage;
+            }
         }
 
         public PagesSettingsViewModel(ContentPage leftPage, ContentPage rightPage)
         {
-            LeftPage = leftPage;
-            RightPage = rightPage;
+            this.leftPage = leftPage;
+            this.rightPage = rightPage;
+
+            SelectPage(leftPage);
+            IsLeftPageChecked = true;
+        }
+
+        private void SelectPage(ContentPage page)
+        {
+            selectedPage = page;
+
+            // TODO: Handle BackgroundImage as well
+            BackgroundColor = selectedPage.Background as BackgroundColor;
         }
     }
 }

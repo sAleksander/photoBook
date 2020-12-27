@@ -1,19 +1,45 @@
-﻿using PhotoBook.Model.Pages;
+﻿using GalaSoft.MvvmLight.Command;
+using PhotoBook.Model.Backgrounds;
+using PhotoBook.Model.Pages;
 
 namespace PhotoBook.ViewModel
 {
     public class FrontCoverSettingsViewModel : SettingsViewModel
     {
         private FrontCover frontCover;
-        public FrontCover FrontCover
+        private BackCover backCover;
+
+        private string title;
+        public string Title
         {
-            get => frontCover;
-            private set => Set(nameof(FrontCover), ref frontCover, value);
+            get => title;
+            set => Set(nameof(Title), ref title, value);
         }
 
-        public FrontCoverSettingsViewModel(FrontCover frontCover)
+        private BackgroundColor backgroundColor;
+        public BackgroundColor BackgroundColor
         {
-            FrontCover = frontCover;
+            get => backgroundColor;
+            set {
+                Set(nameof(BackgroundColor), ref backgroundColor, value);
+                frontCover.Background = value;
+                backCover.Background = value;
+            }
+        }
+
+        public RelayCommand ApplyTitle => new RelayCommand(() =>
+        {
+            frontCover.Title = Title;
+        });
+
+        public FrontCoverSettingsViewModel(FrontCover frontCover, BackCover backCover)
+        {
+            this.frontCover = frontCover;
+            this.backCover = backCover;
+
+            Title = frontCover.Title;
+            // TODO: Handle BackgroundImage as well
+            BackgroundColor = frontCover.Background as BackgroundColor;
         }
     }
 }

@@ -44,24 +44,10 @@ namespace PhotoBook.View
                 titleStackPanel.Visibility = Visibility.Collapsed;
         }
 
-        //Change subtitle
-        public void changeSubtitle(object sender, RoutedEventArgs e)
-        {
-            if (subtitleStackPanel.Visibility == Visibility.Collapsed)
-                subtitleStackPanel.Visibility = Visibility.Visible;
-            else
-                subtitleStackPanel.Visibility = Visibility.Collapsed;
-        }
-
-        
-        public void showColorPicker(object sender, RoutedEventArgs e)
-        {
-            colorPickerStackPanel.IsEnabled = true;
-        }
-
 
 
         //Change fontFamily
+        /*
         public void changeFontFamily(object sender, RoutedEventArgs e)
         {
             if (fontStackPanel.Visibility == Visibility.Collapsed)
@@ -69,6 +55,7 @@ namespace PhotoBook.View
             else
                 fontStackPanel.Visibility = Visibility.Collapsed;
         }
+        */
 
 
         //Changing font size
@@ -79,8 +66,7 @@ namespace PhotoBook.View
             double percentage = (ActualWidth / defaultWidth);
 
             btnChangeTitle.SetValue(FontSizeProperty, 25 * percentage);
-            btnChangeSubtitle.SetValue(FontSizeProperty, 25 * percentage);
-            btnChangeFont.SetValue(FontSizeProperty, 25 * percentage);
+            //btnChangeFont.SetValue(FontSizeProperty, 25 * percentage);
             btnChangeTheme.SetValue(FontSizeProperty, 25 * percentage);
 
         }
