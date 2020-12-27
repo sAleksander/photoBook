@@ -9,9 +9,8 @@
       d:DesignHeight="450" d:DesignWidth="500"
       Title="BackCoverSettingsView" SizeChanged="PageSizeChange">
 
-    <Grid Background="Transparent" Margin="10,30,0,0">
-        <StackPanel CanVerticallyScroll="True">
-            <Button Name="btnPdf"
+    <StackPanel CanVerticallyScroll="True">
+        <Button Name="btnPdf"
                     Content="Eksportuj do PDF" 
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
@@ -19,13 +18,13 @@
                     Background="Transparent"
                     FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
                     Height="50">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="2"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button Name="btnHtml"
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Name="btnHtml"
                     Content="Eksportuj do HTML"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
@@ -34,7 +33,7 @@
                     Background="Transparent" 
                     Height="50"
                     Margin="0,1,0,1"/>
-            <Button Name="btnDocs"
+        <Button Name="btnDocs"
                     Content="Eksportuj do DOCS" 
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
@@ -43,12 +42,11 @@
                     Foreground="White" FontFamily="Segoe UI Light" FontSize="25px"
                     Height="50"
                     Margin="0,1,0,1">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="2"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-        </StackPanel>
-    </Grid>
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </StackPanel>
 </Page>

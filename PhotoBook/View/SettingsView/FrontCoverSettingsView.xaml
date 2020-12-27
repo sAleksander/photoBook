@@ -9,12 +9,10 @@
       d:DesignHeight="300" d:DesignWidth="500"
       Title="FrontCoverSettingsView"  SizeChanged="PageSizeChange">
 
-    <Grid Background="Transparent" Margin="10,30,0,0">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="500">
-            <StackPanel CanVerticallyScroll="True">
+    <StackPanel CanVerticallyScroll="True">
 
-                <!--Title-->
-                <Button Name="btnChangeTitle"
+        <!--Title-->
+        <Button Name="btnChangeTitle"
                     Click="changeTitle"
                     Content="Zmień tytuł" 
                     VerticalAlignment="Top"
@@ -23,33 +21,33 @@
                     Background="Transparent"
                     FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
                     Height="50">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="2"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <StackPanel Name="titleStackPanel" >
-                    <Label Content="Wpisz tytuł"
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <StackPanel Name="titleStackPanel" >
+            <Label Content="Wpisz tytuł"
                        Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
                        Margin="40,0,0,0"/>
-                    <TextBox Background="#e8e8e8"
+            <TextBox Background="#e8e8e8"
                          Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
                          Height="70"
                          Margin="40,0,15,0"
                          Text="{Binding Title}"/>
-                    <Button Content="Zatwierdź" 
+            <Button Content="Zatwierdź" 
                         HorizontalAlignment="Right"
                         Margin="0,0,30,0"
                         BorderBrush="Transparent"
                         Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"
                         Background="Transparent"
                         Command="{Binding ApplyTitle}"/>
-                </StackPanel>
+        </StackPanel>
 
-                <!--FontFamily-->
+        <!--FontFamily-->
 
-                <!-- TODO: We don't have fonts yet
+        <!-- TODO: We don't have fonts yet
                 <Button Click="changeFontFamily"
                     Name="btnChangeFont"
                     Content="Zmień czcionkę" 
@@ -102,9 +100,9 @@
                 
                 -->
 
-                <!--Theme-->
+        <!--Theme-->
 
-                <Button Name="btnChangeTheme"
+        <Button Name="btnChangeTheme"
                     Click="showTheme"
                     Content="Zmień motyw"
                     VerticalAlignment="Top" 
@@ -114,8 +112,8 @@
                     Background="Transparent" 
                     Height="50"
                     Margin="0,1,0,1"/>
-                <StackPanel Background="Transparent" Name="themeStackPanel">
-                    <!--
+        <StackPanel Background="Transparent" Name="themeStackPanel">
+            <!--
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Name="btnColor"
                         Content="Kolor"
@@ -126,10 +124,10 @@
                         Height="40"
                         Margin="40,0,0,0"/>
                     -->
-                    <settingsview:ColorPicker x:Name="BackgroundColorPicker"
+            <settingsview:ColorPicker x:Name="BackgroundColorPicker"
                                               BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}"/>
 
-                    <!-- TODO: Bind it to view model somehow
+            <!-- TODO: Bind it to view model somehow
                     <Label Content="Motyw 1"
                            Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
                            Margin="45,0,0,0"/>
@@ -160,8 +158,6 @@
                     </RadioButton>
                     
                     -->
-                </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+        </StackPanel>
+    </StackPanel>
 </Page>
