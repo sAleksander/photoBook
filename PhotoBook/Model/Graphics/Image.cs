@@ -45,15 +45,15 @@ namespace PhotoBook.Model.Graphics
             if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))
                 editedBitmap.Save($"\\UsedImages\\{Path.GetFileName(path)}");
 
-            #region Mockup
             DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
 
-            Width = 1350;
-            Height = 900;
+            Width = originalBitmap.Width;
+            Height = originalBitmap.Height;
 
             CurrentFilter = new Filter();
-            #endregion
         }
+
+        public Image(string path) : this(path, 0, 0, 0, 0) { }
 
         public Bitmap originalBitmap { get; }
         public Bitmap editedBitmap { get; private set; }

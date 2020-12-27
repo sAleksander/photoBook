@@ -72,7 +72,7 @@ namespace PhotoBook.Model
                         0, 0, image.Width, image.Height
                     );
 
-                    contentPage.AddAndEditComment(j, $"Obrazek {j}");
+                    contentPage.SetComment(j, $"Obrazek {j}");
                 }
 
                 _contentPages.Add(contentPage);
