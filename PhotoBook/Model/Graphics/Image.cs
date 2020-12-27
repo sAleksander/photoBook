@@ -14,8 +14,18 @@ namespace PhotoBook.Model.Graphics
             #region Mockup
             DisplayedPath = path;
 
-            Width = 1350;
-            Height = 900;
+            if (path.Contains("placeholder_original.png"))
+            {
+                Width = 1350; Height = 900;
+            }
+            else if (path.Contains("placeholder_cropped.png"))
+            {
+                Width = 600; Height = 575;
+            }
+            else
+            {
+                throw new Exception("Image not available in mockup version");
+            }
 
             CurrentFilter = Filter.Type.None;
             #endregion
