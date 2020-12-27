@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using PhotoBook.ViewModel.Settings;
 using Page = PhotoBook.Model.Pages.Page;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
 

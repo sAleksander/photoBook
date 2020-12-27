@@ -2,7 +2,7 @@
 using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Pages;
 
-namespace PhotoBook.ViewModel
+namespace PhotoBook.ViewModel.Settings
 {
     public class PagesSettingsViewModel : SettingsViewModel
     {
@@ -27,7 +27,7 @@ namespace PhotoBook.ViewModel
             get => selectedPage == leftPage;
             set
             {
-                if (value) selectedPage = leftPage;
+                if (value) SelectPage(leftPage);
             }
         }
 
@@ -36,7 +36,7 @@ namespace PhotoBook.ViewModel
             get => selectedPage == rightPage;
             set
             {
-                if (value) selectedPage = rightPage;
+                if (value) SelectPage(rightPage);
             }
         }
 

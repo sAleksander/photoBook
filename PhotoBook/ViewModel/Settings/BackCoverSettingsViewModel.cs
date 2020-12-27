@@ -1,6 +1,6 @@
 ﻿using PhotoBook.Model.Pages;
 
-namespace PhotoBook.ViewModel
+namespace PhotoBook.ViewModel.Settings
 {
     public class BackCoverSettingsViewModel : SettingsViewModel
     {

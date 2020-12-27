@@ -1,5 +1,6 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using PhotoBook.ViewModel.Settings;
 
 namespace PhotoBook.ViewModel
 {

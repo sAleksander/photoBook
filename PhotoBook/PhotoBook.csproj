@@ -98,15 +98,16 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\BackCoverSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\BackCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\FrontCoverSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\FrontCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Navigator.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\PagesSettingsViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\ImageViewModel.cs" />
+    <Compile Include="ViewModel\Settings\PagesSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
