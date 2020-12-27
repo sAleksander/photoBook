@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Pages;
+using System.Collections.ObjectModel;
 
 namespace PhotoBook.ViewModel.Settings
 {
@@ -40,6 +41,13 @@ namespace PhotoBook.ViewModel.Settings
             }
         }
 
+        private ObservableCollection<ImageViewModel> images;
+        public ObservableCollection<ImageViewModel> Images
+        {
+            get => images;
+            set => Set(nameof(Images), ref images, value);
+        }
+
         public PagesSettingsViewModel(ContentPage leftPage, ContentPage rightPage)
         {
             this.leftPage = leftPage;
@@ -55,6 +63,13 @@ namespace PhotoBook.ViewModel.Settings
 
             // TODO: Handle BackgroundImage as well
             BackgroundColor = selectedPage.Background as BackgroundColor;
+
+            var newImages = new ObservableCollection<ImageViewModel>();
+            for (int imageIndex = 0; imageIndex < page.Layout.NumOfImages; imageIndex++)
+            {
+                newImages.Add(new ImageViewModel(page, imageIndex));
+            }
+            Images = newImages;
         }
     }
 }

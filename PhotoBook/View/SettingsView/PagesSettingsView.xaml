@@ -12,7 +12,7 @@
     <Grid Background="Transparent" Margin="10,30,0,0">
         <ScrollViewer VerticalScrollBarVisibility="Auto" Height="500">
             <StackPanel CanVerticallyScroll="True">
-                
+
                 <!--Right/left side options-->
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
@@ -33,7 +33,7 @@
                         IsChecked="{Binding IsRightPageChecked, Mode=TwoWay}"/>
                 </StackPanel>
 
-                
+
                 <!--Change layout-->
                 <Button Name="btnLayout"
                     Click="changeLayout"
@@ -76,8 +76,8 @@
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
                 </StackPanel>
-                
-                
+
+
                 <!--Change Theme-->
                 <Button Name="btnTheme"
                     Click="showTheme"
@@ -136,9 +136,20 @@
                     </RadioButton>
                     -->
                 </StackPanel>
+
+                <ItemsControl ItemsSource="{
+                    Binding Path=Images,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <settingsview:PhotoOptions
+                                Description="{Binding Description, Mode=TwoWay}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                
             </StackPanel>
-            
-            
         </ScrollViewer>
     </Grid>
 </Page>
