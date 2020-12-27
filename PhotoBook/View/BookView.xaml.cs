@@ -185,6 +185,7 @@ namespace PhotoBook.View
 
             switch (background)
             {
+                // TODO: Implement background images
                 case BackgroundImage bgImage:
                     throw new NotImplementedException();
                 case BackgroundColor bgColor:
