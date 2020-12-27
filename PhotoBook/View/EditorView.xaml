@@ -52,27 +52,15 @@
 
         <!--Left side-->
         <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="6*"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0">
-                <Frame Content="{Binding BookViewModel}"/>
-                <Button Content="FrontCoverSettings" 
-                        Command="{Binding ShowFrontCoverSettings}"/>
-                <Button Content="BackCoverSettings" 
-                        Command="{Binding ShowBackCoverSettings}"/>
-                <Button Content="PagesSettings" 
-                        Command="{Binding ShowPagesSettings}"/>
-            </StackPanel>
+                <Frame Grid.Row="0" Background="#e8e8e8"
+                   Content="{Binding BookViewModel}" Margin="10,20,20,0"/>
 
-
-            <Frame Grid.Row="1" Background="#e8e8e8"
-                   Margin="10,20,20,0"/>
-
-            <Grid Grid.Row="2" >
+            <Grid Grid.Row="1" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
