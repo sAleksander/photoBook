@@ -82,92 +82,41 @@ namespace PhotoBook.Model
 
         public (ContentPage, ContentPage) GetContentPagesAt(int index)
         {
-            #region Mockup
-            return (_contentPages[0], _contentPages[1]);
-            #endregion
-
-            if (index == -1)
-                return (_contentPages[NumOfContentPages - 2], _contentPages[NumOfContentPages - 1]);
-
-            else if (index >= 0 && index < _contentPages.Count)
-            {
-                byte adjustedIndex = (byte)index;
-
-                if (index % 2 == 1)
-                    adjustedIndex = (byte)(index - 1);
-
-                return (_contentPages[adjustedIndex], _contentPages[adjustedIndex + 1]);
-            }
-
-            else
+            if (index < 0 || index >= _contentPages.Count)
                 throw new Exception("Wrong page index chosen!");
+
+            var adjustedIndex = GetAdjustedIndex(index);
+            return (_contentPages[adjustedIndex], _contentPages[adjustedIndex + 1]);
         }
 
         public void CreateNewPages(int index = -1)
         {
-            #region Mockup
-            throw new NotImplementedException("Not available in mockup version");
-            #endregion
-
-            if (index == -1){
+            if (index == -1) {
                 _contentPages.Add(new ContentPage());
                 _contentPages.Add(new ContentPage());
+                return;
             }
 
-            else if (index >= 0 && index < _contentPages.Count){
-                // Provides inserting pages between sheets & not pages
-                byte adjustedIndex = (byte)index;
-
-                if(index % 2 == 1)
-                    adjustedIndex = (byte)(index - 1);
-
-                _contentPages.Insert(adjustedIndex, new ContentPage());
-                _contentPages.Insert(adjustedIndex, new ContentPage());
-            }
-
-            else
+            if (index < 0 || index >= _contentPages.Count)
                 throw new Exception("Wrong insert page index chosen!");
 
-            // Remind about changes here
+            var adjustedIndex = GetAdjustedIndex(index);
+            _contentPages.Insert(adjustedIndex, new ContentPage());
+            _contentPages.Insert(adjustedIndex, new ContentPage());
         }
 
-        public void DeletePages(int index = -1)
+        public void DeletePages(int index)
         {
-            if(index == -1)
-            {
-                _contentPages.RemoveAt(_contentPages.Count - 1);
-                _contentPages.RemoveAt(_contentPages.Count - 1);
-            }
-
-            else if (index >= 0 && index < _contentPages.Count)
-            {
-                byte adjustedIndex = (byte)index;
-
-                if (index % 2 == 1)
-                    adjustedIndex = (byte)(index - 1);
-
-                _contentPages.RemoveAt(adjustedIndex);
-                _contentPages.RemoveAt(adjustedIndex);
-            }
-
-            else
+            if (index < 0 || index >= _contentPages.Count)
                 throw new Exception("Wrong remove page index chosen!");
 
-            // Remind about changes here
+            var adjustedIndex = GetAdjustedIndex(index);
+            _contentPages.RemoveRange(adjustedIndex, 2);
         }
 
-        public void EditPage(int index, ContentPage editedPage)
+        private int GetAdjustedIndex(int index)
         {
-            if (index == -1)
-                _contentPages[_contentPages.Count - 1] = editedPage;
-
-            else if (index >= 0 && index < _contentPages.Count)
-                _contentPages[index] = editedPage;
-
-            else
-                throw new Exception("Wrong edit page index chosen!");
-
-            // Remind about changes here
+            return index % 2 == 0 ? index : index - 1;
         }
 
         public void LoadPhotoBook()
