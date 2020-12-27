@@ -2,10 +2,12 @@
 using PhotoBook.Model.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Image = PhotoBook.Model.Graphics.Image;
 
 namespace PhotoBook.Model.Pages
 {
@@ -19,6 +21,12 @@ namespace PhotoBook.Model.Pages
             _images = new Image[2];
             _comments = new string[2];
         }
+        public ContentPage(ContentPage cPage, Image[] images, string[] comments)
+        {
+            Background = cPage.Background;
+            _images = images;
+            _comments = comments;
+        }
         #endregion
 
         public Layout Layout { get; set; }
@@ -26,13 +34,13 @@ namespace PhotoBook.Model.Pages
         private Image[] _images;
         public Image[] Images { get => _images; }
         private string[] _comments;
-        string[] Comments { get; set; }
+        public string[] Comments { get; private set; }
 
         #region Image functionality
         public Image LoadImage(int layoutImageIndex, string imagePath)
         {
             #region Mockup
-            Image testImage = new Image(imagePath);
+            Image testImage = new Image(imagePath, 0, 0, new Bitmap(imagePath).Width, new Bitmap(imagePath).Height);
             _images[layoutImageIndex] = testImage;
             return testImage;
             #endregion
@@ -42,7 +50,8 @@ namespace PhotoBook.Model.Pages
             if (!File.Exists(imagePath))
                 throw new Exception("File at a given path doesn't exist!");
 
-            Image newImage = new Image(imagePath);
+            Image newImage = new Image(imagePath, 0, 0, 1350, 900);
+ 
             _images[layoutImageIndex] = newImage;
 
             // TODO: Inform the others about the changes

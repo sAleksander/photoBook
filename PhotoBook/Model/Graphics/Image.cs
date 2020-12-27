@@ -16,9 +16,12 @@ namespace PhotoBook.Model.Graphics
         {
             System.IO.FileAttributes attr = File.GetAttributes(OriginalPath);
 
+            // TODO: Handle situations in which two files would have the same names
+
             if (attr.HasFlag(FileAttributes.Directory))
                 throw new Exception("Correct image path was not provided");
             if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
+
                 throw new Exception("File/image with wrong exception provided");
 
             OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
@@ -26,9 +29,10 @@ namespace PhotoBook.Model.Graphics
 
             if (!Directory.Exists("\\OriginalImages"))
                 Directory.CreateDirectory("OriginalImages");
+
             if (!File.Exists($"\\OriginalImages\\{Path.GetFileName(path)}"))
-                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");            
-                        
+                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
+
             CroppingRectangle = new Rectangle(x, y, width, height);
 
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(x, y, width, height);
@@ -37,22 +41,18 @@ namespace PhotoBook.Model.Graphics
 
             if (!Directory.Exists("\\UsedImages"))
                 Directory.CreateDirectory("UsedImages");
-            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))            
+
+            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))
                 editedBitmap.Save($"\\UsedImages\\{Path.GetFileName(path)}");
-                      
-            #region Mockup            
+
+            #region Mockup
             DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
 
             Width = 1350;
             Height = 900;
 
             CurrentFilter = new Filter();
-            #endregion            
-        }
-
-        private Rectangle Rectangle(int x, int y, int width, int height)
-        {
-            throw new NotImplementedException();
+            #endregion
         }
 
         public Bitmap originalBitmap { get; }
@@ -68,27 +68,27 @@ namespace PhotoBook.Model.Graphics
 
         public Filter CurrentFilter { get; private set; } = new Filter();
         public void SetFilter(Filter.Type filterType)
-        {            
+        {
             #region Mockup
             throw new NotImplementedException("Not available in mockup version");
             #endregion
 
+            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(CroppingRectangle.X, CroppingRectangle.Y, CroppingRectangle.Width, CroppingRectangle.Height);
+            System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
+
             if (filterType == Filter.Type.None)
-            {
-                System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(CroppingRectangle.X, CroppingRectangle.Y, CroppingRectangle.Width, CroppingRectangle.Height);
-                System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
                 editedBitmap = originalBitmap.Clone(rectangle, format);
-            }
+
             else
             {
                 CurrentFilter.SetFilterSettings(filterType);
-                editedBitmap = CurrentFilter.applyFilter(originalBitmap);
+                editedBitmap = CurrentFilter.applyFilter(originalBitmap.Clone(rectangle, format));
             }
 
             if (File.Exists(DisplayedPath))
                 File.Delete(DisplayedPath);
 
             editedBitmap.Save(DisplayedPath);
-        }        
+        }
     }
 }

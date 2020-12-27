@@ -10,7 +10,7 @@ namespace PhotoBook.Model.Graphics
 {
     public class Filter
     {
-        public Filter() { 
+        public Filter() {
             SetFilterSettings(Filter.Type.None);
             currentType = Type.None;
         }
@@ -20,7 +20,7 @@ namespace PhotoBook.Model.Graphics
             currentType = filterType;
         }
 
-        private Type currentType;
+        public Type currentType { get; private set; }
         Dictionary<string, double> _settings = new Dictionary<string, double>();
         Dictionary<string, double> Settings { get => _settings; }
 
@@ -40,7 +40,7 @@ namespace PhotoBook.Model.Graphics
             currentType = filterType;
             _settings.Clear();
 
-            switch (filterType) {                
+            switch (filterType) {
                 case Filter.Type.Cold:
                     _settings.Add("R", 0.8);
                     _settings.Add("G", 0.8);
@@ -67,7 +67,6 @@ namespace PhotoBook.Model.Graphics
             }
         }
 
-        // The method below in the future should return a picture with a filter added as an argument
         public Bitmap applyFilter(Bitmap originalBitmap)
         {
             Bitmap editedBitmap = originalBitmap;
@@ -88,7 +87,7 @@ namespace PhotoBook.Model.Graphics
                             pixelPointer[1] = pixelPointer[0];
                             pixelPointer[2] = pixelPointer[0];
                             pixelPointer += 3;
-                        }                        
+                        }
                         break;
 
                     default:
@@ -97,7 +96,7 @@ namespace PhotoBook.Model.Graphics
                             pixelPointer[2] = (byte)(_settings["R"] * pixelPointer[2]);
                             pixelPointer[1] = (byte)(_settings["G"] * pixelPointer[1]);
                             pixelPointer[0] = (byte)(_settings["B"] * pixelPointer[0]);
-                        }                        
+                        }
                         break;
                 }
             }

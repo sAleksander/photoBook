@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace PhotoBook.Model.Pages
 {
     public class BackCover : Page
-    {
+    {    
     }
 }

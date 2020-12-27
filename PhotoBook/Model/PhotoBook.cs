@@ -1,4 +1,5 @@
 ﻿using PhotoBook.Model.Arrangement;
+using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Graphics;
 using PhotoBook.Model.Pages;
 using System;
@@ -18,6 +19,7 @@ namespace PhotoBook.Model
 
             SavePath = savePath;
             Directory.SetCurrentDirectory(savePath);
+            LoadPhotoBook();
         }
         
         public string SavePath { get; private set; }
@@ -29,8 +31,8 @@ namespace PhotoBook.Model
 
         private List<ContentPage> _contentPages;
 
-        public FrontCover FrontCover { get; }
-        public BackCover BackCover { get; }
+        public FrontCover FrontCover { get; private set; }
+        public BackCover BackCover { get; private set; }
         public int NumOfContentPages { get => _contentPages.Count; }
 
         public Dictionary<Layout.Type, Layout> AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
@@ -168,28 +170,200 @@ namespace PhotoBook.Model
             // Remind about changes here
         }
 
-        public void LoadPhotoBook(string path)
+        public void LoadPhotoBook()
         {
-            if (!Directory.Exists(path))
-                throw new Exception("Provided directory path doesn't exist!");
+            if (!Directory.Exists(SavePath))
+                throw new Exception("Provided path directory doesn't exist!");
+            if (File.Exists(SavePath))
+                File.Delete(SavePath);
 
-            SavePath = path;
-            Directory.SetCurrentDirectory(path);
+            var photoBookSaveFile = File.ReadAllLines(SavePath);
 
-            // TODO: Implement the rest 
+            string currentPage = "";
+            Stack<string> currentProperty = new Stack<string>();
+
+            byte R = new byte();
+            byte G = new byte();
+            byte B = new byte();
+
+            string path = "";
+            int x = 0;
+            int y = 0;
+            int width = 0;
+            int height = 0;
+
+            int layoutImages = 0;
+            List<Image> tempImages = new List<Image>();
+            List<string> tempComments = new List<string>();
+
+            FrontCover tempFrontCover = new FrontCover();
+            ContentPage tempContentPage = new ContentPage();
+            List<ContentPage> tempContentPages = new List<ContentPage>();
+            BackCover tempBackCover = new BackCover();
+
+
+            foreach (string line in photoBookSaveFile)
+            {
+                if (line.Trim() == "")
+                    continue;
+                                
+                else
+                {
+                    if (line.Contains(":"))
+                    {
+                        var separator = line.Trim().LastIndexOf("\":");
+
+                        var element = line.Trim().Substring(1, separator - 1);
+                        var value = line.Trim().Substring(separator + 3);
+
+                        if (element == "FrontCover" || element == "ContentPages" || element == "BackCover")
+                            currentPage = element;
+                        else
+                        {
+                            switch (currentPage)
+                            {
+                                case "FrontCover":
+                                    switch (element)
+                                    {
+                                        case "Title":
+                                            tempFrontCover.Title = value;
+                                            break;
+                                        case "R":
+                                            currentProperty.Push("BackgroundColor");
+                                            R = Convert.ToByte(value);                                            
+                                            break;
+                                        case "G":
+                                            G = Convert.ToByte(value);
+                                            break;
+                                        case "B":
+                                            B = Convert.ToByte(value);
+                                            tempFrontCover.Background = new BackgroundColor(R, G, B);
+                                            currentProperty.Pop();
+                                            break;
+                                        case "Path":
+                                            path = value;
+                                            break;
+                                        case "X":
+                                            x = Convert.ToInt32(value);
+                                            break;
+                                        case "Y":
+                                            y = Convert.ToInt32(value);
+                                            break;
+                                        case "Width":
+                                            width = Convert.ToInt32(value);
+                                            break;
+                                        case "Height":
+                                            height = Convert.ToInt32(value);
+                                            tempFrontCover.Background = new BackgroundImage(new Image(path, x, y, width, height));                                            
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    break;
+                                case "ContentPages":
+                                    switch (element)
+                                    {
+                                        case "BackgroundImage":
+                                            currentProperty.Push("BackgroundImage");
+                                            break;
+                                        case "Images":
+                                            currentProperty.Push("Images");                                            
+                                            break;
+                                        case "R":
+                                            R = Convert.ToByte(value);
+                                            break;
+                                        case "G":
+                                            G = Convert.ToByte(value);
+                                            break;
+                                        case "B":
+                                            B = Convert.ToByte(value);
+                                            tempContentPage.Background = new BackgroundColor(R, G, B);
+                                            break;
+                                        case "Path":
+                                            path = value;
+                                            break;
+                                        case "X":
+                                            if (currentProperty.Peek() == "Images")
+                                                currentProperty.Push("Image");
+                                            x = Convert.ToInt32(value);
+                                            break;
+                                        case "Y":
+                                            y = Convert.ToInt32(value);
+                                            break;
+                                        case "Width":
+                                            width = Convert.ToInt32(value);
+                                            break;
+                                        case "Height":
+                                            height = Convert.ToInt32(value);
+
+                                            if (currentProperty.Peek() == "BackgroundImage")                                            
+                                                tempContentPage.Background = new BackgroundImage(new Image(path, x, y, width, height));                                                
+                                            
+                                            currentProperty.Pop();
+                                            break;
+                                        case "CurrentFilter":
+                                            tempImages.Add(new Image(path, x, y, width, height));
+
+                                            switch (value) {
+                                                case "Filter.Type.Warm":
+                                                    tempImages[-1].SetFilter(Filter.Type.Warm);
+                                                    break;
+                                                case "Filter.Type.Cold":
+                                                    tempImages[-1].SetFilter(Filter.Type.Cold);
+                                                    break;
+                                                case "Filter.Type.Greyscale":
+                                                    tempImages[-1].SetFilter(Filter.Type.Greyscale);
+                                                    break;
+                                                }
+
+                                            currentProperty.Pop();
+                                            if (tempImages.Count == layoutImages)                                                
+                                                currentProperty.Pop();
+                                            break;
+
+                                        case "Comment":
+                                            tempComments.Add(value);                                            
+                                            break;
+
+                                        default:    
+                                            if(currentPage == "ContentPages" && currentProperty.Count == 0 && tempComments.Count == layoutImages)
+                                            {
+                                                tempContentPages.Add(new ContentPage(tempContentPage, tempImages.ToArray(), tempComments.ToArray()));
+                                                tempImages.Clear();
+                                                tempComments.Clear();
+                                            }
+                                            break;
+                                    }
+                                    break;
+
+                                case "BackCover":
+                                    tempBackCover.Background = tempFrontCover.Background;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            FrontCover = tempFrontCover;
+            _contentPages = tempContentPages;
+            BackCover = tempBackCover;            
         }
 
-        public string SavePhotoBook(string path)
+        public void SavePhotoBook()
         {
             // List of turples storing paths of original images and their used counterparts
             List<(string, string)> usedImagesPaths = new List<(string, string)>();
 
             // Deleting those images from project directory that aren't used anymore
 
-            if (FrontCover.Background.GetType().Equals(typeof(Backgrounds.BackgroundImage)))
+            switch (FrontCover.Background)
             {
-                // TODO: Solve below's problem with not being able to reference backgroundimage type fields
-                // listOfUsedImages.Add(FrontCover.Background.Image.OriginalPath);
+                case BackgroundImage bgi:
+                    usedImagesPaths.Add((bgi.Image.OriginalPath, bgi.Image.OriginalPath));
+                    break;
+                default:
+                    break;
             }
 
             foreach(ContentPage contentPage in _contentPages)            
@@ -197,14 +371,7 @@ namespace PhotoBook.Model
                     if (!usedImagesPaths.Contains((image.OriginalPath, image.DisplayedPath)))
                         usedImagesPaths.Add((image.OriginalPath, image.DisplayedPath));                
             
-
-            if (BackCover.Background.GetType().Equals(typeof(Backgrounds.BackgroundImage)))
-            {
-                // TODO: Solve below's problem with not being able to reference backgroundimage type fields
-                // listOfUsedImages.Add(BackCover.Background.Image.OriginalPath);
-            }
-
-            // TODO: Combine below two searches into one
+            // TODO: In the future combine below two searches into one
             List<string> allOriginalImagesPaths = Directory.GetFiles("OriginalImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
             List<string> allUsedImagesPaths = Directory.GetFiles("UsedImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
 
@@ -220,9 +387,180 @@ namespace PhotoBook.Model
                 if (!secondPaths.Contains(allUsedImagesPaths[i]))
                     File.Delete(allUsedImagesPaths[i]);
 
-            // TODO: Implement exporting & saving all photobook info
+            // Saving photoBookData
 
-            return "";
+            if (!File.Exists(SavePath))
+                File.Delete(SavePath);
+
+            StringBuilder jsonContent = new StringBuilder();
+            var lvl = 0;
+
+            jsonContent.AppendLine("{");
+            lvl++;
+
+            jsonContent.AppendLine("\t\"FrontCover\" : {");
+            lvl++;
+
+            void addIndenting(int direction = 0)
+            {
+                for (int i = 0; i < lvl; i++)
+                    jsonContent.Append("\t");
+
+                if (direction > 0)
+                    lvl++;
+                else if (direction < 0)
+                    lvl--;
+            }
+
+            addIndenting(1);
+            jsonContent.AppendLine($"Title : {FrontCover.Title},");
+            
+
+            switch (FrontCover.Background)
+            {
+                case BackgroundColor bgc:
+                    addIndenting(1);
+                    jsonContent.AppendLine("BackgroundColor : {");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"R : {bgc.R},");
+                    
+                    addIndenting();
+                    jsonContent.AppendLine($"G : {bgc.G},");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"B : {bgc.B},");
+                    break;
+                
+                case BackgroundImage bgi:
+                    addIndenting(1);
+                    jsonContent.AppendLine("BackgroundImage : {");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"Path : {bgi.Image.OriginalPath},");
+                    
+                    addIndenting();
+                    jsonContent.AppendLine($"X : {bgi.Image.CroppingRectangle.X},");
+                    
+                    addIndenting();
+                    jsonContent.AppendLine($"Y : {bgi.Image.CroppingRectangle.Y},");
+                    
+                    addIndenting();
+                    jsonContent.AppendLine($"Width : {bgi.Image.CroppingRectangle.Width},");
+                    
+                    addIndenting(-1);
+                    jsonContent.AppendLine($"Height : {bgi.Image.CroppingRectangle.Height},");
+                    break;
+            }
+
+            addIndenting();
+            jsonContent.AppendLine("},");
+
+            addIndenting(1);
+            jsonContent.AppendLine("\"ContentPages\" : [");
+            
+            foreach(ContentPage page in _contentPages) {
+
+                addIndenting(1);
+                jsonContent.AppendLine("{");                
+
+                switch (page.Background)
+                {
+                    case BackgroundColor bgc:
+                        addIndenting(1);
+                        jsonContent.AppendLine("BackgroundColor : {");
+
+                        addIndenting();
+                        jsonContent.AppendLine($"R : {bgc.R},");
+
+                        addIndenting();
+                        jsonContent.AppendLine($"G : {bgc.G},");
+
+                        addIndenting(-1);
+                        jsonContent.AppendLine($"B : {bgc.B},");
+                        break;
+
+                    case BackgroundImage bgi:
+                        addIndenting(1);
+                        jsonContent.AppendLine("BackgroundImage : {");
+                        lvl++;
+
+                        addIndenting();
+                        jsonContent.AppendLine($"Path : {bgi.Image.OriginalPath},");
+
+                        addIndenting();
+                        jsonContent.AppendLine($"X : {bgi.Image.CroppingRectangle.X},");
+
+                        addIndenting();
+                        jsonContent.AppendLine($"Y : {bgi.Image.CroppingRectangle.Y},");
+
+                        addIndenting();
+                        jsonContent.AppendLine($"Width : {bgi.Image.CroppingRectangle.Width},");
+
+                        addIndenting(-1);
+                        jsonContent.AppendLine($"Height : {bgi.Image.CroppingRectangle.Height},");
+                        break;
+                }
+
+                addIndenting();
+                jsonContent.AppendLine("},");
+
+                addIndenting();
+                jsonContent.AppendLine($"\"Layout\" : {page.Layout.Name},");
+
+                addIndenting(1);
+                jsonContent.AppendLine("\"Images\" : [");                
+
+                foreach(Image image in page.Images)
+                {
+                    addIndenting();
+                    jsonContent.AppendLine("{");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"\"X\" : {image.CroppingRectangle.X},");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"\"Y\" : {image.CroppingRectangle.Y},");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"\"Width\" : {image.CroppingRectangle.Width},");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"\"Height\" : {image.CroppingRectangle.Height}");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"\"OriginalPath\" : {image.OriginalPath},");
+
+                    addIndenting();
+                    jsonContent.AppendLine($"\"CurrentFilter\" : {image.CurrentFilter.currentType}");
+
+                    addIndenting(-1);
+                    jsonContent.AppendLine("},");
+                }
+
+                addIndenting();
+                jsonContent.AppendLine("],");
+
+                addIndenting(1);
+                jsonContent.AppendLine("\"Comments\" : [");                
+
+                foreach(string comment in page.Comments)
+                {
+                    addIndenting(-1); ;
+                    jsonContent.AppendLine($"\"Comment\" : \"{comment}\"");
+                }
+
+                addIndenting();
+                jsonContent.AppendLine("\"]\"");
+            }
+
+            lvl--;
+            addIndenting();
+            jsonContent.AppendLine("\"]\"");
+
+            jsonContent.AppendLine("}");
+
+            File.WriteAllText(SavePath, jsonContent.ToString());
         }
     }
 }

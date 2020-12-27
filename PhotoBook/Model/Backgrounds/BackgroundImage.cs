@@ -9,10 +9,7 @@ namespace PhotoBook.Model.Backgrounds
 {
     public class BackgroundImage : Background
     {
-        BackgroundImage(Image image)
-        {
-            Image = image;
-        }
+        public BackgroundImage(Image image) { Image = image; }
 
         public Image Image { set; get; }
     }
