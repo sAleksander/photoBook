@@ -118,13 +118,20 @@ namespace PhotoBook.View
                 var imgConstraints = layout.ImageConstraints[imgIndex];
                 var image = page.GetImage(imgIndex);
 
-                // TODO: Take account of cropping of the image
-
+                // Create image
                 var wpfImage = new Image
                 {
                     Width = imgConstraints.Width,
                     Height = imgConstraints.Height,
-                    Source = new BitmapImage(new Uri(image.DisplayedPath)),
+                    Source = new CroppedBitmap(
+                        new BitmapImage(new Uri(image.DisplayedPath)),
+                        new Int32Rect(
+                            image.CroppingRectangle.X,
+                            image.CroppingRectangle.Y,
+                            image.CroppingRectangle.Width,
+                            image.CroppingRectangle.Height
+                        )
+                    )
                 };
 
                 Canvas.SetLeft(wpfImage, leftOffset + imgConstraints.X);
@@ -132,6 +139,7 @@ namespace PhotoBook.View
 
                 canvas.Children.Add(wpfImage);
 
+                // Create comment label
                 var imgBottom = imgConstraints.Y + imgConstraints.Height;
 
                 var commentLabel = new Label()
