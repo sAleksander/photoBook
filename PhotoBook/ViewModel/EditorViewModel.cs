@@ -132,22 +132,5 @@ namespace PhotoBook.ViewModel
         {
             MainViewModel.Navigator.ChangeCurrentVM(locator.Home);
         });
-
-        // Debug commands
-        public RelayCommand ShowFrontCoverSettings => new RelayCommand(() =>
-        {
-            SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
-        });
-
-        public RelayCommand ShowBackCoverSettings => new RelayCommand(() =>
-        {
-            SettingsViewModel = new BackCoverSettingsViewModel(model);
-        });
-
-        public RelayCommand ShowPagesSettings => new RelayCommand(() =>
-        {
-            var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
-            SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
-        });
     }
 }
