@@ -16,6 +16,7 @@ namespace PhotoBook.ViewModel
     public class EditorViewModel : ViewModelBase
     {
         private PhotoBookModel model = PhotoBookModel.CreateMockup();
+        private ViewModelLocator locator;
 
         private int currentContentPageIndex = 0;
         private PageType currentPageType = PageType.FrontCover;
@@ -35,8 +36,9 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(SettingsViewModel), ref settingsViewModel, value);
         }
 
-        public EditorViewModel()
+        public EditorViewModel(ViewModelLocator locator)
         {
+            this.locator = locator;
             bookViewModel = new BookViewModel(model);
 
             NotifyNestedViewModels();
@@ -128,7 +130,7 @@ namespace PhotoBook.ViewModel
 
         public RelayCommand Exit => new RelayCommand(() =>
         {
-            MainViewModel.Navigator.ChangeCurrentVM<HomeViewModel>();
+            MainViewModel.Navigator.ChangeCurrentVM(locator.Home);
         });
 
         // Debug commands

@@ -38,6 +38,10 @@ namespace PhotoBook.ViewModel
             SimpleIoc.Default.Register<PagesSettingsViewModel>();
 
             SimpleIoc.Default.Register<BookViewModel>();
+
+            // Used to pass ViewModelLocator to view models so that they can navigate
+            // to other VMs.
+            SimpleIoc.Default.Register(() => this);
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

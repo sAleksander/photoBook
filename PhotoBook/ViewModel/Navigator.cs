@@ -26,9 +26,9 @@ namespace PhotoBook.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void ChangeCurrentVM<T>() where T : ViewModelBase, new()
+        public void ChangeCurrentVM(ViewModelBase vm)
         {
-            CurrentVM = new T();
+            CurrentVM = vm;
         }
 
         protected void OnPropertyChange(params string[] propertsName)

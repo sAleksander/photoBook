@@ -5,9 +5,9 @@ namespace PhotoBook.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+        public MainViewModel(ViewModelLocator locator)
         {
-            Navigator.ChangeCurrentVM<HomeViewModel>();
+            Navigator.ChangeCurrentVM(locator.Home);
 
             ////if (IsInDesignMode)
             ////{
