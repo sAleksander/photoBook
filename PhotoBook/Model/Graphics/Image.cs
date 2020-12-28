@@ -48,17 +48,8 @@ namespace PhotoBook.Model.Graphics
             File.Copy(path, destinationFilename, false);
 
             OriginalPath = destinationFilename;
+            DisplayedPath = destinationFilename;
             originalBitmap = new Bitmap(path);
-
-
-            CroppingRectangle = new Rectangle(x, y, width, height);
-            CropBitmap();
-
-            var editedDestinationFilename = $"UsedImages\\{randomFilename}";
-
-            Directory.CreateDirectory("UsedImages");
-            editedBitmap.Save(editedDestinationFilename);
-            DisplayedPath = editedDestinationFilename;
 
 
             Width = originalBitmap.Width;
