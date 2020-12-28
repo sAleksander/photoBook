@@ -3,37 +3,37 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:PhotoBook.View"
+      xmlns:local="clr-namespace:PhotoBook.View" xmlns:settingsview="clr-namespace:PhotoBook.View.SettingsView"
       DataContext="{Binding Source={StaticResource Locator}, Path=PagesSettings}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="500"
       Title="PagesSettingsView">
 
-    <Grid Background="Transparent" Margin="10,30,0,0">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="500">
-            <StackPanel CanVerticallyScroll="True">
-                
-                <!--Right/left side options-->
-                <StackPanel Orientation="Horizontal">
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+    <StackPanel CanVerticallyScroll="True">
+
+        <!--Right/left side options-->
+        <StackPanel Orientation="Horizontal">
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Name="btnLeftSide"
                         Content="Lewa strona"
                         BorderBrush="White" 
                         Background="Transparent"
                         FontSize="20" Foreground="White" FontFamily="Segoe UI Light"
-                        Width="130"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Width="130"
+                        IsChecked="{Binding IsLeftPageChecked, Mode=TwoWay}"/>
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
                         Name="btnRightSide"
                         Content="Prawa strona"
                         BorderBrush="White" 
                         Background="Transparent"
                         FontSize="20" Foreground="White" FontFamily="Segoe UI Light" 
-                        Width="130"/>
-                </StackPanel>
+                        Width="130"
+                        IsChecked="{Binding IsRightPageChecked, Mode=TwoWay}"/>
+        </StackPanel>
 
-                
-                <!--Change layout-->
-                <Button Name="btnLayout"
+
+        <!--Change layout-->
+        <Button Name="btnLayout"
                     Click="changeLayout"
                     Content="Układ strony" 
                     VerticalAlignment="Top"
@@ -42,16 +42,15 @@
                     Background="Transparent"
                     FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
                     Height="50">
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="2"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <StackPanel Name="layoutStackPanel" 
-                        Background="Transparent"
-                        Visibility="Collapsed">
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <StackPanel Name="layoutStackPanel" 
+                        Background="Transparent">
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Content="1 zdjęcie"
                         HorizontalContentAlignment="Left"
                         Background="Transparent" 
@@ -59,14 +58,14 @@
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Content="2 zdjęcia pionowo"  
                         Background="Transparent" 
                         BorderBrush="Transparent"
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Content="2 zdjęcia poziomo" 
                         VerticalAlignment="Top" 
                         Background="Transparent" 
@@ -74,11 +73,11 @@
                         Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                </StackPanel>
-                
-                
-                <!--Change Theme-->
-                <Button Name="btnTheme"
+        </StackPanel>
+
+
+        <!--Change Theme-->
+        <Button Name="btnTheme"
                     Click="showTheme"
                     Content="Zmień motyw"
                     VerticalAlignment="Top" 
@@ -88,7 +87,8 @@
                     Background="Transparent" 
                     Height="50"
                     Margin="0,1,0,1"/>
-                <StackPanel Visibility="Collapsed" Background="Transparent" Name="themeStackPanel">
+        <StackPanel Background="Transparent" Name="themeStackPanel">
+            <!--
                     <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Checked="showColorPicker"
                         Name="btnColor"
@@ -99,46 +99,11 @@
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0"/>
-                    <StackPanel IsEnabled="False" Name="colorPickerStackPanel" Margin="45,0,10,0">
-                        <!--R-->
-                        <Label Content="R"
-                               Foreground="White" FontFamily="Segoe UI Light" FontSize="16px"
-                               />
-                        <Slider Name="Rslider"
-                                    Maximum="255" Minimum="0" 
-                                    TickFrequency="2" 
-                                    IsSnapToTickEnabled="True"
-                                    AutoToolTipPlacement="TopLeft"
-                                    AutoToolTipPrecision="0"/>
-                        <!--G-->
-                        <Label Content="G"
-                               Foreground="White" FontFamily="Segoe UI Light" FontSize="16px"
-                               />
-                        <Slider Name="Gslider"
-                                    Maximum="255" Minimum="0" 
-                                    TickFrequency="2" 
-                                    IsSnapToTickEnabled="True"
-                                    AutoToolTipPlacement="TopLeft"
-                                    AutoToolTipPrecision="0"/>
-                        <!--B-->
-                        <Label Content="B"
-                               Foreground="White" FontFamily="Segoe UI Light" FontSize="16px"
-                               />
-                        <Slider Name="Bslider"
-                                    Maximum="255" Minimum="0" 
-                                    TickFrequency="2" 
-                                    IsSnapToTickEnabled="True"
-                                    AutoToolTipPlacement="TopLeft"
-                                    AutoToolTipPrecision="0"/>
-                        <Button Content="Zatwierdź" 
-                                HorizontalAlignment="Right"
-                                Margin="0,0,30,0"
-                                BorderBrush="Transparent"
-                                Background="Transparent"
-                                Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"/>
-                    </StackPanel>
+                    -->
+            <settingsview:ColorPicker x:Name="BackgroundColorPicker"
+                                              BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}"/>
 
-                    <!--Theme 1-->
+            <!-- TODO: Bind it to view model somehow
                     <Label Content="Motyw 1"
                            Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
                            Margin="45,0,0,0"/>
@@ -152,7 +117,7 @@
                             <ImageBrush ImageSource="/PhotoBook;component/View/Images/Motyw1.png" TileMode="Tile"/>
                         </RadioButton.Background>
                     </RadioButton>
-                    <!--Theme 2-->
+                    
                     <Label Content="Motyw 2"
                            Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
                            Margin="45,0,0,0"/>
@@ -167,11 +132,20 @@
                             <ImageBrush ImageSource="/PhotoBook;component/View/Images/Motyw2.png"/>
                         </RadioButton.Background>
                     </RadioButton>
-              
-                </StackPanel>
-            </StackPanel>
-            
-            
-        </ScrollViewer>
-    </Grid>
+                    -->
+        </StackPanel>
+
+        <ItemsControl ItemsSource="{
+                    Binding Path=Images,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <settingsview:PhotoOptions
+                                Description="{Binding Description, Mode=TwoWay}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </StackPanel>
 </Page>

@@ -98,15 +98,16 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\BackCoverSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\BackCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\FrontCoverSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\FrontCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Navigator.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\PagesSettingsViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\ImageViewModel.cs" />
+    <Compile Include="ViewModel\Settings\PagesSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
@@ -125,6 +126,9 @@
     </Compile>
     <Compile Include="View\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView\ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingsView\FrontCoverSettingsView.xaml.cs">
       <DependentUpon>FrontCoverSettingsView.xaml</DependentUpon>
@@ -171,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView\ColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

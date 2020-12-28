@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Exporters;
+using PhotoBook.ViewModel.Settings;
 using Page = PhotoBook.Model.Pages.Page;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
@@ -181,7 +182,7 @@ namespace PhotoBook.ViewModel
                     {
                         model.FrontCover
                     });
-                    SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover);
+                    SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
                     break;
                 case PageType.Content:
                     var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
@@ -209,7 +210,7 @@ namespace PhotoBook.ViewModel
         // Debug commands
         public RelayCommand ShowFrontCoverSettings => new RelayCommand(() =>
         {
-            SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover);
+            SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
         });
 
         public RelayCommand ShowBackCoverSettings => new RelayCommand(() =>

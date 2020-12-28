@@ -6,13 +6,11 @@
              xmlns:local="clr-namespace:PhotoBook.View.SettingsView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500">
-    
-    <Grid Background="Transparent" Margin="10,30,0,0">
 
-        <StackPanel CanVerticallyScroll="True">
-            <!--Photo options-->
+    <StackPanel CanVerticallyScroll="True">
+        <!--Photo options-->
 
-            <Button Name="btnPhoto"
+        <Button Name="btnPhoto"
                     Content="Zdjęcie"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
@@ -20,9 +18,10 @@
                     Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
                     Background="Transparent" 
                     Height="50"
-                    Margin="0,1,0,1"/>
-            <StackPanel Visibility="Visible" Background="Transparent" Name="photoOptionStackPanel">
-                <Button Name="btnAddPhoto"
+                    Margin="0,1,0,1"
+                Click="btnPhoto_Click"/>
+        <StackPanel Visibility="Visible" Background="Transparent" Name="photoOptionStackPanel">
+            <Button Name="btnAddPhoto"
                         Content="Dodaj zdjęcie"
                         HorizontalContentAlignment="Left"
                         Background="Transparent" 
@@ -31,8 +30,8 @@
                         Height="40"
                         Margin="40,0,0,0"/>
 
-                <!--Add Description-->
-                <Button Click="addDescription" 
+            <!--Add Description-->
+            <Button Click="addDescription" 
                         Name="btnAddDesc"
                         Content="Dodaj opis"  
                         Background="Transparent" 
@@ -40,26 +39,29 @@
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                <StackPanel Name="addDescStackPanel" Visibility="Collapsed">
-                    <Label Content="Wpisz opis"
+            <StackPanel Name="addDescStackPanel">
+                <Label Content="Wpisz opis"
                                Foreground="White" 
                                FontFamily="Segoe UI Light" FontSize="14px"
                                 Margin="60,0,0,0"/>
-                    <TextBox Background="#e8e8e8"
+                <TextBox Name="DescriptionTextBox"
+                                Background="#e8e8e8"
                                 Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
                                 Height="70"
-                                Margin="60,0,15,0"/>
-                    <Button Content="Zatwierdź" 
+                                Margin="60,0,15,0"
+                                Text="{Binding Description, Mode=OneWay}"/>
+                <Button Content="Zatwierdź" 
                                 HorizontalAlignment="Right"
                                 Margin="0,0,30,0"
                                 BorderBrush="Transparent"
                                 Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"
-                                Background="Transparent" />
-                </StackPanel>
+                                Background="Transparent"
+                                Click="ApplyDescriptionButton_Click"/>
+            </StackPanel>
 
 
-                <!--Add Filter-->
-                <Button Click="addFilter"
+            <!--Add Filter-->
+            <Button Click="addFilter"
                         Name="btnAddFilter"
                         Content="Dodaj filtr" 
                         VerticalAlignment="Top" 
@@ -68,8 +70,8 @@
                         Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                <StackPanel Visibility="Collapsed" Background="Transparent" Name="filterStackPanel">
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+            <StackPanel Background="Transparent" Name="filterStackPanel">
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Content="Brak"
                         HorizontalContentAlignment="Left"
                         Background="Transparent" 
@@ -77,7 +79,7 @@
                         Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
                         Content="Ciepły"  
                         Background="Transparent" 
                         BorderBrush="Transparent"
@@ -85,7 +87,7 @@
                         HorizontalContentAlignment="Left"
                         Height="40"
                         Margin="60,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
                         Content="Zimny" 
                         VerticalAlignment="Top" 
                         Background="Transparent" 
@@ -94,7 +96,7 @@
                         HorizontalContentAlignment="Left"
                         Height="40"
                         Margin="60,0,0,0" />
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
                         Content="Czarno-biały" 
                         VerticalAlignment="Top" 
                         Background="Transparent" 
@@ -103,10 +105,9 @@
                         HorizontalContentAlignment="Left"
                         Height="40"
                         Margin="60,0,0,0"/>
-                </StackPanel>
-
-
             </StackPanel>
+
+
         </StackPanel>
-    </Grid>
+    </StackPanel>
 </UserControl>

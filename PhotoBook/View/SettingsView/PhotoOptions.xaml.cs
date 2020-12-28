@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhotoBook.ViewModel.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,11 +21,28 @@ namespace PhotoBook.View.SettingsView
     /// </summary>
     public partial class PhotoOptions : UserControl
     {
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+            nameof(Description),
+            typeof(string),
+            typeof(PhotoOptions),
+            new PropertyMetadata("")
+        );
+
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
+        }
+
         public PhotoOptions()
         {
             InitializeComponent();
         }
 
+        private void ApplyDescriptionButton_Click(object sender, RoutedEventArgs e)
+        {
+            Description = DescriptionTextBox.Text;
+        }
 
         //Add Description
         public void addDescription(object sender, RoutedEventArgs e)
@@ -42,6 +60,13 @@ namespace PhotoBook.View.SettingsView
                 filterStackPanel.Visibility = Visibility.Visible;
             else
                 filterStackPanel.Visibility = Visibility.Collapsed;
+        }
+        private void btnPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            if (photoOptionStackPanel.Visibility == Visibility.Collapsed)
+                photoOptionStackPanel.Visibility = Visibility.Visible;
+            else
+                photoOptionStackPanel.Visibility = Visibility.Collapsed;
         }
 
         //Changing font size

@@ -42,11 +42,6 @@ namespace PhotoBook.View
                 layoutStackPanel.Visibility = Visibility.Collapsed;
         }
 
-        public void showColorPicker(object sender, RoutedEventArgs e)
-        {
-            colorPickerStackPanel.IsEnabled = true;
-        }
-
         //Changing font size
         public const int defaultWidth = 385;
 
