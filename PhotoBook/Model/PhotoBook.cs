@@ -13,56 +13,47 @@ namespace PhotoBook.Model
 {
     public class PhotoBook
     {
-        public PhotoBook(string savePath) {
-            if (!Directory.Exists(savePath))
-                throw new Exception("Provided directory path doesn't exist!");
-
-            SavePath = savePath;
-            Directory.SetCurrentDirectory(savePath);
-            LoadPhotoBook();
-        }
-        
-        public string SavePath { get; private set; }
-        public static string Font { get; } = "Arial";
-
-        public static int PageWidthInPixels { get; }
-        public static int PageHeightInPixels { get; }
-
-
-        private List<ContentPage> _contentPages;
-
-        public FrontCover FrontCover { get; private set; }
-        public BackCover BackCover { get; private set; }
-        public int NumOfContentPages { get => _contentPages.Count; }
-
-        public Dictionary<Layout.Type, Layout> AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
-
-        #region Mockup
-        static PhotoBook()
+        public static PhotoBook CreateNew(string projectDirPath)
         {
-            PageWidthInPixels = 800;
-            PageHeightInPixels = 1500;
+            PhotoBook photoBook = new PhotoBook();
+            photoBook.SaveDirectory = Path.GetFullPath(projectDirPath);
+            Directory.SetCurrentDirectory(projectDirPath);
+
+            return photoBook;
         }
 
-        public PhotoBook()
+        public static PhotoBook Load(string configFilePath)
         {
+            PhotoBook photoBook = new PhotoBook();
+            photoBook.SaveDirectory = Path.GetDirectoryName(Path.GetFullPath(configFilePath));
+            Directory.SetCurrentDirectory(configFilePath);
+
+            photoBook.LoadPhotoBook();
+
+            return photoBook;
+        }
+
+        public static PhotoBook CreateMockup()
+        {
+            PhotoBook photoBook = new PhotoBook();
+
             if (!Directory.Exists("\\Images"))
                 Directory.CreateDirectory("Images");
 
-            FrontCover = new Pages.FrontCover();
-            FrontCover.Title = "Moja fotoksiążka";
-            FrontCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
+            photoBook.FrontCover = new Pages.FrontCover();
+            photoBook.FrontCover.Title = "Moja fotoksiążka";
+            photoBook.FrontCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
 
-            BackCover = new Pages.BackCover();
-            BackCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
+            photoBook.BackCover = new Pages.BackCover();
+            photoBook.BackCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
 
-            _contentPages = new List<ContentPage>(6);
+            photoBook._contentPages = new List<ContentPage>(6);
 
             for (int i = 0; i < 6; i++)
             {
                 ContentPage contentPage = new ContentPage();
 
-                contentPage.Layout = AvailableLayouts[Layout.Type.TwoPictures];
+                contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
                 contentPage.Background = new Backgrounds.BackgroundColor(83, 83, 66);
 
                 for (int j = 0; j < 2; j++)
@@ -75,10 +66,28 @@ namespace PhotoBook.Model
                     contentPage.SetComment(j, $"Obrazek {j}");
                 }
 
-                _contentPages.Add(contentPage);
+                photoBook._contentPages.Add(contentPage);
             }
+
+            return photoBook;
         }
-        #endregion
+        
+        public static string Font { get; } = "Arial";
+
+        public static int PageWidthInPixels { get; } = 800;
+        public static int PageHeightInPixels { get; } = 1500;
+
+        private List<ContentPage> _contentPages;
+        
+        public FrontCover FrontCover { get; private set; }
+        public BackCover BackCover { get; private set; }
+        public int NumOfContentPages { get => _contentPages.Count; }
+
+        public string SaveDirectory { get; private set; }
+
+        public Dictionary<Layout.Type, Layout> AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
+
+        private PhotoBook() { }
 
         public (ContentPage, ContentPage) GetContentPagesAt(int index)
         {
@@ -121,12 +130,12 @@ namespace PhotoBook.Model
 
         public void LoadPhotoBook()
         {
-            if (!Directory.Exists(SavePath))
+            if (!Directory.Exists(SaveDirectory))
                 throw new Exception("Provided path directory doesn't exist!");
-            if (File.Exists(SavePath))
-                File.Delete(SavePath);
+            if (File.Exists(SaveDirectory))
+                File.Delete(SaveDirectory);
 
-            var photoBookSaveFile = File.ReadAllLines(SavePath);
+            var photoBookSaveFile = File.ReadAllLines(SaveDirectory);
 
             string currentPage = "";
             Stack<string> currentProperty = new Stack<string>();
@@ -338,8 +347,8 @@ namespace PhotoBook.Model
 
             // Saving photoBookData
 
-            if (!File.Exists(SavePath))
-                File.Delete(SavePath);
+            if (!File.Exists(SaveDirectory))
+                File.Delete(SaveDirectory);
 
             StringBuilder jsonContent = new StringBuilder();
             var lvl = 0;
@@ -509,7 +518,7 @@ namespace PhotoBook.Model
 
             jsonContent.AppendLine("}");
 
-            File.WriteAllText(SavePath, jsonContent.ToString());
+            File.WriteAllText(SaveDirectory, jsonContent.ToString());
         }
     }
 }
