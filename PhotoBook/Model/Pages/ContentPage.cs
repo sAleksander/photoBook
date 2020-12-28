@@ -8,10 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Image = PhotoBook.Model.Graphics.Image;
+using PhotoBook.Model.Serialization;
+using PhotoBook.Model.Backgrounds;
 
 namespace PhotoBook.Model.Pages
 {
-    public class ContentPage : Page
+    public class ContentPage : Page, SerializeInterface<ContentPage>
     {
         // TOOD: Should layout be required for creating a ContentPage?
         public ContentPage()
@@ -118,6 +120,46 @@ namespace PhotoBook.Model.Pages
                     (int)(scaleY * image.Height)
                 );
             }
+        }
+
+        public int SerializeObject(Serializer serializer)
+        {
+            string contentPage = $"{Images}:\n";
+
+            foreach (Image image in _images)
+                contentPage += $"-&{image.SerializeObject(serializer)}\n";
+
+            contentPage += $"{Comments}:\n";
+
+            foreach (string comment in _comments)
+                contentPage += $"-\"{comment}\"\n";
+
+            int backgroundID = 0;
+            string resultType = "";
+
+            switch (Background)
+            {
+                case BackgroundColor bgc:
+                    backgroundID = bgc.SerializeObject(serializer);
+                    resultType = "BackgroundColor";
+                    break;
+
+                case BackgroundImage bgi:
+                    backgroundID = bgi.SerializeObject(serializer);
+                    resultType = "BackgroundImage";
+                    break;
+            }
+
+            contentPage += $"Background:&{backgroundID},{resultType}";
+
+            int contentPageID = serializer.AddObject(contentPage);
+
+            return contentPageID;
+        }
+
+        public ContentPage DeserializeObject()
+        {
+            throw new NotImplementedException();
         }
     }
 }

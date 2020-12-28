@@ -8,10 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PhotoBook.Model.Serialization;
 
 namespace PhotoBook.Model
 {
-    public class PhotoBook
+    public class PhotoBook : SerializeInterface<PhotoBook>
     {
         public PhotoBook(string savePath) {
             if (!Directory.Exists(savePath))
@@ -21,7 +22,7 @@ namespace PhotoBook.Model
             Directory.SetCurrentDirectory(savePath);
             LoadPhotoBook();
         }
-        
+
         public string SavePath { get; private set; }
         public static string Font { get; } = "Arial";
 
@@ -155,7 +156,7 @@ namespace PhotoBook.Model
             {
                 if (line.Trim() == "")
                     continue;
-                                
+
                 else
                 {
                     if (line.Contains(":"))
@@ -179,7 +180,7 @@ namespace PhotoBook.Model
                                             break;
                                         case "R":
                                             currentProperty.Push("BackgroundColor");
-                                            R = Convert.ToByte(value);                                            
+                                            R = Convert.ToByte(value);
                                             break;
                                         case "G":
                                             G = Convert.ToByte(value);
@@ -203,7 +204,7 @@ namespace PhotoBook.Model
                                             break;
                                         case "Height":
                                             height = Convert.ToInt32(value);
-                                            tempFrontCover.Background = new BackgroundImage(new Image(path, x, y, width, height));                                            
+                                            tempFrontCover.Background = new BackgroundImage(new Image(path, x, y, width, height));
                                             break;
                                         default:
                                             break;
@@ -216,7 +217,7 @@ namespace PhotoBook.Model
                                             currentProperty.Push("BackgroundImage");
                                             break;
                                         case "Images":
-                                            currentProperty.Push("Images");                                            
+                                            currentProperty.Push("Images");
                                             break;
                                         case "R":
                                             R = Convert.ToByte(value);
@@ -245,9 +246,9 @@ namespace PhotoBook.Model
                                         case "Height":
                                             height = Convert.ToInt32(value);
 
-                                            if (currentProperty.Peek() == "BackgroundImage")                                            
-                                                tempContentPage.Background = new BackgroundImage(new Image(path, x, y, width, height));                                                
-                                            
+                                            if (currentProperty.Peek() == "BackgroundImage")
+                                                tempContentPage.Background = new BackgroundImage(new Image(path, x, y, width, height));
+
                                             currentProperty.Pop();
                                             break;
                                         case "CurrentFilter":
@@ -266,15 +267,15 @@ namespace PhotoBook.Model
                                                 }
 
                                             currentProperty.Pop();
-                                            if (tempImages.Count == layoutImages)                                                
+                                            if (tempImages.Count == layoutImages)
                                                 currentProperty.Pop();
                                             break;
 
                                         case "Comment":
-                                            tempComments.Add(value);                                            
+                                            tempComments.Add(value);
                                             break;
 
-                                        default:    
+                                        default:
                                             if(currentPage == "ContentPages" && currentProperty.Count == 0 && tempComments.Count == layoutImages)
                                             {
                                                 tempContentPages.Add(new ContentPage(tempContentPage, tempImages.ToArray(), tempComments.ToArray()));
@@ -296,7 +297,7 @@ namespace PhotoBook.Model
 
             FrontCover = tempFrontCover;
             _contentPages = tempContentPages;
-            BackCover = tempBackCover;            
+            BackCover = tempBackCover;
         }
 
         public void SavePhotoBook()
@@ -315,11 +316,11 @@ namespace PhotoBook.Model
                     break;
             }
 
-            foreach(ContentPage contentPage in _contentPages)            
-                foreach(Image image in contentPage.Images)                
+            foreach(ContentPage contentPage in _contentPages)
+                foreach(Image image in contentPage.Images)
                     if (!usedImagesPaths.Contains((image.OriginalPath, image.DisplayedPath)))
-                        usedImagesPaths.Add((image.OriginalPath, image.DisplayedPath));                
-            
+                        usedImagesPaths.Add((image.OriginalPath, image.DisplayedPath));
+
             // TODO: In the future combine below two searches into one
             List<string> allOriginalImagesPaths = Directory.GetFiles("OriginalImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
             List<string> allUsedImagesPaths = Directory.GetFiles("UsedImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
@@ -328,7 +329,7 @@ namespace PhotoBook.Model
             var firstPaths = usedImagesPaths.Select(t => t.Item1).ToList();
             var secondPaths = usedImagesPaths.Select(t => t.Item2).ToList();
 
-            for (int i = 0; i <= allOriginalImagesPaths.Count; i++)            
+            for (int i = 0; i <= allOriginalImagesPaths.Count; i++)
                 if (!firstPaths.Contains(allOriginalImagesPaths[i]))
                     File.Delete(allOriginalImagesPaths[i]);
 
@@ -363,7 +364,7 @@ namespace PhotoBook.Model
 
             addIndenting(1);
             jsonContent.AppendLine($"Title : {FrontCover.Title},");
-            
+
 
             switch (FrontCover.Background)
             {
@@ -373,30 +374,30 @@ namespace PhotoBook.Model
 
                     addIndenting();
                     jsonContent.AppendLine($"R : {bgc.R},");
-                    
+
                     addIndenting();
                     jsonContent.AppendLine($"G : {bgc.G},");
 
                     addIndenting();
                     jsonContent.AppendLine($"B : {bgc.B},");
                     break;
-                
+
                 case BackgroundImage bgi:
                     addIndenting(1);
                     jsonContent.AppendLine("BackgroundImage : {");
 
                     addIndenting();
                     jsonContent.AppendLine($"Path : {bgi.Image.OriginalPath},");
-                    
+
                     addIndenting();
                     jsonContent.AppendLine($"X : {bgi.Image.CroppingRectangle.X},");
-                    
+
                     addIndenting();
                     jsonContent.AppendLine($"Y : {bgi.Image.CroppingRectangle.Y},");
-                    
+
                     addIndenting();
                     jsonContent.AppendLine($"Width : {bgi.Image.CroppingRectangle.Width},");
-                    
+
                     addIndenting(-1);
                     jsonContent.AppendLine($"Height : {bgi.Image.CroppingRectangle.Height},");
                     break;
@@ -407,11 +408,11 @@ namespace PhotoBook.Model
 
             addIndenting(1);
             jsonContent.AppendLine("\"ContentPages\" : [");
-            
+
             foreach(ContentPage page in _contentPages) {
 
                 addIndenting(1);
-                jsonContent.AppendLine("{");                
+                jsonContent.AppendLine("{");
 
                 switch (page.Background)
                 {
@@ -458,7 +459,7 @@ namespace PhotoBook.Model
                 jsonContent.AppendLine($"\"Layout\" : {page.Layout.Name},");
 
                 addIndenting(1);
-                jsonContent.AppendLine("\"Images\" : [");                
+                jsonContent.AppendLine("\"Images\" : [");
 
                 foreach(Image image in page.Images)
                 {
@@ -491,7 +492,7 @@ namespace PhotoBook.Model
                 jsonContent.AppendLine("],");
 
                 addIndenting(1);
-                jsonContent.AppendLine("\"Comments\" : [");                
+                jsonContent.AppendLine("\"Comments\" : [");
 
                 foreach(string comment in page.Comments)
                 {
@@ -510,6 +511,35 @@ namespace PhotoBook.Model
             jsonContent.AppendLine("}");
 
             File.WriteAllText(SavePath, jsonContent.ToString());
+        }
+
+        public int SerializeObject(Serializer s)
+        {
+            Serializer serializer = new Serializer();
+
+            string photoBook = $"{nameof(SavePath)}:{SavePath}\n";
+
+            photoBook += $"{nameof(Font)}:{Font}\n";
+
+            photoBook += $"{nameof(FrontCover)}:{FrontCover.SerializeObject(serializer)}\n";
+
+            photoBook += $"{nameof(_contentPages)}:\n";
+
+            foreach (ContentPage content_page in _contentPages)
+                photoBook += $"-&{content_page.SerializeObject(serializer)}\n";
+
+            photoBook += $"{nameof(BackCover)}:{BackCover.SerializeObject(serializer)}\n";
+
+            // Below code is unnecessary
+
+            int photoBookID = serializer.AddObject(photoBook);
+
+            return photoBookID;
+        }
+
+        public PhotoBook DeserializeObject()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using PhotoBook.Model.Arrangement;
 using System.Drawing;
 using Rectangle = PhotoBook.Model.Arrangement.Rectangle;
+using PhotoBook.Model.Serialization;
 using System.IO;
 
 namespace PhotoBook.Model.Graphics
 {
-    public class Image
+    public class Image : SerializeInterface<Image>
     {
         public Image(string path, int x, int y, int width, int height)
         {
@@ -89,6 +90,16 @@ namespace PhotoBook.Model.Graphics
                 File.Delete(DisplayedPath);
 
             editedBitmap.Save(DisplayedPath);
+        }
+
+        public int SerializeObject(Serializer serializer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Image DeserializeObject()
+        {
+            throw new NotImplementedException();
         }
     }
 }
