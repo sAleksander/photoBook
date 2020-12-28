@@ -19,7 +19,7 @@
                 <MenuItem Header="Utwórz nową"/>
                 <MenuItem Header="Otwórz istniejącą"/>
                 <MenuItem Header="Zapisz"/>
-                <MenuItem Header="Wyjdź"/>
+                <MenuItem Header="Wyjdź" Command="{Binding Exit}"/>
             </MenuItem>
         </Menu>   
         
@@ -99,7 +99,8 @@
                             Margin="20"
                             BorderThickness="0" 
                             Foreground="White"
-                            HorizontalAlignment="Right">
+                            HorizontalAlignment="Right"
+                            Command="{Binding DeletePages}">
                         <StackPanel>
                             <Image Name="imageDelete"
                                    Source="Images/delete.png" 
@@ -116,7 +117,8 @@
                             Margin="20"
                             BorderThickness="0" 
                             Foreground="White"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Left"
+                            Command="{Binding InsertPages}">
                         <StackPanel>
                             <Image Name="imageAdd"
                                    Source="Images/add.png" 

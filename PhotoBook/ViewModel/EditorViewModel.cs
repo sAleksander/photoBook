@@ -41,7 +41,7 @@ namespace PhotoBook.ViewModel
             this.locator = locator;
             bookViewModel = new BookViewModel(model);
 
-            NotifyNestedViewModels();
+            UpdateView();
 
         }
 
@@ -69,7 +69,7 @@ namespace PhotoBook.ViewModel
                 case PageType.BackCover: return;
             }
 
-            NotifyNestedViewModels();
+            UpdateView();
         });
 
         public RelayCommand PreviousPage => new RelayCommand(() =>
@@ -96,11 +96,51 @@ namespace PhotoBook.ViewModel
                     break;
             }
 
-            NotifyNestedViewModels();
+            UpdateView();
         });
 
-        private void NotifyNestedViewModels()
+        private RelayCommand deletePages;
+        public RelayCommand DeletePages
         {
+            get
+            {
+                return deletePages ?? (deletePages = new RelayCommand(
+                    () =>
+                    {
+                        model.DeletePages(currentContentPageIndex);
+
+                        if (model.NumOfContentPages == 0)
+                        {
+                            currentPageType = PageType.FrontCover;
+                            currentContentPageIndex = 0;
+                        }
+
+                        UpdateView();
+                    },
+                    () => currentPageType == PageType.Content));
+            }
+        }
+
+        private RelayCommand insertPages;
+        public RelayCommand InsertPages
+        {
+            get
+            {
+                return insertPages ?? (insertPages = new RelayCommand(
+                    () =>
+                    {
+                        model.CreateNewPages(currentContentPageIndex);
+                        UpdateView();
+                    },
+                    () => currentPageType != PageType.BackCover));
+            }
+        }
+
+        private void UpdateView()
+        {
+            DeletePages.RaiseCanExecuteChanged();
+            InsertPages.RaiseCanExecuteChanged();
+
             switch (currentPageType)
             {
                 case PageType.FrontCover:
