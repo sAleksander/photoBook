@@ -26,8 +26,6 @@ namespace PhotoBook.Model.Graphics
             System.IO.FileAttributes attr = File.GetAttributes(path);
             var extension = Path.GetExtension(path);
 
-            // TODO: Handle situations in which two files would have the same names
-
             if (attr.HasFlag(FileAttributes.Directory))
                 throw new Exception("Correct image path was not provided");
             if (extension != ".jpg" && extension != ".png")
