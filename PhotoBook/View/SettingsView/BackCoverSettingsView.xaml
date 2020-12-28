@@ -16,6 +16,7 @@
                     HorizontalContentAlignment="Left"
                     BorderBrush="White" 
                     Background="Transparent"
+                    Command="{Binding ExportToPdf}"
                     FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
                     Height="50">
             <Button.Resources>
@@ -31,6 +32,7 @@
                     BorderBrush="White" 
                     Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
                     Background="Transparent" 
+                    Command="{Binding ExportToHtml}"
                     Height="50"
                     Margin="0,1,0,1"/>
         <Button Name="btnDocs"
