@@ -1,5 +1,6 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using PhotoBook.ViewModel.Settings;
 
 namespace PhotoBook.ViewModel
 {
@@ -43,11 +44,14 @@ namespace PhotoBook.ViewModel
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public EditorViewModel Editor => ServiceLocator.Current.GetInstance<EditorViewModel>();
 
-        public FrontCoverSettingsViewModel FrontCoverSettings => ServiceLocator.Current.GetInstance<FrontCoverSettingsViewModel>();
-        public BackCoverSettingsViewModel BackCoverSettings => ServiceLocator.Current.GetInstance<BackCoverSettingsViewModel>();
-        public PagesSettingsViewModel PagesSettings => ServiceLocator.Current.GetInstance<PagesSettingsViewModel>();
+        public FrontCoverSettingsViewModel FrontCoverSettings => (FrontCoverSettingsViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().SettingsViewModel;
+        public BackCoverSettingsViewModel BackCoverSettings => (BackCoverSettingsViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().SettingsViewModel;
+        public PagesSettingsViewModel PagesSettings => (PagesSettingsViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().SettingsViewModel;
 
-        public BookViewModel Book => ServiceLocator.Current.GetInstance<BookViewModel>();
+        public BookViewModel Book => ServiceLocator.Current.GetInstance<EditorViewModel>().BookViewModel;
 
         public static void Cleanup()
         {

@@ -49,12 +49,25 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Common.5.0.0\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -76,6 +89,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Exporters\ToHtml.cs" />
+    <Compile Include="Model\Exporters\ToPdf.cs" />
     <Compile Include="Model\Graphics\Filter.cs" />
     <Compile Include="Model\Graphics\Image.cs" />
     <Compile Include="Model\Backgrounds\Background.cs" />
@@ -88,24 +103,37 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\BackCoverSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\BackCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\FrontCoverSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\FrontCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Navigator.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\PagesSettingsViewModel.cs" />
-    <Compile Include="ViewModel\SettingsViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\ImageViewModel.cs" />
+    <Compile Include="ViewModel\Settings\PagesSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\BookView.xaml.cs">
       <DependentUpon>BookView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhotoBookPages\BackPage.xaml.cs">
+      <DependentUpon>BackPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhotoBookPages\FrontPage.xaml.cs">
+      <DependentUpon>FrontPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PhotoBookPages\MiddlePages.xaml.cs">
+      <DependentUpon>MiddlePages.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingsView\BackCoverSettingsView.xaml.cs">
       <DependentUpon>BackCoverSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView\ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SettingsView\FrontCoverSettingsView.xaml.cs">
       <DependentUpon>FrontCoverSettingsView.xaml</DependentUpon>
@@ -115,6 +143,9 @@
     </Compile>
     <Compile Include="View\SettingsView\PagesSettingsView.xaml.cs">
       <DependentUpon>PagesSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView\PhotoOptions.xaml.cs">
+      <DependentUpon>PhotoOptions.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -132,11 +163,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\PhotoBookPages\BackPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhotoBookPages\FrontPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PhotoBookPages\MiddlePages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\SettingsView\BackCoverSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView\ColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -149,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SettingsView\PagesSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView\PhotoOptions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -179,6 +230,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\logoBlack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\logoWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\arrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\Motyw1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Images\Motyw2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

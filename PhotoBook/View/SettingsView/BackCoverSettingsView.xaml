@@ -6,10 +6,49 @@
       xmlns:local="clr-namespace:PhotoBook.View"
       DataContext="{Binding Source={StaticResource Locator}, Path=BackCoverSettings}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="BackCoverSettingsView">
+      d:DesignHeight="450" d:DesignWidth="500"
+      Title="BackCoverSettingsView" SizeChanged="PageSizeChange">
 
-    <Grid>
-        <Label Content="BackCoverSettings"/>
-    </Grid>
+    <StackPanel CanVerticallyScroll="True">
+        <Button Name="btnPdf"
+                    Content="Eksportuj do PDF" 
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Background="Transparent"
+                    Command="{Binding ExportToPdf}"
+                    FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
+                    Height="50">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Name="btnHtml"
+                    Content="Eksportuj do HTML"
+                    VerticalAlignment="Top" 
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
+                    Background="Transparent" 
+                    Command="{Binding ExportToHtml}"
+                    Height="50"
+                    Margin="0,1,0,1"/>
+        <Button Name="btnDocs"
+                    Content="Eksportuj do DOCS" 
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    BorderBrush="White" 
+                    Background="Transparent" 
+                    Foreground="White" FontFamily="Segoe UI Light" FontSize="25px"
+                    Height="50"
+                    Margin="0,1,0,1">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </StackPanel>
 </Page>

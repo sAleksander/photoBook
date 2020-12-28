@@ -10,6 +10,8 @@
       Title="BookView">
 
     <Grid>
-        <Label Content="Ładna strona"/>
+        <Viewbox>
+            <Canvas Name="BookCanvas"/>
+        </Viewbox>
     </Grid>
 </Page>

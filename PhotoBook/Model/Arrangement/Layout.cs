@@ -46,7 +46,7 @@ namespace PhotoBook.Model.Arrangement
         #region Mockup
         static Layout()
         {
-            CommentFontSize = 15;
+            CommentFontSize = 32;
             CommentOffsetInPixels = 50;
         }
         #endregion

@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PhotoBook"
              xmlns:viewModel="clr-namespace:PhotoBook.ViewModel"
+             xmlns:viewModelSettings="clr-namespace:PhotoBook.ViewModel.Settings"
              xmlns:view="clr-namespace:PhotoBook.View"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <viewModel:ViewModelLocator x:Key="Locator"/>
+
 
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:HomeView/>
@@ -14,19 +16,20 @@
         <DataTemplate DataType="{x:Type viewModel:EditorViewModel}">
             <view:EditorView/>
         </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type viewModel:FrontCoverSettingsViewModel}">
+
+        <DataTemplate DataType="{x:Type viewModelSettings:FrontCoverSettingsViewModel}">
             <view:FrontCoverSettingsView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:BackCoverSettingsViewModel}">
+        <DataTemplate DataType="{x:Type viewModelSettings:BackCoverSettingsViewModel}">
             <view:BackCoverSettingsView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:PagesSettingsViewModel}">
+        <DataTemplate DataType="{x:Type viewModelSettings:PagesSettingsViewModel}">
             <view:PagesSettingsView/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModel:BookViewModel}">
             <view:BookView/>
         </DataTemplate>
+        
     </Application.Resources>
 </Application>

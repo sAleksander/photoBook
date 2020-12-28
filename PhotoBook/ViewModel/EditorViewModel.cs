@@ -1,16 +1,29 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System;
+using PhotoBook.Model.Exporters;
+using PhotoBook.ViewModel.Settings;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Page = PhotoBook.Model.Pages.Page;
+using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
 namespace PhotoBook.ViewModel
 {
+    public enum PageType
+    {
+        FrontCover,
+        Content,
+        BackCover
+    }
+
     public class EditorViewModel : ViewModelBase
     {
-        private BookViewModel bookViewModel = new BookViewModel();
+        private PhotoBookModel model = new PhotoBookModel();
+
+        private int currentContentPageIndex = 0;
+        private PageType currentPageType = PageType.FrontCover;
+
+        // Nested view models
+        private BookViewModel bookViewModel;
         public BookViewModel BookViewModel
         {
             get => bookViewModel;
@@ -24,24 +37,117 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(SettingsViewModel), ref settingsViewModel, value);
         }
 
+        public EditorViewModel()
+        {
+            bookViewModel = new BookViewModel(model);
+
+            NotifyNestedViewModels();
+
+        }
+
+        public RelayCommand NextPage => new RelayCommand(() =>
+        {
+            switch (currentPageType)
+            {
+                case PageType.FrontCover:
+                    if (model.NumOfContentPages == 0)
+                    {
+                        currentPageType = PageType.BackCover;
+                    }
+                    else
+                    {
+                        currentPageType = PageType.Content;
+                        currentContentPageIndex = 0;
+                    }
+                    break;
+                case PageType.Content:
+                    if (currentContentPageIndex + 2 < model.NumOfContentPages)
+                        currentContentPageIndex += 2;
+                    else
+                        currentPageType = PageType.BackCover;
+                    break;
+                case PageType.BackCover: return;
+            }
+
+            NotifyNestedViewModels();
+        });
+
+        public RelayCommand PreviousPage => new RelayCommand(() =>
+        {
+            switch (currentPageType)
+            {
+                case PageType.FrontCover: return;
+                case PageType.Content:
+                    if (currentContentPageIndex - 2 >= 0)
+                        currentContentPageIndex -= 2;
+                    else
+                        currentPageType = PageType.FrontCover;
+                    break;
+                case PageType.BackCover:
+                    if (model.NumOfContentPages == 0)
+                    {
+                        currentPageType = PageType.FrontCover;
+                    }
+                    else
+                    {
+                        currentPageType = PageType.Content;
+                        currentContentPageIndex = model.NumOfContentPages - 2;
+                    }
+                    break;
+            }
+
+            NotifyNestedViewModels();
+        });
+
+        private void NotifyNestedViewModels()
+        {
+            switch (currentPageType)
+            {
+                case PageType.FrontCover:
+                    bookViewModel.SetPages(currentPageType, new Page[]
+                    {
+                        model.FrontCover
+                    });
+                    SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
+                    break;
+                case PageType.Content:
+                    var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
+                    bookViewModel.SetPages(currentPageType, new Page[]
+                    {
+                        leftPage, rightPage
+                    });
+                    SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
+                    break;
+                case PageType.BackCover:
+                    bookViewModel.SetPages(currentPageType, new Page[]
+                    {
+                        model.BackCover
+                    });
+                    SettingsViewModel = new BackCoverSettingsViewModel(model);
+                    break;
+            }
+        }
+
         public RelayCommand Exit => new RelayCommand(() =>
         {
             MainViewModel.Navigator.ChangeCurrentVM<HomeViewModel>();
         });
 
+        // Debug commands
         public RelayCommand ShowFrontCoverSettings => new RelayCommand(() =>
         {
-            SettingsViewModel = new FrontCoverSettingsViewModel();
+            SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
         });
 
         public RelayCommand ShowBackCoverSettings => new RelayCommand(() =>
         {
-            SettingsViewModel = new BackCoverSettingsViewModel();
+            SettingsViewModel = new BackCoverSettingsViewModel(model);
         });
 
         public RelayCommand ShowPagesSettings => new RelayCommand(() =>
         {
-            SettingsViewModel = new PagesSettingsViewModel();
+            var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
+            SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
         });
     }
 }

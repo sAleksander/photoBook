@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PhotoBook.Model
 {
@@ -56,15 +55,19 @@ namespace PhotoBook.Model
                 contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
                 contentPage.Background = new Backgrounds.BackgroundColor(83, 83, 66);
 
-                for (int j = 0; j < 2; j++)
-                {
-                    var image = contentPage.LoadImage(j, "placeholder_cropped.png");
-                    image.CroppingRectangle = new Rectangle(
-                        0, 0, image.Width, image.Height
-                    );
+                var image = contentPage.LoadImage(0, Path.GetFullPath("placeholder_cropped.png"));
+                image.CroppingRectangle = new Rectangle(
+                    0, 0, 600, 575
+                );
 
-                    contentPage.SetComment(j, $"Obrazek {j}");
-                }
+                contentPage.SetComment(0, $"Obrazek 1");
+
+                var image2 = contentPage.LoadImage(1, Path.GetFullPath("placeholder_original.png"));
+                image2.CroppingRectangle = new Rectangle(
+                    203, 115, 697, 668
+                );
+
+                contentPage.SetComment(1, $"Obrazek 2");
 
                 photoBook._contentPages.Add(contentPage);
             }
