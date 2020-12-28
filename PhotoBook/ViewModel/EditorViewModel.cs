@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Exporters;
 using PhotoBook.ViewModel.Settings;
+using System.Collections.Generic;
 using Page = PhotoBook.Model.Pages.Page;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
@@ -41,10 +42,88 @@ namespace PhotoBook.ViewModel
             bookViewModel = new BookViewModel(model);
 
             NotifyNestedViewModels();
+
+        }
+
+        private string fileNameExporter(string path)
+        {
+            string[] tmp = path.Split('\\');
+            return tmp[tmp.Length - 1];
         }
 
         // Page related commands
-        public RelayCommand ExportToHtml => new RelayCommand(() => {
+
+        public RelayCommand ExportToPdf => new RelayCommand(() =>
+        {
+
+            ToPdf ob = new ToPdf();
+
+            switch (model.FrontCover.Background)
+            {
+                case Model.Backgrounds.BackgroundColor bgColor:
+                    ob.CreateFrontCover(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B), model.FrontCover.Title);
+                    break;
+                case Model.Backgrounds.BackgroundImage bgImage:
+                    ob.CreateFrontCover(ToHtml.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)), model.FrontCover.Title);
+                    break;
+            }
+
+            for (int i = 0; i < model.NumOfContentPages; i++)
+            {
+                List<string> photos = new List<string>();
+                List<string> descriptions = new List<string>();
+
+                for (int j = 0; j < model.GetContentPagesAt(i).Item1.Layout.NumOfImages; j++)
+                {
+                    photos.Add(fileNameExporter(model.GetContentPagesAt(i).Item1.GetImage(j).DisplayedPath));
+                    descriptions.Add(model.GetContentPagesAt(i).Item1.GetComment(j));
+                }
+
+                switch (model.GetContentPagesAt(i).Item1.Background)
+                {
+                    case Model.Backgrounds.BackgroundColor bgColor:
+                        ob.CreatePage(photos, descriptions, ToPdf.CssBackground(bgColor.R, bgColor.G, bgColor.B));
+                        break;
+                    case Model.Backgrounds.BackgroundImage bgImage:
+                        ob.CreatePage(photos, descriptions, ToPdf.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
+                        break;
+                }
+
+                photos = new List<string>();
+                descriptions = new List<string>();
+
+                for (int j = 0; j < model.GetContentPagesAt(i).Item2.Layout.NumOfImages; j++)
+                {
+                    photos.Add(fileNameExporter(model.GetContentPagesAt(i).Item2.GetImage(j).DisplayedPath));
+                    descriptions.Add(model.GetContentPagesAt(i).Item2.GetComment(j));
+                }
+
+                switch (model.GetContentPagesAt(i).Item2.Background)
+                {
+                    case Model.Backgrounds.BackgroundColor bgColor:
+                        ob.CreatePage(photos, descriptions, ToPdf.CssBackground(bgColor.R, bgColor.G, bgColor.B));
+                        break;
+                    case Model.Backgrounds.BackgroundImage bgImage:
+                        ob.CreatePage(photos, descriptions, ToPdf.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
+                        break;
+                }
+            }
+
+            switch (model.BackCover.Background)
+            {
+                case Model.Backgrounds.BackgroundColor bgColor:
+                    ob.CreateBackCover(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B));
+                    break;
+                case Model.Backgrounds.BackgroundImage bgImage:
+                    ob.CreateBackCover(ToHtml.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
+                    break;
+            }
+
+            ob.GeneratePdf();
+        });
+
+        public RelayCommand ExportToHtml => new RelayCommand(() =>
+        {
             ToHtml ob = new ToHtml(model.NumOfContentPages);
 
             string fileNameExporter(string path)
