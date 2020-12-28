@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PhotoBook.Model.Arrangement;
 using System.Drawing;
 using Rectangle = PhotoBook.Model.Arrangement.Rectangle;
 using System.IO;
@@ -12,49 +7,6 @@ namespace PhotoBook.Model.Graphics
 {
     public class Image
     {
-        public Image(string path, int x, int y, int width, int height)
-        {
-            System.IO.FileAttributes attr = File.GetAttributes(OriginalPath);
-
-            // TODO: Handle situations in which two files would have the same names
-
-            if (attr.HasFlag(FileAttributes.Directory))
-                throw new Exception("Correct image path was not provided");
-            if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
-
-                throw new Exception("File/image with wrong exception provided");
-
-            OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
-            originalBitmap = new Bitmap(path);
-
-            if (!Directory.Exists("\\OriginalImages"))
-                Directory.CreateDirectory("OriginalImages");
-
-            if (!File.Exists($"\\OriginalImages\\{Path.GetFileName(path)}"))
-                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
-
-            CroppingRectangle = new Rectangle(x, y, width, height);
-
-            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(x, y, width, height);
-            System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
-            editedBitmap = originalBitmap.Clone(rectangle, format);
-
-            if (!Directory.Exists("\\UsedImages"))
-                Directory.CreateDirectory("UsedImages");
-
-            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))
-                editedBitmap.Save($"\\UsedImages\\{Path.GetFileName(path)}");
-
-            DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
-
-            Width = originalBitmap.Width;
-            Height = originalBitmap.Height;
-
-            CurrentFilter = new Filter();
-        }
-
-        public Image(string path) : this(path, 0, 0, 0, 0) { }
-
         public Bitmap originalBitmap { get; }
         public Bitmap editedBitmap { get; private set; }
 
@@ -64,11 +16,59 @@ namespace PhotoBook.Model.Graphics
         public string DisplayedPath { get; }
         public string DisplayedAbsolutePath { get => Path.GetFullPath(DisplayedPath); }
 
-        // TODO: Think even more whether the width & height will be necessary (due to the use of bitmap)
-        public int Width { get; } // TODO: Think whether it will even be required
-        public int Height { get; } // TODO: Think whether it will even be required
+        public int Width { get; }
+        public int Height { get; }
 
         public Filter CurrentFilter { get; private set; } = new Filter();
+
+        public Image(string path, int x, int y, int width, int height)
+        {
+            System.IO.FileAttributes attr = File.GetAttributes(path);
+            var extension = Path.GetExtension(path);
+
+            // TODO: Handle situations in which two files would have the same names
+
+            if (attr.HasFlag(FileAttributes.Directory))
+                throw new Exception("Correct image path was not provided");
+            if (extension != ".jpg" && extension != ".png")
+                throw new Exception("File/image with wrong exception provided");
+
+
+            var randomFilename = GenerateRandomFilename(extension);
+            var destinationFilename = $"OriginalImages\\{randomFilename}";
+
+            while (File.Exists(destinationFilename))
+            {
+                randomFilename = GenerateRandomFilename(extension);
+                destinationFilename = $"OriginalImages\\{randomFilename}";
+            }
+
+
+            Directory.CreateDirectory("OriginalImages");
+            File.Copy(path, destinationFilename, false);
+
+            OriginalPath = destinationFilename;
+            originalBitmap = new Bitmap(path);
+
+
+            CroppingRectangle = new Rectangle(x, y, width, height);
+            CropBitmap();
+
+            var editedDestinationFilename = $"UsedImages\\{randomFilename}";
+
+            Directory.CreateDirectory("UsedImages");
+            editedBitmap.Save(editedDestinationFilename);
+            DisplayedPath = editedDestinationFilename;
+
+
+            Width = originalBitmap.Width;
+            Height = originalBitmap.Height;
+
+            CurrentFilter = new Filter();
+        }
+
+        public Image(string path) : this(path, 0, 0, 0, 0) { }
+
         public void SetFilter(Filter.Type filterType)
         {
             #region Mockup
@@ -91,6 +91,30 @@ namespace PhotoBook.Model.Graphics
                 File.Delete(DisplayedPath);
 
             editedBitmap.Save(DisplayedPath);
+        }
+
+        private static Random random = new Random();
+        private string GenerateRandomFilename(string extension)
+        {
+            var availableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var chars = new char[8];
+
+            for (int i = 0; i < chars.Length; i++)
+            {
+                chars[i] = availableChars[random.Next(availableChars.Length)];
+            }
+
+            return new string(chars) + extension;
+        }
+
+        private void CropBitmap()
+        {
+            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(
+                CroppingRectangle.X, CroppingRectangle.Y,
+                CroppingRectangle.Width == 0 ? originalBitmap.Width : CroppingRectangle.Width,
+                CroppingRectangle.Height == 0 ? originalBitmap.Height : CroppingRectangle.Height);
+            System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
+            editedBitmap = originalBitmap.Clone(rectangle, format);
         }
     }
 }

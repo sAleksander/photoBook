@@ -34,10 +34,16 @@ namespace PhotoBook.Model
 
         public static PhotoBook CreateMockup()
         {
-            PhotoBook photoBook = new PhotoBook();
+            if (Directory.Exists("mockup_project"))
+            {
+                Directory.Delete("mockup_project", true);
+            }
 
-            if (!Directory.Exists("\\Images"))
-                Directory.CreateDirectory("Images");
+            Directory.CreateDirectory("mockup_project");
+            Directory.SetCurrentDirectory("mockup_project");
+
+            PhotoBook photoBook = new PhotoBook();
+            photoBook.SaveDirectory = Path.GetFullPath(Directory.GetCurrentDirectory());
 
             photoBook.FrontCover = new Pages.FrontCover();
             photoBook.FrontCover.Title = "Moja fotoksiążka";
@@ -55,14 +61,14 @@ namespace PhotoBook.Model
                 contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
                 contentPage.Background = new Backgrounds.BackgroundColor(83, 83, 66);
 
-                var image = contentPage.LoadImage(0, Path.GetFullPath("placeholder_cropped.png"));
+                var image = contentPage.LoadImage(0, @"..\placeholder_cropped.png");
                 image.CroppingRectangle = new Rectangle(
                     0, 0, 600, 575
                 );
 
                 contentPage.SetComment(0, $"Obrazek 1");
 
-                var image2 = contentPage.LoadImage(1, Path.GetFullPath("placeholder_original.png"));
+                var image2 = contentPage.LoadImage(1, @"..\placeholder_original.png");
                 image2.CroppingRectangle = new Rectangle(
                     203, 115, 697, 668
                 );

@@ -1,8 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using PhotoBook.Model.Exporters;
 using PhotoBook.ViewModel.Settings;
-using System.Collections.Generic;
 using Page = PhotoBook.Model.Pages.Page;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
@@ -17,7 +15,7 @@ namespace PhotoBook.ViewModel
 
     public class EditorViewModel : ViewModelBase
     {
-        private PhotoBookModel model = new PhotoBookModel();
+        private PhotoBookModel model = PhotoBookModel.CreateMockup();
 
         private int currentContentPageIndex = 0;
         private PageType currentPageType = PageType.FrontCover;
