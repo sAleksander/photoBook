@@ -1,4 +1,5 @@
 using CommonServiceLocator;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using PhotoBook.ViewModel.Settings;
 
@@ -42,6 +43,12 @@ namespace PhotoBook.ViewModel
             // Used to pass ViewModelLocator to view models so that they can navigate
             // to other VMs.
             SimpleIoc.Default.Register(() => this);
+        }
+
+        public void DestroyViewModel<T>() where T : ViewModelBase
+        {
+            SimpleIoc.Default.Unregister<T>();
+            SimpleIoc.Default.Register<T>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();

@@ -171,6 +171,7 @@ namespace PhotoBook.ViewModel
         public RelayCommand Exit => new RelayCommand(() =>
         {
             MainViewModel.Navigator.ChangeCurrentVM(locator.Home);
+            locator.DestroyViewModel<EditorViewModel>();
         });
     }
 }
