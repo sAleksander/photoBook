@@ -124,7 +124,7 @@ namespace PhotoBook.View
                     Width = imgConstraints.Width,
                     Height = imgConstraints.Height,
                     Source = new CroppedBitmap(
-                        new BitmapImage(new Uri(image.DisplayedPath)),
+                        new BitmapImage(new Uri(image.DisplayedAbsolutePath)),
                         new Int32Rect(
                             image.CroppingRectangle.X,
                             image.CroppingRectangle.Y,
