@@ -54,7 +54,7 @@ namespace PhotoBook.Model
 
             photoBook._contentPages = new List<ContentPage>(6);
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 4; i++)
             {
                 ContentPage contentPage = new ContentPage();
 
@@ -66,14 +66,14 @@ namespace PhotoBook.Model
                     0, 0, 600, 575
                 );
 
-                contentPage.SetComment(0, $"Obrazek 1");
+                contentPage.SetComment(0, $"Obrazek {2 * i}");
 
                 var image2 = contentPage.LoadImage(1, @"..\placeholder_original.png");
                 image2.CroppingRectangle = new Rectangle(
                     203, 115, 697, 668
                 );
 
-                contentPage.SetComment(1, $"Obrazek 2");
+                contentPage.SetComment(1, $"Obrazek {2 * i + 1}");
 
                 photoBook._contentPages.Add(contentPage);
             }
