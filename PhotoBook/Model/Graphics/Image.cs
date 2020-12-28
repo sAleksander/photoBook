@@ -60,7 +60,9 @@ namespace PhotoBook.Model.Graphics
 
         public Rectangle CroppingRectangle { get; set; }
         public string OriginalPath { get; }
+        public string OriginalAbsolutePath { get => Path.GetFullPath(OriginalPath); }
         public string DisplayedPath { get; }
+        public string DisplayedAbsolutePath { get => Path.GetFullPath(DisplayedPath); }
 
         // TODO: Think even more whether the width & height will be necessary (due to the use of bitmap)
         public int Width { get; } // TODO: Think whether it will even be required
