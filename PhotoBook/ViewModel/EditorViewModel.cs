@@ -43,6 +43,7 @@ namespace PhotoBook.ViewModel
             NotifyNestedViewModels();
         }
 
+        // Page related commands
         public RelayCommand ExportToHtml => new RelayCommand(() => {
             ToHtml ob = new ToHtml(model.NumOfContentPages);
 
@@ -118,7 +119,6 @@ namespace PhotoBook.ViewModel
             }
         });
 
-        // Page related commands
         public RelayCommand NextPage => new RelayCommand(() =>
         {
             switch (currentPageType)
