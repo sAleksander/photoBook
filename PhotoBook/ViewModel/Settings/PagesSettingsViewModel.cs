@@ -28,6 +28,7 @@ namespace PhotoBook.ViewModel.Settings
             get => selectedPage == leftPage;
             set
             {
+                RaisePropertyChanged(nameof(IsLeftPageChecked));
                 if (value) SelectPage(leftPage);
             }
         }
@@ -37,6 +38,7 @@ namespace PhotoBook.ViewModel.Settings
             get => selectedPage == rightPage;
             set
             {
+                RaisePropertyChanged(nameof(IsRightPageChecked));
                 if (value) SelectPage(rightPage);
             }
         }
