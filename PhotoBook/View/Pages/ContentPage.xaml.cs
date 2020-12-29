@@ -22,7 +22,7 @@ namespace PhotoBook.View.Pages
     /// <summary>
     /// Interaction logic for ContentPage.xaml
     /// </summary>
-    public partial class ContentPage : Page
+    public partial class ContentPage : UserControl
     {
         private PagesViewModel viewModel;
 

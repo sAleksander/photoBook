@@ -18,7 +18,7 @@ namespace PhotoBook.View
     /// <summary>
     /// Interaction logic for BackCoverSettingsView.xaml
     /// </summary>
-    public partial class BackCoverSettingsView : Page
+    public partial class BackCoverSettingsView : UserControl
     {
         public BackCoverSettingsView()
         {

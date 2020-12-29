@@ -23,14 +23,14 @@ namespace PhotoBook.ViewModel.Pages
             FrontCover.PropertyChanged += OnFrontCoverPropertyChanged;
         }
 
-        ~FrontCoverViewModel()
-        {
-            FrontCover.PropertyChanged -= OnFrontCoverPropertyChanged;
-        }
-
         public void OnFrontCoverPropertyChanged(object s, PropertyChangedEventArgs args)
         {
             RaisePropertyChanged(args.PropertyName);
+        }
+
+        public override void UnregisterEventHandlers()
+        {
+            FrontCover.PropertyChanged -= OnFrontCoverPropertyChanged;
         }
     }
 }

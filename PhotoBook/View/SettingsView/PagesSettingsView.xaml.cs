@@ -18,7 +18,7 @@ namespace PhotoBook.View
     /// <summary>
     /// Interaction logic for PagesSettingsView.xaml
     /// </summary>
-    public partial class PagesSettingsView : Page
+    public partial class PagesSettingsView : UserControl
     {
         public PagesSettingsView()
         {

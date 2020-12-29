@@ -151,6 +151,9 @@
     <Compile Include="View\SettingsView\PhotoOptions.xaml.cs">
       <DependentUpon>PhotoOptions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewModelViewer.xaml.cs">
+      <DependentUpon>ViewModelViewer.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -204,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SettingsView\PhotoOptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewModelViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -28,7 +28,11 @@ namespace PhotoBook.ViewModel
         public BookViewModel BookViewModel
         {
             get => bookViewModel;
-            set => Set(nameof(BookViewModel), ref bookViewModel, value);
+            set
+            {
+                bookViewModel?.UnregisterEventHandlers();
+                Set(nameof(BookViewModel), ref bookViewModel, value);
+            }
         }
 
         private SettingsViewModel settingsViewModel;
@@ -173,28 +177,8 @@ namespace PhotoBook.ViewModel
             var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
             var contentPages = new Model.Pages.ContentPage[] { leftPage, rightPage };
 
-            // TODO: This is a really stupid fix for view not updating
-            //       its Content property when SettingsViewModel/BookViewModel
-            //       of the same type changes. Is there a better way to do it?
-            switch (SettingsViewModel)
-            {
-                case PagesSettingsViewModel pagesSettings:
-                    pagesSettings.ResetPages(leftPage, rightPage);
-                    break;
-                default:
-                    SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
-                    break;
-            }
-
-            switch (bookViewModel)
-            {
-                case PagesViewModel pagesVM:
-                    pagesVM.ResetPages(contentPages);
-                    break;
-                default:
-                    BookViewModel = new PagesViewModel(contentPages);
-                    break;
-            }
+            SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
+            BookViewModel = new PagesViewModel(contentPages);
         }
 
         private void CreateBackCoverViewModels()

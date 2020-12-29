@@ -18,7 +18,7 @@ namespace PhotoBook.View
     /// <summary>
     /// Interaction logic for FrontCoverSettingsView.xaml
     /// </summary>
-    public partial class FrontCoverSettingsView : Page
+    public partial class FrontCoverSettingsView : UserControl
     {
         public FrontCoverSettingsView()
         {

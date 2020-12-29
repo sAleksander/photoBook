@@ -22,7 +22,7 @@ namespace PhotoBook.View.Pages
     /// <summary>
     /// Interaction logic for FrontCover.xaml
     /// </summary>
-    public partial class FrontCover : Page
+    public partial class FrontCover : UserControl
     {
         private FrontCoverViewModel viewModel;
 
