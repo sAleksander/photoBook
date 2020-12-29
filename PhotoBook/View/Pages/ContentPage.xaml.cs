@@ -28,6 +28,8 @@ namespace PhotoBook.View.Pages
 
         private Canvas canvas;
 
+        private Rectangle[] backgrounds = new Rectangle[2];
+
         public ContentPage()
         {
             InitializeComponent();
@@ -38,6 +40,14 @@ namespace PhotoBook.View.Pages
             DrawContentPages();
 
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
+            viewModel.BackgroundChanged += OnViewModelBaackgroundChanged;
+        }
+
+        private void OnViewModelBaackgroundChanged(int pageIndex)
+        {
+            var fill = backgrounds[pageIndex].Fill as SolidColorBrush;
+            var newColor = viewModel.ContentPages[pageIndex].Background as Model.Backgrounds.BackgroundColor;
+            fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
         }
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -69,6 +79,7 @@ namespace PhotoBook.View.Pages
             var bgRectangle = PageDrawingUtilities.CreateBackgroundRectangle(page.Background);
             Canvas.SetLeft(bgRectangle, leftOffset);
             canvas.Children.Add(bgRectangle);
+            backgrounds[index] = bgRectangle;
 
             var layout = page.Layout;
 

@@ -1,5 +1,5 @@
-﻿using GalaSoft.MvvmLight;
-using PhotoBook.Model.Backgrounds;
+﻿using PhotoBook.Model.Backgrounds;
+using System.ComponentModel;
 
 namespace PhotoBook.ViewModel.Pages
 {
@@ -19,16 +19,18 @@ namespace PhotoBook.ViewModel.Pages
         public FrontCoverViewModel(Model.Pages.FrontCover frontCover)
         {
             FrontCover = frontCover;
+
+            FrontCover.PropertyChanged += OnFrontCoverPropertyChanged;
         }
 
-        public void OnTitleChanged()
+        ~FrontCoverViewModel()
         {
-            RaisePropertyChanged(nameof(Title));
+            FrontCover.PropertyChanged -= OnFrontCoverPropertyChanged;
         }
 
-        public void OnBackgroundChanged()
+        public void OnFrontCoverPropertyChanged(object s, PropertyChangedEventArgs args)
         {
-            RaisePropertyChanged(nameof(Background));
+            RaisePropertyChanged(args.PropertyName);
         }
     }
 }

@@ -11,7 +11,17 @@ namespace PhotoBook.Model.Pages
     {
         // In pixels
         public static int FontSize { get; } = 64;
-        public string Title { get; set; }
+
+        private string title;
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                InvokePropertyChanged(nameof(Title));
+            }
+        }
 
         public override void setBackground(int R = -1, int G = -1, int B = -1, string path = "", int X = -1, int Y =- 1, int Width = -1, int Height = -1)
         {
