@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Pages;
 
 namespace PhotoBook.ViewModel.Settings
@@ -16,6 +17,28 @@ namespace PhotoBook.ViewModel.Settings
             {
                 Set(nameof(Description), ref description, value);
                 page.SetComment(imageIndex, value);
+            }
+        }
+
+        public string ImageFilter { get; } = "Image Files|*.png;*.jpg";
+
+        private string chosenFilePath;
+        public string ChosenFilePath
+        {
+            get => chosenFilePath;
+            set => Set(nameof(ChosenFilePath), ref chosenFilePath, value);
+        }
+
+        private RelayCommand fileChosen;
+        public RelayCommand FileChosen
+        {
+            get
+            {
+                return fileChosen ?? (fileChosen = new RelayCommand(
+                    () =>
+                    {
+                        page.LoadImage(imageIndex, ChosenFilePath);
+                    }));
             }
         }
 

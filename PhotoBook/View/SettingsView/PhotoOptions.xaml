@@ -21,14 +21,13 @@
                     Margin="0,1,0,1"
                 Click="btnPhoto_Click"/>
         <StackPanel Visibility="Visible" Background="Transparent" Name="photoOptionStackPanel">
-            <Button Name="btnAddPhoto"
-                        Content="Dodaj zdjęcie"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0"/>
+            <local:FilePickerButton
+                Margin="40,0,0,0"
+                ButtonContent="Dodaj zdjęcie"
+                Filter="{Binding ImageFilter, Mode=OneWay}"
+                ChosenFile="{Binding ChosenFilePath, Mode=OneWayToSource}"
+                FileChosenCommand="{Binding FileChosen}"
+                />
 
             <!--Add Description-->
             <Button Click="addDescription" 
