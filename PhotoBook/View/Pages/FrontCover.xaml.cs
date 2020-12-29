@@ -29,7 +29,7 @@ namespace PhotoBook.View.Pages
         private Canvas canvas;
 
         private Label titleLabel;
-        
+        private Rectangle backgroundRectangle;
 
         public FrontCover()
         {
@@ -53,6 +53,12 @@ namespace PhotoBook.View.Pages
             {
                 titleLabel.Content = viewModel.Title;
             }
+            else if (args.PropertyName.Equals(nameof(viewModel.Background)))
+            {
+                var fill = backgroundRectangle.Fill as SolidColorBrush;
+                var newColor = viewModel.Background;
+                fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
+            }
         }
 
         private void DrawFrontCover()
@@ -64,9 +70,9 @@ namespace PhotoBook.View.Pages
 
             var frontCover = viewModel.FrontCover;
 
-            canvas.Children.Add(
-                PageDrawingUtilities.CreateBackgroundRectangle(frontCover.Background)
-            );
+            backgroundRectangle = PageDrawingUtilities.CreateBackgroundRectangle(frontCover.Background);
+
+            canvas.Children.Add(backgroundRectangle);
 
             titleLabel = new Label()
             {

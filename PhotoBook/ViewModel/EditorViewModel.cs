@@ -165,6 +165,7 @@ namespace PhotoBook.ViewModel
             var settingsVM = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
 
             settingsVM.TitleChanged += bookVM.OnTitleChanged;
+            settingsVM.BackgroundColorChanged += bookVM.OnBackgroundChanged;
 
             SettingsViewModel = settingsVM;
             BookViewModel = bookVM;

@@ -17,6 +17,8 @@ namespace PhotoBook.ViewModel.Settings
             set => Set(nameof(Title), ref title, value);
         }
 
+        public event Action BackgroundColorChanged;
+
         private BackgroundColor backgroundColor;
         public BackgroundColor BackgroundColor
         {
@@ -25,6 +27,7 @@ namespace PhotoBook.ViewModel.Settings
                 Set(nameof(BackgroundColor), ref backgroundColor, value);
                 frontCover.Background = value;
                 backCover.Background = value;
+                BackgroundColorChanged?.Invoke();
             }
         }
 
@@ -33,7 +36,7 @@ namespace PhotoBook.ViewModel.Settings
         public RelayCommand ApplyTitle => new RelayCommand(() =>
         {
             frontCover.Title = Title;
-            TitleChanged();
+            TitleChanged?.Invoke();
         });
 
         public FrontCoverSettingsViewModel(FrontCover frontCover, BackCover backCover)

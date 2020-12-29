@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using PhotoBook.Model.Backgrounds;
 
 namespace PhotoBook.ViewModel.Pages
 {
@@ -12,6 +13,8 @@ namespace PhotoBook.ViewModel.Pages
         }
 
         public string Title => FrontCover.Title;
+        // TODO: Handle BackgroundImage as well
+        public BackgroundColor Background => FrontCover.Background as BackgroundColor;
 
         public FrontCoverViewModel(Model.Pages.FrontCover frontCover)
         {
@@ -21,6 +24,11 @@ namespace PhotoBook.ViewModel.Pages
         public void OnTitleChanged()
         {
             RaisePropertyChanged(nameof(Title));
+        }
+
+        public void OnBackgroundChanged()
+        {
+            RaisePropertyChanged(nameof(Background));
         }
     }
 }
