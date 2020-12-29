@@ -29,6 +29,8 @@ namespace PhotoBook.View.Pages
         private Canvas canvas;
 
         private Rectangle[] backgrounds = new Rectangle[2];
+        private Image[][] images = new Image[2][];
+        private Label[][] labels = new Label[2][];
 
         public ContentPage()
         {
@@ -41,6 +43,16 @@ namespace PhotoBook.View.Pages
 
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
             viewModel.BackgroundChanged += OnViewModelBaackgroundChanged;
+            viewModel.ImageChanged += OnViewModelImageChanged;
+            viewModel.CommentChanged += OnViewModelCommentChanged;
+        }
+
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName.Equals(nameof(viewModel.ContentPages)))
+            {
+                DrawContentPages();
+            }
         }
 
         private void OnViewModelBaackgroundChanged(int pageIndex)
@@ -50,12 +62,23 @@ namespace PhotoBook.View.Pages
             fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
         }
 
-        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void OnViewModelImageChanged(int pageIndex, int layoutIndex)
         {
-            if (args.PropertyName.Equals(nameof(viewModel.ContentPages)))
-            {
-                DrawContentPages();
-            }
+            canvas.Children.Remove(images[pageIndex][layoutIndex]);
+
+            var page = viewModel.ContentPages[pageIndex];
+
+            var image = page.GetImage(layoutIndex);
+            var imgConstraints = page.Layout.ImageConstraints[layoutIndex];
+            var leftOffset = pageIndex * PhotoBookModel.PageWidthInPixels;
+
+            images[pageIndex][layoutIndex] = DrawImage(image, imgConstraints, leftOffset);
+        }
+
+        private void OnViewModelCommentChanged(int pageIndex, int layoutIndex)
+        {
+            var newComment = viewModel.ContentPages[pageIndex].GetComment(layoutIndex);
+            labels[pageIndex][layoutIndex].Content = newComment;
         }
 
         private void DrawContentPages()
@@ -71,17 +94,19 @@ namespace PhotoBook.View.Pages
             }
         }
 
-        private void DrawContentPage(Model.Pages.ContentPage page, int index)
+        private void DrawContentPage(Model.Pages.ContentPage page, int pageIndex)
         {
-            var leftOffset = index * PhotoBookModel.PageWidthInPixels;
+            var leftOffset = pageIndex * PhotoBookModel.PageWidthInPixels;
 
             // Create background
             var bgRectangle = PageDrawingUtilities.CreateBackgroundRectangle(page.Background);
             Canvas.SetLeft(bgRectangle, leftOffset);
             canvas.Children.Add(bgRectangle);
-            backgrounds[index] = bgRectangle;
+            backgrounds[pageIndex] = bgRectangle;
 
             var layout = page.Layout;
+            images[pageIndex] = new Image[layout.NumOfImages];
+            labels[pageIndex] = new Label[layout.NumOfImages];
 
             for (int imgIndex = 0; imgIndex < layout.NumOfImages; imgIndex++)
             {
@@ -90,14 +115,14 @@ namespace PhotoBook.View.Pages
 
                 if (image != null)
                 {
-                    DrawImage(image, imgConstraints, leftOffset);
+                    images[pageIndex][imgIndex] = DrawImage(image, imgConstraints, leftOffset);
                 }
 
-                DrawImageComment(page.GetComment(imgIndex), imgConstraints, leftOffset);
+                labels[pageIndex][imgIndex] = DrawImageComment(page.GetComment(imgIndex), imgConstraints, leftOffset);
             }
         }
 
-        private void DrawImage(
+        private Image DrawImage(
             PhotoBook.Model.Graphics.Image image,
             PhotoBook.Model.Arrangement.Rectangle imgConstraints,
             int leftOffset)
@@ -121,9 +146,11 @@ namespace PhotoBook.View.Pages
             Canvas.SetTop(wpfImage, imgConstraints.Y);
 
             canvas.Children.Add(wpfImage);
+
+            return wpfImage;
         }
 
-        private void DrawImageComment(
+        private Label DrawImageComment(
             string comment,
             PhotoBook.Model.Arrangement.Rectangle imgConstraints,
             int leftOffset)
@@ -146,6 +173,8 @@ namespace PhotoBook.View.Pages
             Canvas.SetTop(commentLabel, imgBottom + Model.Arrangement.Layout.CommentOffsetInPixels);
 
             canvas.Children.Add(commentLabel);
+
+            return commentLabel;
         }
     }
 }

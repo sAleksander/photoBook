@@ -14,20 +14,11 @@ namespace PhotoBook.Model.Pages
 {
     public class ContentPage : Page
     {
-        // TOOD: Should layout be required for creating a ContentPage?
-        public ContentPage()
-        {
-            Background = new BackgroundColor(83, 83, 66);
-        }
+        public delegate void ImageChangedEventHandler(int layoutIndex);
+        public event ImageChangedEventHandler ImageChanged;
 
-        // TODO: This constructor is used when loading ContentPage from JSON,
-        //       but it doesn't initialize the Layout
-        public ContentPage(ContentPage cPage, Image[] images, string[] comments)
-        {
-            Background = cPage.Background;
-            _images = images;
-            _comments = comments;
-        }
+        public delegate void CommentChangedEventHandler(int layoutIndex);
+        public event CommentChangedEventHandler CommentChanged;
 
         private Layout layout;
         public Layout Layout
@@ -43,8 +34,24 @@ namespace PhotoBook.Model.Pages
 
         private Image[] _images;
         public Image[] Images { get => _images; }
+
         private string[] _comments;
         public string[] Comments { get; private set; }
+
+        // TOOD: Should layout be required for creating a ContentPage?
+        public ContentPage()
+        {
+            Background = new BackgroundColor(83, 83, 66);
+        }
+
+        // TODO: This constructor is used when loading ContentPage from JSON,
+        //       but it doesn't initialize the Layout
+        public ContentPage(ContentPage cPage, Image[] images, string[] comments)
+        {
+            Background = cPage.Background;
+            _images = images;
+            _comments = comments;
+        }
 
         #region Image functionality
         public Image LoadImage(int layoutImageIndex, string imagePath)
@@ -60,6 +67,8 @@ namespace PhotoBook.Model.Pages
             AutoCropImage(newImage, Layout.ImageConstraints[layoutImageIndex]);
 
             _images[layoutImageIndex] = newImage;
+
+            ImageChanged?.Invoke(layoutImageIndex);
 
             return newImage;
         }
@@ -85,7 +94,7 @@ namespace PhotoBook.Model.Pages
 
             _comments[commentIndex] = commentContent;
 
-            // Inform about changes
+            CommentChanged?.Invoke(commentIndex);
         }
 
         public string GetComment(int commentIndex)

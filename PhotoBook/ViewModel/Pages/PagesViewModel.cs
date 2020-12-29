@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using PhotoBook.Model.Pages;
 using System.ComponentModel;
+using static PhotoBook.Model.Pages.ContentPage;
 
 namespace PhotoBook.ViewModel.Pages
 {
@@ -9,12 +10,22 @@ namespace PhotoBook.ViewModel.Pages
         public delegate void BackgroundChangedEventHandler(int pageIndex);
         public event BackgroundChangedEventHandler BackgroundChanged;
 
+        public delegate void PageImageChangedEventHandler(int pageIndex, int layoutIndex);
+        public event PageImageChangedEventHandler ImageChanged;
+
+        public delegate void PageCommentChangedEventHandler(int pageIndex, int layoutIndex);
+        public event PageCommentChangedEventHandler CommentChanged;
+
         private ContentPage[] contentPages;
         public ContentPage[] ContentPages
         {
             get => contentPages;
             private set => Set(nameof(ContentPages), ref contentPages, value);
         }
+
+        private PropertyChangedEventHandler[] pagePropertyChangedHandlers = new PropertyChangedEventHandler[2];
+        private ImageChangedEventHandler[] imageChangedHandlers = new ImageChangedEventHandler[2];
+        private CommentChangedEventHandler[] commentChangedHandlers = new CommentChangedEventHandler[2];
 
         public PagesViewModel(ContentPage[] contentPages)
         {
@@ -32,15 +43,27 @@ namespace PhotoBook.ViewModel.Pages
 
             ContentPages = contentPages;
 
-            ContentPages[0].PropertyChanged += OnLeftPagePropertyChanged;
-            ContentPages[1].PropertyChanged += OnRightPagePropertyChanged;
+            for (int i = 0; i < 2; i++)
+            {
+                var curPageIndex = i;
+
+                pagePropertyChangedHandlers[i] = (s, args) => OnPagePropertyChanged(curPageIndex, args.PropertyName);
+                ContentPages[i].PropertyChanged += pagePropertyChangedHandlers[i];
+
+                imageChangedHandlers[i] = (layoutIndex) => ImageChanged?.Invoke(curPageIndex, layoutIndex);
+                ContentPages[i].ImageChanged += imageChangedHandlers[i];
+
+                commentChangedHandlers[i] = (layoutIndex) => CommentChanged?.Invoke(curPageIndex, layoutIndex);
+                ContentPages[i].CommentChanged += commentChangedHandlers[i];
+            }
+            
         }
 
-        public void OnLeftPagePropertyChanged(object s, PropertyChangedEventArgs args)
+        public void OnPagePropertyChanged(int pageIndex, string propertyName)
         {
-            if (args.PropertyName.Equals(nameof(ContentPage.Background)))
+            if (propertyName.Equals(nameof(ContentPage.Background)))
             {
-                BackgroundChanged?.Invoke(0);
+                BackgroundChanged?.Invoke(pageIndex);
             }
         }
 
@@ -56,8 +79,12 @@ namespace PhotoBook.ViewModel.Pages
         {
             if (contentPages == null) return;
 
-            ContentPages[0].PropertyChanged -= OnLeftPagePropertyChanged;
-            ContentPages[1].PropertyChanged -= OnRightPagePropertyChanged;
+            for (int i = 0; i < 2; i++)
+            {
+                ContentPages[i].PropertyChanged -= pagePropertyChangedHandlers[i];
+                ContentPages[i].ImageChanged -= imageChangedHandlers[i];
+                ContentPages[i].CommentChanged -= commentChangedHandlers[i];
+            }
         }
     }
 }
