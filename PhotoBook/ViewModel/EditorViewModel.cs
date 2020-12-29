@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using PhotoBook.Model.Arrangement;
 using PhotoBook.ViewModel.Settings;
 using Page = PhotoBook.Model.Pages.Page;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
@@ -130,6 +131,9 @@ namespace PhotoBook.ViewModel
                     () =>
                     {
                         model.CreateNewPages(currentContentPageIndex);
+                        var (left, right) = model.GetContentPagesAt(currentContentPageIndex);
+                        left.Layout = model.AvailableLayouts[Layout.Type.TwoPictures];
+                        right.Layout = model.AvailableLayouts[Layout.Type.TwoPictures];
                         UpdateView();
                     },
                     () => currentPageType != PageType.BackCover));

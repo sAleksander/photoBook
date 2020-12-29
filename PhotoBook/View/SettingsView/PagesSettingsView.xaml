@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:PhotoBook.View" xmlns:settingsview="clr-namespace:PhotoBook.View.SettingsView"
       DataContext="{Binding Source={StaticResource Locator}, Path=PagesSettings}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="500"
-      Title="PagesSettingsView">
+      d:DesignHeight="450" d:DesignWidth="500">
 
     <StackPanel CanVerticallyScroll="True">
 

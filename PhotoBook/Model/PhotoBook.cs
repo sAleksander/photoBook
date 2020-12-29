@@ -59,7 +59,6 @@ namespace PhotoBook.Model
                 ContentPage contentPage = new ContentPage();
 
                 contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
-                contentPage.Background = new Backgrounds.BackgroundColor(83, 83, 66);
 
                 var image = contentPage.LoadImage(0, @"..\placeholder_cropped.png");
                 image.CroppingRectangle = new Rectangle(

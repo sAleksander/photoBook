@@ -118,47 +118,64 @@ namespace PhotoBook.View
                 var imgConstraints = layout.ImageConstraints[imgIndex];
                 var image = page.GetImage(imgIndex);
 
-                // Create image
-                var wpfImage = new Image
+                if (image != null)
                 {
-                    Width = imgConstraints.Width,
-                    Height = imgConstraints.Height,
-                    Source = new CroppedBitmap(
-                        new BitmapImage(new Uri(image.DisplayedAbsolutePath)),
-                        new Int32Rect(
-                            image.CroppingRectangle.X,
-                            image.CroppingRectangle.Y,
-                            image.CroppingRectangle.Width,
-                            image.CroppingRectangle.Height
-                        )
-                    )
-                };
+                    DrawImage(image, imgConstraints, leftOffset);
+                }
 
-                Canvas.SetLeft(wpfImage, leftOffset + imgConstraints.X);
-                Canvas.SetTop(wpfImage, imgConstraints.Y);
-
-                canvas.Children.Add(wpfImage);
-
-                // Create comment label
-                var imgBottom = imgConstraints.Y + imgConstraints.Height;
-
-                var commentLabel = new Label()
-                {
-                    Content = page.GetComment(imgIndex),
-                    Width = PhotoBookModel.PageWidthInPixels,
-                    HorizontalContentAlignment = HorizontalAlignment.Center,
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    FontSize = Model.Arrangement.Layout.CommentFontSize,
-
-                    // TODO: Should we hardcode it in the model or let the user change it?
-                    Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
-                };
-
-                Canvas.SetLeft(commentLabel, leftOffset);
-                Canvas.SetTop(commentLabel, imgBottom + Model.Arrangement.Layout.CommentOffsetInPixels);
-
-                canvas.Children.Add(commentLabel);
+                DrawImageComment(page.GetComment(imgIndex), imgConstraints, leftOffset);
             }
+        }
+
+        private void DrawImage(
+            PhotoBook.Model.Graphics.Image image,
+            PhotoBook.Model.Arrangement.Rectangle imgConstraints,
+            int leftOffset)
+        {
+            var wpfImage = new Image
+            {
+                Width = imgConstraints.Width,
+                Height = imgConstraints.Height,
+                Source = new CroppedBitmap(
+                    new BitmapImage(new Uri(image.DisplayedAbsolutePath)),
+                    new Int32Rect(
+                        image.CroppingRectangle.X,
+                        image.CroppingRectangle.Y,
+                        image.CroppingRectangle.Width,
+                        image.CroppingRectangle.Height
+                    )
+                )
+            };
+
+            Canvas.SetLeft(wpfImage, leftOffset + imgConstraints.X);
+            Canvas.SetTop(wpfImage, imgConstraints.Y);
+
+            canvas.Children.Add(wpfImage);
+        }
+
+        private void DrawImageComment(
+            string comment,
+            PhotoBook.Model.Arrangement.Rectangle imgConstraints,
+            int leftOffset)
+        {
+            var imgBottom = imgConstraints.Y + imgConstraints.Height;
+
+            var commentLabel = new Label()
+            {
+                Content = comment,
+                Width = PhotoBookModel.PageWidthInPixels,
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                FontSize = Model.Arrangement.Layout.CommentFontSize,
+
+                // TODO: Should we hardcode it in the model or let the user change it?
+                Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
+            };
+
+            Canvas.SetLeft(commentLabel, leftOffset);
+            Canvas.SetTop(commentLabel, imgBottom + Model.Arrangement.Layout.CommentOffsetInPixels);
+
+            canvas.Children.Add(commentLabel);
         }
 
         private void DrawBackCover()

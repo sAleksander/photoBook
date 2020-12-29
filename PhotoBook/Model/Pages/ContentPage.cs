@@ -1,4 +1,5 @@
 ﻿using PhotoBook.Model.Arrangement;
+using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace PhotoBook.Model.Pages
         // TOOD: Should layout be required for creating a ContentPage?
         public ContentPage()
         {
+            Background = new BackgroundColor(83, 83, 66);
         }
 
         // TODO: This constructor is used when loading ContentPage from JSON,
