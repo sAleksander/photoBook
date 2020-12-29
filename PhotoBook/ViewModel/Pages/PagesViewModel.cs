@@ -23,12 +23,12 @@ namespace PhotoBook.ViewModel.Pages
 
         ~PagesViewModel()
         {
-            UnregisterEvents();
+            UnregisterEventHandlers();
         }
 
         public void ResetPages(ContentPage[] contentPages)
         {
-            UnregisterEvents();
+            UnregisterEventHandlers();
 
             ContentPages = contentPages;
 
@@ -52,7 +52,7 @@ namespace PhotoBook.ViewModel.Pages
             }
         }
 
-        private void UnregisterEvents()
+        private void UnregisterEventHandlers()
         {
             if (contentPages == null) return;
 
