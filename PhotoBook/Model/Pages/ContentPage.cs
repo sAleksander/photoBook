@@ -99,23 +99,23 @@ namespace PhotoBook.Model.Pages
 
         private void AutoCropImage(Image image, Arrangement.Rectangle imageConstraints)
         {
-            double scaleX = imageConstraints.Width / image.Width;
-            double scaleY = imageConstraints.Height / image.Height;
+            double constraintsRatio = (double)imageConstraints.Width / imageConstraints.Height;
+            double imageRatio = (double)image.Width / image.Height;
 
-            if (scaleX < scaleY)
+            if (constraintsRatio > imageRatio)
             {
                 image.CroppingRectangle = new Arrangement.Rectangle(
                     0, 0,
-                    (int)(scaleX * image.Width),
-                    (int)(scaleX * image.Height)
+                    (int)(image.Width),
+                    (int)(image.Width / constraintsRatio)
                 );
             }
             else
             {
                 image.CroppingRectangle = new Arrangement.Rectangle(
                     0, 0,
-                    (int)(scaleY * image.Width),
-                    (int)(scaleY * image.Height)
+                    (int)(image.Height * constraintsRatio),
+                    (int)(image.Height)
                 );
             }
         }
