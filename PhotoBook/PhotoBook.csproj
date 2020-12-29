@@ -103,8 +103,11 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
+    <Compile Include="ViewModel\Pages\BackCoverViewModel.cs" />
+    <Compile Include="ViewModel\Pages\BookViewModel.cs" />
+    <Compile Include="ViewModel\Pages\FrontCoverViewModel.cs" />
+    <Compile Include="ViewModel\Pages\PagesViewModel.cs" />
     <Compile Include="ViewModel\Settings\BackCoverSettingsViewModel.cs" />
-    <Compile Include="ViewModel\BookViewModel.cs" />
     <Compile Include="ViewModel\EditorViewModel.cs" />
     <Compile Include="ViewModel\Settings\FrontCoverSettingsViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
@@ -114,18 +117,16 @@
     <Compile Include="ViewModel\Settings\PagesSettingsViewModel.cs" />
     <Compile Include="ViewModel\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\BookView.xaml.cs">
-      <DependentUpon>BookView.xaml</DependentUpon>
+    <Compile Include="View\Pages\BackCover.xaml.cs">
+      <DependentUpon>BackCover.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PhotoBookPages\BackPage.xaml.cs">
-      <DependentUpon>BackPage.xaml</DependentUpon>
+    <Compile Include="View\Pages\FrontCover.xaml.cs">
+      <DependentUpon>FrontCover.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PhotoBookPages\FrontPage.xaml.cs">
-      <DependentUpon>FrontPage.xaml</DependentUpon>
+    <Compile Include="View\Pages\ContentPage.xaml.cs">
+      <DependentUpon>ContentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\PhotoBookPages\MiddlePages.xaml.cs">
-      <DependentUpon>MiddlePages.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="View\Pages\PageDrawingUtilities.cs" />
     <Compile Include="View\SettingsView\BackCoverSettingsView.xaml.cs">
       <DependentUpon>BackCoverSettingsView.xaml</DependentUpon>
     </Compile>
@@ -162,19 +163,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\BookView.xaml">
+    <Page Include="View\Pages\BackCover.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PhotoBookPages\BackPage.xaml">
+    <Page Include="View\Pages\FrontCover.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PhotoBookPages\FrontPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\PhotoBookPages\MiddlePages.xaml">
+    <Page Include="View\Pages\ContentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

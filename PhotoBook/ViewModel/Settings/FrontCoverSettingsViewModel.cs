@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Pages;
+using System;
 
 namespace PhotoBook.ViewModel.Settings
 {
@@ -27,9 +28,12 @@ namespace PhotoBook.ViewModel.Settings
             }
         }
 
+        public event Action TitleChanged;
+
         public RelayCommand ApplyTitle => new RelayCommand(() =>
         {
             frontCover.Title = Title;
+            TitleChanged();
         });
 
         public FrontCoverSettingsViewModel(FrontCover frontCover, BackCover backCover)

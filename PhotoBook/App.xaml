@@ -4,11 +4,12 @@
              xmlns:local="clr-namespace:PhotoBook"
              xmlns:viewModel="clr-namespace:PhotoBook.ViewModel"
              xmlns:viewModelSettings="clr-namespace:PhotoBook.ViewModel.Settings"
+             xmlns:viewModelPages="clr-namespace:PhotoBook.ViewModel.Pages"
              xmlns:view="clr-namespace:PhotoBook.View"
+             xmlns:viewPages="clr-namespace:PhotoBook.View.Pages"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <viewModel:ViewModelLocator x:Key="Locator"/>
-
 
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <view:HomeView/>
@@ -27,9 +28,15 @@
             <view:PagesSettingsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModel:BookViewModel}">
-            <view:BookView/>
+        <DataTemplate DataType="{x:Type viewModelPages:FrontCoverViewModel}">
+            <viewPages:FrontCover/>
         </DataTemplate>
-        
+        <DataTemplate DataType="{x:Type viewModelPages:PagesViewModel}">
+            <viewPages:ContentPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModelPages:BackCoverViewModel}">
+            <viewPages:BackCover/>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

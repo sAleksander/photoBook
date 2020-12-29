@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Arrangement;
+using PhotoBook.ViewModel.Pages;
 using PhotoBook.ViewModel.Settings;
 using Page = PhotoBook.Model.Pages.Page;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
@@ -40,7 +41,6 @@ namespace PhotoBook.ViewModel
         public EditorViewModel(ViewModelLocator locator)
         {
             this.locator = locator;
-            bookViewModel = new BookViewModel(model);
 
             UpdateView();
 
@@ -148,40 +148,64 @@ namespace PhotoBook.ViewModel
             switch (currentPageType)
             {
                 case PageType.FrontCover:
-                    bookViewModel.SetPages(currentPageType, new Page[]
-                    {
-                        model.FrontCover
-                    });
-                    SettingsViewModel = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
+                    CreateFrontCoverViewModels();
                     break;
                 case PageType.Content:
-                    var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
-                    bookViewModel.SetPages(currentPageType, new Page[]
-                    {
-                        leftPage, rightPage
-                    });
-
-                    // TODO: This is a really stupid fix for view not updating
-                    //       its Content property when SettingsViewModel of the same
-                    //       type changes. Is there a better way to do it?
-                    switch (SettingsViewModel)
-                    {
-                        case PagesSettingsViewModel pagesSettings:
-                            pagesSettings.ResetPages(leftPage, rightPage);
-                            break;
-                        default:
-                            SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
-                            break;
-                    }
+                    CreateContentViewModels();
                     break;
                 case PageType.BackCover:
-                    bookViewModel.SetPages(currentPageType, new Page[]
-                    {
-                        model.BackCover
-                    });
-                    SettingsViewModel = new BackCoverSettingsViewModel(model);
+                    CreateBackCoverViewModels();
                     break;
             }
+        }
+
+        private void CreateFrontCoverViewModels()
+        {
+            var bookVM = new FrontCoverViewModel(model.FrontCover);
+            var settingsVM = new FrontCoverSettingsViewModel(model.FrontCover, model.BackCover);
+
+            settingsVM.TitleChanged += bookVM.OnTitleChanged;
+
+            SettingsViewModel = settingsVM;
+            BookViewModel = bookVM;
+        }
+
+        private void CreateContentViewModels()
+        {
+            var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
+            var contentPages = new Model.Pages.ContentPage[] { leftPage, rightPage };
+
+            // TODO: This is a really stupid fix for view not updating
+            //       its Content property when SettingsViewModel/BookViewModel
+            //       of the same type changes. Is there a better way to do it?
+            switch (SettingsViewModel)
+            {
+                case PagesSettingsViewModel pagesSettings:
+                    pagesSettings.ResetPages(leftPage, rightPage);
+                    break;
+                default:
+                    SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
+                    break;
+            }
+
+            switch (bookViewModel)
+            {
+                case PagesViewModel pagesVM:
+                    pagesVM.ResetPages(contentPages);
+                    break;
+                default:
+                    BookViewModel = new PagesViewModel(contentPages);
+                    break;
+            }
+        }
+
+        private void CreateBackCoverViewModels()
+        {
+            var bookVM = new BackCoverViewModel(model.BackCover);
+            var settingsVM = new BackCoverSettingsViewModel(model);
+
+            SettingsViewModel = settingsVM;
+            BookViewModel = bookVM;
         }
 
         public RelayCommand Exit => new RelayCommand(() =>
