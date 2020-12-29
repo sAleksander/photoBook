@@ -156,7 +156,19 @@ namespace PhotoBook.ViewModel
                     {
                         leftPage, rightPage
                     });
-                    SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
+
+                    // TODO: This is a really stupid fix for view not updating
+                    //       its Content property when SettingsViewModel of the same
+                    //       type changes. Is there a better way to do it?
+                    switch (SettingsViewModel)
+                    {
+                        case PagesSettingsViewModel pagesSettings:
+                            pagesSettings.ResetPages(leftPage, rightPage);
+                            break;
+                        default:
+                            SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
+                            break;
+                    }
                     break;
                 case PageType.BackCover:
                     bookViewModel.SetPages(currentPageType, new Page[]

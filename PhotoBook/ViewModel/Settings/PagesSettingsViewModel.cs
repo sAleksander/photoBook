@@ -50,6 +50,11 @@ namespace PhotoBook.ViewModel.Settings
 
         public PagesSettingsViewModel(ContentPage leftPage, ContentPage rightPage)
         {
+            ResetPages(leftPage, rightPage);
+        }
+
+        public void ResetPages(ContentPage leftPage, ContentPage rightPage)
+        {
             this.leftPage = leftPage;
             this.rightPage = rightPage;
 
