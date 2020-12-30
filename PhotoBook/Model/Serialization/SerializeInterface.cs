@@ -11,6 +11,6 @@ namespace PhotoBook.Model.Serialization
     {
         int SerializeObject(Serializer serializer);
 
-        T DeserializeObject();
+        T DeserializeObject(Serializer serializer, int objectID);
     }
 }

@@ -24,7 +24,7 @@ namespace PhotoBook.Model
         }
 
         public string SavePath { get; private set; }
-        public static string Font { get; } = "Arial";
+        public static string Font { get; private set; } = "Arial";
 
         public static int PageWidthInPixels { get; }
         public static int PageHeightInPixels { get; }
@@ -530,16 +530,65 @@ namespace PhotoBook.Model
 
             photoBook += $"{nameof(BackCover)}:{BackCover.SerializeObject(serializer)}\n";
 
-            // Below code is unnecessary
+            serializer.AddObject(photoBook);
 
-            int photoBookID = serializer.AddObject(photoBook);
+            serializer.SaveObjects(SavePath);
 
-            return photoBookID;
+            return 0;
         }
 
-        public PhotoBook DeserializeObject()
+        public PhotoBook DeserializeObject(Serializer serializer, int objectID = -1)
         {
-            throw new NotImplementedException();
+            serializer.LoadData(SavePath);
+
+            string photoBookData = serializer.GetObjectData(-1);
+
+            int attributeIndex = photoBookData.IndexOf($"{nameof(Font)}");
+            int dividerIndex = photoBookData.IndexOf(':', attributeIndex);
+            int endOfLineIndex = photoBookData.IndexOf('\n', dividerIndex);
+
+            Font = photoBookData.Substring(dividerIndex + 1, endOfLineIndex);
+
+            // Front cover
+
+            attributeIndex = photoBookData.IndexOf($"{nameof(FrontCover)}");
+            dividerIndex = photoBookData.IndexOf(':', attributeIndex);
+            endOfLineIndex = photoBookData.IndexOf('\n', dividerIndex);
+            int pageId = int.Parse(photoBookData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            FrontCover = FrontCover.DeserializeObject(serializer, pageId);
+
+            // Content pages
+
+            _contentPages.Clear();
+
+            attributeIndex = photoBookData.IndexOf($"{nameof(_contentPages)}");
+            dividerIndex = photoBookData.IndexOf(':', attributeIndex);
+            endOfLineIndex = photoBookData.IndexOf($"{nameof(BackCover)}", dividerIndex);
+
+            int currentLine = photoBookData.IndexOf("-&", dividerIndex);
+            int endOfCurrentLine = photoBookData.IndexOf("\n", currentLine);
+
+            while (endOfCurrentLine < endOfLineIndex)
+            {
+                pageId = int.Parse(photoBookData.Substring(currentLine + 1, endOfLineIndex));
+                _contentPages.Add(new ContentPage());
+                _contentPages[-1] = _contentPages[-1].DeserializeObject(serializer, pageId);
+
+                currentLine = photoBookData.IndexOf("-&", endOfCurrentLine);
+                endOfCurrentLine = photoBookData.IndexOf("\n", endOfCurrentLine);
+            }
+
+            // Back cover
+
+            attributeIndex = photoBookData.IndexOf($"{nameof(BackCover)}");
+            dividerIndex = photoBookData.IndexOf(':', attributeIndex);
+            endOfLineIndex = photoBookData.IndexOf('\n', dividerIndex);
+            pageId = int.Parse(photoBookData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            BackCover = BackCover.DeserializeObject(serializer, pageId);
+
+            return new PhotoBook();
         }
     }
 }

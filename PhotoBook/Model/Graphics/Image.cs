@@ -60,8 +60,8 @@ namespace PhotoBook.Model.Graphics
         public Bitmap editedBitmap { get; private set; }
 
         public Rectangle CroppingRectangle { get; set; }
-        public string OriginalPath { get; }
-        public string DisplayedPath { get; }
+        public string OriginalPath { get; private set; }
+        public string DisplayedPath { get; private set; }
 
         // TODO: Think even more whether the width & height will be necessary (due to the use of bitmap)
         public int Width { get; } // TODO: Think whether it will even be required
@@ -94,12 +94,55 @@ namespace PhotoBook.Model.Graphics
 
         public int SerializeObject(Serializer serializer)
         {
-            throw new NotImplementedException();
+            string image = "";
+
+            image += $"{nameof(OriginalPath)}:{OriginalPath}\n";
+            image += $"{nameof(DisplayedPath)}:{DisplayedPath}\n";
+            image += $"{nameof(CroppingRectangle)}:&{CroppingRectangle.SerializeObject(serializer)}";
+            image += $"{nameof(CurrentFilter)}:&{CurrentFilter.SerializeObject(serializer)}";
+
+            int imageID = serializer.AddObject(image);
+
+            return imageID;
         }
 
-        public Image DeserializeObject()
+        public Image DeserializeObject(Serializer serializer, int objectID)
         {
-            throw new NotImplementedException();
+            string imageData = serializer.GetObjectData(objectID);
+
+            int attributeIndex = imageData.IndexOf($"{nameof(OriginalPath)}");
+            int dividerIndex = imageData.IndexOf(':', attributeIndex);
+            int endOfLineIndex = imageData.IndexOf('\n', dividerIndex);
+
+            OriginalPath = imageData.Substring(dividerIndex + 1, endOfLineIndex);
+
+            attributeIndex = imageData.IndexOf($"{nameof(DisplayedPath)}");
+            dividerIndex = imageData.IndexOf(':', attributeIndex);
+            endOfLineIndex = imageData.IndexOf('\n', dividerIndex);
+
+            DisplayedPath = imageData.Substring(dividerIndex + 1, endOfLineIndex);
+
+            attributeIndex = imageData.IndexOf($"{nameof(CroppingRectangle)}");
+            dividerIndex = imageData.IndexOf(':', attributeIndex);
+            int refIndex = imageData.IndexOf('&', dividerIndex);
+            endOfLineIndex = imageData.IndexOf("\n", refIndex);
+
+            int croppingRecIndex = int.Parse(imageData.Substring(refIndex + 1, endOfLineIndex));
+
+            CroppingRectangle = CroppingRectangle.DeserializeObject(serializer, croppingRecIndex);
+
+            attributeIndex = imageData.IndexOf($"{nameof(CurrentFilter)}");
+            dividerIndex = imageData.IndexOf(':', attributeIndex);
+            refIndex = imageData.IndexOf('&', dividerIndex);
+            endOfLineIndex = imageData.IndexOf("\n", refIndex);
+
+            int currentFilterIndex = int.Parse(imageData.Substring(refIndex + 1, endOfLineIndex));
+
+            CurrentFilter = CurrentFilter.DeserializeObject(serializer, currentFilterIndex);
+
+            SetFilter(CurrentFilter.currentType);
+
+            return this;
         }
     }
 }

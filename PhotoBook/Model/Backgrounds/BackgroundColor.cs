@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhotoBook.Model.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Backgrounds
 {
-    public class BackgroundColor : Background
+    public class BackgroundColor : Background, SerializeInterface<Background>
     {
         public BackgroundColor()
         {
@@ -25,5 +26,41 @@ namespace PhotoBook.Model.Backgrounds
         public byte R { get; set; }
         public byte G { get; set; }
         public byte B { get; set; }
+
+        public Background DeserializeObject(Serializer serializer, int objectID)
+        {
+            string backgroundColorData = serializer.GetObjectData(objectID);
+
+            int attributeIndex = backgroundColorData.IndexOf($"{nameof(R)}");
+            int dividerIndex = backgroundColorData.IndexOf(':', attributeIndex);
+            int endOfLineIndex = backgroundColorData.IndexOf('\n', dividerIndex);
+
+            R = byte.Parse(backgroundColorData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            attributeIndex = backgroundColorData.IndexOf($"{nameof(G)}");
+            dividerIndex = backgroundColorData.IndexOf(':', attributeIndex);
+            endOfLineIndex = backgroundColorData.IndexOf('\n', dividerIndex);
+
+            G = byte.Parse(backgroundColorData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            attributeIndex = backgroundColorData.IndexOf($"{nameof(B)}");
+            dividerIndex = backgroundColorData.IndexOf(':', attributeIndex);
+            endOfLineIndex = backgroundColorData.IndexOf('\n', dividerIndex);
+
+            B = byte.Parse(backgroundColorData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            return this;
+        }
+
+        public int SerializeObject(Serializer serializer)
+        {
+            string backgroundColor = $"{nameof(R)}:{R}\n";
+            backgroundColor += $"{nameof(G)}:{G}\n";
+            backgroundColor += $"{nameof(B)}:{B}\n";
+
+            int backgroundColorID = serializer.AddObject(backgroundColor);
+
+            return backgroundColorID;
+        }
     }
 }

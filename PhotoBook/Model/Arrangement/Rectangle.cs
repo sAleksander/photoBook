@@ -22,19 +22,53 @@ namespace PhotoBook.Model.Arrangement
             }
         }
 
-        public int X { get; }
-        public int Y { get; }
-        public int Width { get; }
-        public int Height { get; }
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
-        public Rectangle DeserializeObject()
+        public Rectangle DeserializeObject(Serializer serializer, int objectID)
         {
-            throw new NotImplementedException();
+            string rectangleData = serializer.GetObjectData(objectID);
+
+            int attributeIndex = rectangleData.IndexOf($"{nameof(X)}");
+            int dividerIndex = rectangleData.IndexOf(':', attributeIndex);
+            int endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
+
+            X = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            attributeIndex = rectangleData.IndexOf($"{nameof(Y)}");
+            dividerIndex = rectangleData.IndexOf(':', attributeIndex);
+            endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
+
+            Y = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            attributeIndex = rectangleData.IndexOf($"{nameof(Width)}");
+            dividerIndex = rectangleData.IndexOf(':', attributeIndex);
+            endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
+
+            Width = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
+
+            attributeIndex = rectangleData.IndexOf($"{nameof(Height)}");
+            dividerIndex = rectangleData.IndexOf(':', attributeIndex);
+            endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
+
+            Height = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
+
+
+            return this;
         }
 
         public int SerializeObject(Serializer serializer)
         {
-            throw new NotImplementedException();
+            string rectangle = $"{nameof(X)}:{X}\n";
+            rectangle += $"{nameof(Y)}:{Y}\n";
+            rectangle += $"{nameof(Width)}:{Width}\n";
+            rectangle += $"{nameof(Height)}:{Height}\n";
+
+            int rectangleID = serializer.AddObject(rectangle);
+
+            return rectangleID;
         }
     }
 }

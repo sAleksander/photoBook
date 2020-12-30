@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhotoBook.Model.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Graphics
 {
-    public class Filter
+    public class Filter : SerializeInterface<Filter>
     {
         public Filter() {
             SetFilterSettings(Filter.Type.None);
@@ -104,5 +105,45 @@ namespace PhotoBook.Model.Graphics
         }
 
         public static Type[] GetAvailableTypes() => new Type[] { Type.Cold, Type.Warm, Type.Greyscale, Type.None };
+
+        public int SerializeObject(Serializer serializer)
+        {
+            string filter = $"{nameof(currentType)}:{currentType}\n";
+
+            int filterTypeID = serializer.AddObject(filter);
+
+            return filterTypeID;
+        }
+
+        public Filter DeserializeObject(Serializer serializer, int objectID)
+        {
+            string filterData = serializer.GetObjectData(objectID);
+
+            int attributeIndex = filterData.IndexOf($"{nameof(currentType)}");
+            int dividerIndex = filterData.IndexOf(':', attributeIndex);
+            int endOfLineIndex = filterData.IndexOf('\n', dividerIndex);
+
+            string filter = filterData.Substring(dividerIndex + 1, endOfLineIndex);
+
+            switch (filter)
+            {
+                case "Filter.Type.Cold":
+                    currentType = Filter.Type.Cold;
+                    break;
+                case "Filter.Type.Greyscale":
+                    currentType = Filter.Type.Greyscale;
+                    break;
+                case "Filter.Type.None":
+                    currentType = Filter.Type.None;
+                    break;
+                case "Filter.Type.Warm":
+                    currentType = Filter.Type.Warm;
+                    break;
+                default:
+                    throw new Exception("Wrong filter type while deserialising");
+            }
+
+            return this;
+        }
     }
 }
