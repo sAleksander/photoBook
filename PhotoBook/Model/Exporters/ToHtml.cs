@@ -16,7 +16,7 @@ namespace PhotoBook.Model.Exporters
         const string LAYOUT_DIRECTORY = MAIN_DIRECTORY + "\\" + RELATIVE_LAYOUT_DIRECTORY;
         const string PHOTOS_DIRECTORY = MAIN_DIRECTORY + "\\" + RELATIVE_PHOTOS_DIRECTORY;
         const string IMPORT_LAYOUT_DIRECTORY = ".\\";
-        const string IMPORT_PHOTOS_DIRECTORY = ".\\";
+        const string IMPORT_PHOTOS_DIRECTORY = ".\\PROCESSED";
         const string FRONT_COVER_FILE = "front.html";
         const string BACK_COVER_FILE = "back.html";
         #endregion
@@ -166,14 +166,14 @@ namespace PhotoBook.Model.Exporters
                 {
                     string tmp = $@"
                         <div style='height: 44%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: 40vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: 20vw; height: auto;'>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[0]}
                         </div>
                         </div>
 
                         <div style='height: 44%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[1]}' style='width: 40vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[1]}' style='width: 20vw; height: auto;'>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[1]}
                         </div>

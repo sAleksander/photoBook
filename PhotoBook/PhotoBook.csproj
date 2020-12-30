@@ -97,6 +97,7 @@
     <Compile Include="Model\Arrangement\Layout.cs" />
     <Compile Include="Model\Backgrounds\BackgroundColor.cs" />
     <Compile Include="Model\Backgrounds\BackgroundImage.cs" />
+    <Compile Include="Model\Helpers\ImageAdjuster.cs" />
     <Compile Include="Model\Pages\BackCover.cs" />
     <Compile Include="Model\Pages\ContentPage.cs" />
     <Compile Include="Model\Pages\FrontCover.cs" />

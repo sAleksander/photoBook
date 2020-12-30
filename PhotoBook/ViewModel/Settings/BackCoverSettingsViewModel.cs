@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using PhotoBook.Model.Arrangement;
 using PhotoBook.Model.Exporters;
+using PhotoBook.Model.Helpers;
 using PhotoBook.Model.Pages;
 using System.Collections.Generic;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
@@ -30,10 +32,41 @@ namespace PhotoBook.ViewModel.Settings
             return tmp[tmp.Length - 1];
         }
 
+        private void prepareImages()
+        {
+            ImageAdjuster.InitializeProcessedImageDirectory();
+            for (int i = 0; i < model.NumOfContentPages; i++)
+            {
+                for (int j = 0; j < model.GetContentPagesAt(i).Item1.Layout.NumOfImages; j++)
+                {
+                    PhotoBook.Model.Graphics.Image tmp = model.GetContentPagesAt(i).Item1.GetImage(j);
+                    ImageAdjuster.CropImage(
+                        tmp.DisplayedPath,
+                        tmp.CroppingRectangle.X,
+                        tmp.CroppingRectangle.Y,
+                        tmp.CroppingRectangle.Width,
+                        tmp.CroppingRectangle.Height
+                        );
+                }
+                for (int j = 0; j < model.GetContentPagesAt(i).Item2.Layout.NumOfImages; j++)
+                {
+                    PhotoBook.Model.Graphics.Image tmp = model.GetContentPagesAt(i).Item2.GetImage(j);
+                    ImageAdjuster.CropImage(
+                        tmp.DisplayedPath,
+                        tmp.CroppingRectangle.X,
+                        tmp.CroppingRectangle.Y,    
+                        tmp.CroppingRectangle.Width,
+                        tmp.CroppingRectangle.Height
+                        );
+                }
+            }
+        }
+
         // Page related commands
 
         public RelayCommand ExportToPdf => new RelayCommand(() =>
         {
+            prepareImages();
 
             ToPdf ob = new ToPdf();
 
@@ -103,6 +136,8 @@ namespace PhotoBook.ViewModel.Settings
 
         public RelayCommand ExportToHtml => new RelayCommand(() =>
         {
+            prepareImages();
+
             ToHtml ob = new ToHtml(model.NumOfContentPages);
 
             string fileNameExporter(string path)
