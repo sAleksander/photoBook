@@ -17,22 +17,37 @@ namespace PhotoBook.Model.Graphics
         {
             System.IO.FileAttributes attr = File.GetAttributes(OriginalPath);
 
-            // TODO: Handle situations in which two files would have the same names
+            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
             if (attr.HasFlag(FileAttributes.Directory))
                 throw new Exception("Correct image path was not provided");
             if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
-
                 throw new Exception("File/image with wrong exception provided");
-
-            OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
-            originalBitmap = new Bitmap(path);
 
             if (!Directory.Exists("\\OriginalImages"))
                 Directory.CreateDirectory("OriginalImages");
 
             if (!File.Exists($"\\OriginalImages\\{Path.GetFileName(path)}"))
+            {
                 File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
+                OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
+                originalBitmap = new Bitmap(OriginalPath);
+            }
+            else
+            {
+                Random random;
+                string newRandomName;
+
+                do
+                {
+                    random = new Random();
+                    newRandomName = new string(Enumerable.Repeat(characters, 10).Select(s => s[random.Next(s.Length)]).ToArray());
+                } while (File.Exists($"\\OriginalImages\\{newRandomName}"));
+
+                File.Copy(path, $"\\OriginalImages\\{newRandomName}");
+                OriginalPath = $"\\OriginalImages\\{newRandomName}";
+                originalBitmap = new Bitmap(OriginalPath);
+            }
 
             CroppingRectangle = new Rectangle(x, y, width, height);
 
@@ -43,10 +58,24 @@ namespace PhotoBook.Model.Graphics
             if (!Directory.Exists("\\UsedImages"))
                 Directory.CreateDirectory("UsedImages");
 
-            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}"))
+            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}")) {
                 editedBitmap.Save($"\\UsedImages\\{Path.GetFileName(path)}");
+                DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
+            }
+            else
+            {
+                Random random;
+                string newRandomName;
 
-            DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
+                do
+                {
+                    random = new Random();
+                    newRandomName = new string(Enumerable.Repeat(characters, 10).Select(s => s[random.Next(s.Length)]).ToArray());
+                } while (File.Exists($"\\OriginalImages\\{newRandomName}"));
+
+                editedBitmap.Save($"\\UsedImages\\{newRandomName}");
+                DisplayedPath = $"\\UsedImages\\{newRandomName}";
+            }
 
             Width = originalBitmap.Width;
             Height = originalBitmap.Height;
@@ -56,7 +85,7 @@ namespace PhotoBook.Model.Graphics
 
         public Image(string path) : this(path, 0, 0, 0, 0) { }
 
-        public Bitmap originalBitmap { get; }
+        public Bitmap originalBitmap { get; private set; }
         public Bitmap editedBitmap { get; private set; }
 
         public Rectangle CroppingRectangle { get; set; }
@@ -115,12 +144,14 @@ namespace PhotoBook.Model.Graphics
             int endOfLineIndex = imageData.IndexOf('\n', dividerIndex);
 
             OriginalPath = imageData.Substring(dividerIndex + 1, endOfLineIndex);
+            originalBitmap = new Bitmap(OriginalPath);
 
             attributeIndex = imageData.IndexOf($"{nameof(DisplayedPath)}");
             dividerIndex = imageData.IndexOf(':', attributeIndex);
             endOfLineIndex = imageData.IndexOf('\n', dividerIndex);
 
             DisplayedPath = imageData.Substring(dividerIndex + 1, endOfLineIndex);
+            editedBitmap = new Bitmap(editedBitmap);
 
             attributeIndex = imageData.IndexOf($"{nameof(CroppingRectangle)}");
             dividerIndex = imageData.IndexOf(':', attributeIndex);
@@ -139,8 +170,6 @@ namespace PhotoBook.Model.Graphics
             int currentFilterIndex = int.Parse(imageData.Substring(refIndex + 1, endOfLineIndex));
 
             CurrentFilter = CurrentFilter.DeserializeObject(serializer, currentFilterIndex);
-
-            SetFilter(CurrentFilter.currentType);
 
             return this;
         }
