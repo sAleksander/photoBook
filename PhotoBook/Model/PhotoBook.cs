@@ -106,20 +106,25 @@ namespace PhotoBook.Model
             return (_contentPages[adjustedIndex], _contentPages[adjustedIndex + 1]);
         }
 
-        public void CreateNewPages(int index = -1)
+        public (ContentPage, ContentPage) CreateNewPages(int index = -1)
         {
+            var left = new ContentPage();
+            var right = new ContentPage();
+
             if (index == -1) {
-                _contentPages.Add(new ContentPage());
-                _contentPages.Add(new ContentPage());
-                return;
+                _contentPages.Add(left);
+                _contentPages.Add(right);
+                return (left, right);
             }
 
-            if (index < 0 || index >= _contentPages.Count)
+            if (index < 0 || index > _contentPages.Count)
                 throw new Exception("Wrong insert page index chosen!");
 
             var adjustedIndex = GetAdjustedIndex(index);
-            _contentPages.Insert(adjustedIndex, new ContentPage());
-            _contentPages.Insert(adjustedIndex, new ContentPage());
+            _contentPages.Insert(adjustedIndex, right);
+            _contentPages.Insert(adjustedIndex, left);
+
+            return (left, right);
         }
 
         public void DeletePages(int index)

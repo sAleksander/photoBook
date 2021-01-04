@@ -133,13 +133,33 @@ namespace PhotoBook.ViewModel
                 return insertPages ?? (insertPages = new RelayCommand(
                     () =>
                     {
-                        model.CreateNewPages(currentContentPageIndex);
-                        var (left, right) = model.GetContentPagesAt(currentContentPageIndex);
+                        Model.Pages.ContentPage left, right;
+
+                        switch (currentPageType)
+                        {
+                            case PageType.FrontCover:
+                                currentPageType = PageType.Content;
+                                currentContentPageIndex = 0;
+
+                                (left, right) = model.CreateNewPages(0);
+                                break;
+                            case PageType.Content:
+                                (left, right) = model.CreateNewPages(currentContentPageIndex);
+                                break;
+                            case PageType.BackCover:
+                                currentPageType = PageType.Content;
+                                currentContentPageIndex = model.NumOfContentPages;
+
+                                (left, right) = model.CreateNewPages(model.NumOfContentPages);
+                                break;
+                            default: throw new System.Exception("Unreachable");
+                        }
+
                         left.Layout = model.AvailableLayouts[Layout.Type.TwoPictures];
                         right.Layout = model.AvailableLayouts[Layout.Type.TwoPictures];
+
                         UpdateView();
-                    },
-                    () => currentPageType != PageType.BackCover));
+                    }));
             }
         }
 
