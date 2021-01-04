@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:PhotoBook.View"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1800"
+      DataContext="{Binding Source={StaticResource Locator}, Path=CropPhoto}"
       Title="CropPhotoView"
       Loaded="Page_Loaded">
 
@@ -69,7 +70,8 @@
                 FontSize="40"
                 Foreground="White"
                 Height="70"
-                Width="250" Margin="775,40,380.5,40">
+                Width="250" Margin="775,40,380.5,40"
+                Command="{Binding Apply}">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="7"/>

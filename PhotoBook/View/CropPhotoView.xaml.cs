@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhotoBook.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,23 @@ namespace PhotoBook.View
     /// </summary>
     public partial class CropPhotoView : Page
     {
+        private CropPhotoViewModel viewModel;
+
+        private Model.Arrangement.Rectangle imgCroppingRectangle;
+
         public CropPhotoView()
         {
             InitializeComponent();
+
+            viewModel = (CropPhotoViewModel)DataContext;
+            imgCroppingRectangle = viewModel.CroppingRectangle;
+
+            originalImage.Source = new BitmapImage(new Uri(viewModel.ImagePath));
+
+            Canvas.SetLeft(croppRectangle, imgCroppingRectangle.X);
+            Canvas.SetTop(croppRectangle, imgCroppingRectangle.Y);
+            croppRectangle.Width = imgCroppingRectangle.Width;
+            croppRectangle.Height = imgCroppingRectangle.Height;
         }
 
         //Adjust cropping reectangle size

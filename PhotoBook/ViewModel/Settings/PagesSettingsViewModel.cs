@@ -7,6 +7,8 @@ namespace PhotoBook.ViewModel.Settings
 {
     public class PagesSettingsViewModel : SettingsViewModel
     {
+        private ViewModelLocator locator;
+
         private ContentPage leftPage;
         private ContentPage rightPage;
 
@@ -50,8 +52,10 @@ namespace PhotoBook.ViewModel.Settings
             set => Set(nameof(Images), ref images, value);
         }
 
-        public PagesSettingsViewModel(ContentPage leftPage, ContentPage rightPage)
+        public PagesSettingsViewModel(ViewModelLocator locator, ContentPage leftPage, ContentPage rightPage)
         {
+            this.locator = locator;
+
             ResetPages(leftPage, rightPage);
         }
 
@@ -74,7 +78,7 @@ namespace PhotoBook.ViewModel.Settings
             var newImages = new ObservableCollection<ImageViewModel>();
             for (int imageIndex = 0; imageIndex < page.Layout.NumOfImages; imageIndex++)
             {
-                newImages.Add(new ImageViewModel(page, imageIndex));
+                newImages.Add(new ImageViewModel(locator, page, imageIndex));
             }
             Images = newImages;
         }

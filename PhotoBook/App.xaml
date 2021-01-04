@@ -38,5 +38,9 @@
             <viewPages:BackCover/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:CropPhotoViewModel}">
+            <view:CropPhotoView/>
+        </DataTemplate>
+
     </Application.Resources>
 </Application>

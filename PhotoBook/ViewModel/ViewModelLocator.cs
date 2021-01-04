@@ -41,6 +41,8 @@ namespace PhotoBook.ViewModel
 
             SimpleIoc.Default.Register<BookViewModel>();
 
+            SimpleIoc.Default.Register<CropPhotoViewModel>();
+
             // Used to pass ViewModelLocator to view models so that they can navigate
             // to other VMs.
             SimpleIoc.Default.Register(() => this);
@@ -69,6 +71,8 @@ namespace PhotoBook.ViewModel
             ServiceLocator.Current.GetInstance<EditorViewModel>().BookViewModel;
         public PagesViewModel Pages => (PagesViewModel)
             ServiceLocator.Current.GetInstance<EditorViewModel>().BookViewModel;
+
+        public CropPhotoViewModel CropPhoto => ServiceLocator.Current.GetInstance<CropPhotoViewModel>();
 
         public static void Cleanup()
         {

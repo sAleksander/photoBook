@@ -103,6 +103,7 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
+    <Compile Include="ViewModel\CropPhotoViewModel.cs" />
     <Compile Include="ViewModel\Pages\BackCoverViewModel.cs" />
     <Compile Include="ViewModel\Pages\BookViewModel.cs" />
     <Compile Include="ViewModel\Pages\FrontCoverViewModel.cs" />
