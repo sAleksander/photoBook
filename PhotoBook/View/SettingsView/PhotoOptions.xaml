@@ -48,14 +48,14 @@
                                 Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
                                 Height="70"
                                 Margin="60,0,15,0"
-                                Text="{Binding Description, Mode=OneWay}"/>
+                                Text="{Binding Description}"/>
                 <Button Content="Zatwierdź" 
                                 HorizontalAlignment="Right"
                                 Margin="0,0,30,0"
                                 BorderBrush="Transparent"
                                 Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"
                                 Background="Transparent"
-                                Click="ApplyDescriptionButton_Click"/>
+                                Command="{Binding ApplyDescription}"/>
             </StackPanel>
 
 

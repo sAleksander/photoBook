@@ -10,7 +10,7 @@ namespace PhotoBook.ViewModel.Settings
         private FrontCover frontCover;
         private BackCover backCover;
 
-        private string title;
+        private string title = "";
         public string Title
         {
             get => title;
@@ -30,6 +30,7 @@ namespace PhotoBook.ViewModel.Settings
 
         public RelayCommand ApplyTitle => new RelayCommand(() =>
         {
+            Title = Title.Trim();
             frontCover.Title = Title;
         });
 

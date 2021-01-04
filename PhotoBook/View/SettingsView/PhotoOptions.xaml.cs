@@ -39,11 +39,6 @@ namespace PhotoBook.View.SettingsView
             InitializeComponent();
         }
 
-        private void ApplyDescriptionButton_Click(object sender, RoutedEventArgs e)
-        {
-            Description = DescriptionTextBox.Text;
-        }
-
         //Add Description
         public void addDescription(object sender, RoutedEventArgs e)
         {

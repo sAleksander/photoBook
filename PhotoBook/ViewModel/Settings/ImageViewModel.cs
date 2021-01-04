@@ -9,15 +9,11 @@ namespace PhotoBook.ViewModel.Settings
         private ContentPage page;
         private int imageIndex;
 
-        private string description;
+        private string description = "";
         public string Description
         {
             get => description;
-            set
-            {
-                Set(nameof(Description), ref description, value);
-                page.SetComment(imageIndex, value);
-            }
+            set => Set(nameof(Description), ref description, value);
         }
 
         public string ImageFilter { get; } = "Image Files|*.png;*.jpg";
@@ -41,6 +37,12 @@ namespace PhotoBook.ViewModel.Settings
                     }));
             }
         }
+
+        public RelayCommand ApplyDescription => new RelayCommand(() =>
+        {
+            Description = Description.Trim();
+            page.SetComment(imageIndex, Description);
+        });
 
         public ImageViewModel(ContentPage page, int imageIndex)
         {
