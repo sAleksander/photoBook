@@ -5,8 +5,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PhotoBook.View"
       mc:Ignorable="d" 
-     d:DesignHeight="900" d:DesignWidth="1800"
-      Title="CropPhotoView">
+      d:DesignHeight="900" d:DesignWidth="1800"
+      Title="CropPhotoView"
+      Loaded="Page_Loaded">
 
     <Grid>
         <Grid.Background>
@@ -17,45 +18,47 @@
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
                    Text="Przytnij zdjęcie"
                    FontFamily="Segoe UI Light"
-                   FontSize="70"
+                   FontSize="50"
                    Foreground="White" 
                    HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"/>
+                   VerticalAlignment="Center" Margin="744,42,349.5,41"/>
         <TextBlock Grid.Row="0"
                    Text="Przytnij zdjęcie za pomocą prostokąta z czerwoną ramką"
                    FontFamily="Segoe UI Light"
-                   FontSize="40"
+                   FontSize="30"
                    Foreground="White" 
                    HorizontalAlignment="Center" 
-                   VerticalAlignment="Bottom"/>
+                   VerticalAlignment="Bottom" Margin="543,0,148.5,0"/>
 
-        <Grid Grid.Row="1">
-            <Image x:Name="originalImage" Source="Images/Witoldus.PNG"/>
+        
+        <Viewbox Grid.Row="1">
             <Canvas x:Name="canvas"
                     Width="{Binding ElementName=originalImage, Path=ActualWidth}"
                     Height="{Binding ElementName=originalImage, Path=ActualHeight}">
+                <Image x:Name="originalImage" Source="Images/Witoldus.PNG"/>
+            
+                <!-- Do width i Height z rectangla bindingi z Modelu -->
                 <Rectangle x:Name="croppRectangle"
                            MouseMove="croppRectangle_MouseMove"
                            MouseLeftButtonUp="croppRectangle_MouseLeftButtonUp"
                            MouseLeftButtonDown="croppRectangle_MouseLeftButtonDown"
                            Fill="Transparent"
                            Stroke="#FF9C1E1E"
+                           StrokeThickness="4"
                            OpacityMask="#FFA80F0F"
                            Width="560"
                            Height="400"
-                           Canvas.Left="120"
-                           Canvas.Top="10"/>
-
+                           Canvas.Left="0"
+                           Canvas.Top="0"/>
             </Canvas>
-        </Grid>
-
+        </Viewbox>
 
         <Button Grid.Row="2"
                 Content="Zatwierdź"
@@ -63,10 +66,10 @@
                 BorderThickness="1"
                 BorderBrush="White"
                 FontFamily="Segoe UI Light"
-                FontSize="50"
+                FontSize="40"
                 Foreground="White"
-                Height="100"
-                Width="300">
+                Height="70"
+                Width="250" Margin="775,40,380.5,40">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="7"/>
