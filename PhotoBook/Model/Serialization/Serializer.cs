@@ -87,6 +87,62 @@ namespace PhotoBook.Model.Serialization
             return data;
         }
 
+        public ObjectDataRelay GetObjectData2(int objectID)
+        {
+            if (objectID < -1)
+                throw new Exception("Incorrect object id provided!");
+
+            ObjectDataRelay data;
+            int corectID = objectID;
+
+            if (objectID == -1)
+                corectID = objectsData.Keys.Last();
+
+            Dictionary<string, string> passedDictionary = new Dictionary<string, string>();
+
+            string objectString = objectsData[corectID];
+
+            int charIterator = 0;
+            int colonIndex = 0;
+            int colonBehindArrayIndex = 0;
+            int endOfLineIndex = 0;
+            string key;
+            string value;
+
+            while(charIterator < objectString.Length)
+            {
+                colonIndex = objectString.IndexOf(":", charIterator);
+                key = objectString.Substring(charIterator, colonIndex - charIterator);
+
+                endOfLineIndex = objectString.IndexOf('\n', colonIndex);
+
+                // Case with arrays
+                if (colonIndex + 1 == endOfLineIndex)
+                {
+                    // Get rid of minus sign from array values
+                    if (key.StartsWith("-"))
+                        key = key.Substring(1);
+
+                    colonBehindArrayIndex = objectString.IndexOf(':', endOfLineIndex);
+                    endOfLineIndex = objectString.LastIndexOf('\n', endOfLineIndex, colonBehindArrayIndex);
+                    value = objectString.Substring(objectString.IndexOf('\n', colonIndex) + 2, endOfLineIndex - objectString.IndexOf('\n', colonIndex));
+                }
+
+                // General property
+                else
+                    value = objectString.Substring(colonIndex + 1, endOfLineIndex - colonIndex);
+
+                passedDictionary.Add(key, value);
+
+                // Pass the \n sign
+                charIterator = endOfLineIndex + 2;
+            }
+
+            data = new ObjectDataRelay(passedDictionary);
+
+            return data;
+        }
+
         public void SaveObjects(string saveFilePath)
         {
             if (File.Exists(saveFilePath))

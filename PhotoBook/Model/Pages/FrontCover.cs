@@ -47,27 +47,13 @@ namespace PhotoBook.Model.Pages
 
         public FrontCover DeserializeObject(Serializer serializer, int objectID)
         {
-            string frontCoverData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            FontSize = objectData.Get<int>(nameof(FontSize));
 
-            int attributeIndex = frontCoverData.IndexOf($"{nameof(FontSize)}");
-            int dividerIndex = frontCoverData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = frontCoverData.IndexOf('\n', dividerIndex);
+            Title = objectData.Get<string>(nameof(Title));
 
-            FontSize = int.Parse(frontCoverData.Substring(dividerIndex + 1, endOfLineIndex));
-
-            attributeIndex = frontCoverData.IndexOf($"{nameof(Title)}");
-            dividerIndex = frontCoverData.IndexOf(':', attributeIndex);
-            endOfLineIndex = frontCoverData.IndexOf('\n', dividerIndex);
-
-            Title = frontCoverData.Substring(dividerIndex + 1, endOfLineIndex);
-
-            attributeIndex = frontCoverData.IndexOf($"{nameof(Background)}");
-            dividerIndex = frontCoverData.IndexOf(':', attributeIndex);
-            int commaIndex = frontCoverData.IndexOf(':', dividerIndex);
-            endOfLineIndex = frontCoverData.IndexOf("\n", commaIndex);
-
-            int backgroundIndex = int.Parse(frontCoverData.Substring(dividerIndex + 2, commaIndex));
-            string backgroundType = frontCoverData.Substring(commaIndex + 1, endOfLineIndex);
+            string backgroundType = objectData.Get<string>(nameof(Background));
+            int backgroundIndex = objectData.Get<int>(nameof(Background));
 
             switch (backgroundType)
             {

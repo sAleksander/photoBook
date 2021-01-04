@@ -172,67 +172,23 @@ namespace PhotoBook.Model.Pages
 
         public ContentPage DeserializeObject(Serializer serializer, int objectID)
         {
-            string contentPageData = serializer.GetObjectData(objectID);
-
-            // TODO: Check if it is correct
-
-            int attributeIndex = contentPageData.IndexOf($"{nameof(Images)}");
-            int dividerIndex = contentPageData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = contentPageData.IndexOf($"{nameof(Comments)}", dividerIndex);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
             List<Image> tempImageList = new List<Image>();
+            List<int> tempImageIndexesList = objectData.Get<List<int>>(nameof(Images));
 
-            int currentLine = contentPageData.IndexOf("-&", dividerIndex);
-            int endOfCurrentLine = contentPageData.IndexOf("\n", currentLine);
-
-            int imageId = 0;
-
-            while (endOfCurrentLine < endOfLineIndex)
+            foreach (int tempImageIndex in tempImageIndexesList)
             {
-                imageId = int.Parse(contentPageData.Substring(currentLine + 1, endOfLineIndex));
-                // Make an empty image object
-                tempImageList.Add(new Image(""));
-                tempImageList[-1] = tempImageList[-1].DeserializeObject(serializer, imageId);
-
-                currentLine = contentPageData.IndexOf("-&", endOfCurrentLine);
-                endOfCurrentLine = contentPageData.IndexOf("\n", endOfCurrentLine);
+                tempImageList.Add(new Image());
+                tempImageList[-1] = tempImageList[-1].DeserializeObject(serializer, tempImageIndex);
             }
 
-            Images = tempImageList.ToArray();
+            _images = tempImageList.ToArray();
 
-            attributeIndex = contentPageData.IndexOf($"{nameof(Comments)}");
-            dividerIndex = contentPageData.IndexOf(':', attributeIndex);
-            endOfLineIndex = contentPageData.LastIndexOf($"\n", dividerIndex);
+            Comments = objectData.Get<List<string>>(nameof(Comments)).ToArray();
 
-            currentLine = contentPageData.IndexOf("-", dividerIndex);
-            endOfCurrentLine = contentPageData.IndexOf("\n", currentLine);
-
-            string[] tempComments = new string[Images.Length];
-            string commentContent = "";
-            // it will be treated as a comment iterator
-            imageId = 0;
-
-            // -1 w razie gdyby trafiło się na koniec tekstu
-            while (endOfCurrentLine < endOfLineIndex || endOfCurrentLine != -1)
-            {
-                // currentLine +2 and endOfLineIndex to avoid \" signs
-                commentContent = contentPageData.Substring(currentLine + 2, endOfLineIndex - 2);
-                tempComments[imageId] = commentContent;
-                imageId++;
-
-                currentLine = contentPageData.IndexOf("-&", endOfCurrentLine);
-                endOfCurrentLine = contentPageData.IndexOf("\n", endOfCurrentLine);
-            }
-
-            Comments = tempComments;
-
-            attributeIndex = contentPageData.IndexOf($"{nameof(Background)}");
-            dividerIndex = contentPageData.IndexOf(':', attributeIndex);
-            int commaIndex = contentPageData.IndexOf(':', dividerIndex);
-            endOfLineIndex = contentPageData.IndexOf("\n", commaIndex);
-
-            int backgroundIndex = int.Parse(contentPageData.Substring(dividerIndex + 2, commaIndex));
-            string backgroundType = contentPageData.Substring(commaIndex + 1, endOfLineIndex);
+            string backgroundType = objectData.Get<string>(nameof(Background));
+            int backgroundIndex = objectData.Get<int>(nameof(Background));
 
             switch (backgroundType)
             {

@@ -117,13 +117,9 @@ namespace PhotoBook.Model.Graphics
 
         public Filter DeserializeObject(Serializer serializer, int objectID)
         {
-            string filterData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
-            int attributeIndex = filterData.IndexOf($"{nameof(currentType)}");
-            int dividerIndex = filterData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = filterData.IndexOf('\n', dividerIndex);
-
-            string filter = filterData.Substring(dividerIndex + 1, endOfLineIndex);
+            string filter = objectData.Get<string>(nameof(currentType));
 
             switch (filter)
             {

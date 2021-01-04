@@ -29,25 +29,11 @@ namespace PhotoBook.Model.Backgrounds
 
         public Background DeserializeObject(Serializer serializer, int objectID)
         {
-            string backgroundColorData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
-            int attributeIndex = backgroundColorData.IndexOf($"{nameof(R)}");
-            int dividerIndex = backgroundColorData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = backgroundColorData.IndexOf('\n', dividerIndex);
-
-            R = byte.Parse(backgroundColorData.Substring(dividerIndex + 1, endOfLineIndex));
-
-            attributeIndex = backgroundColorData.IndexOf($"{nameof(G)}");
-            dividerIndex = backgroundColorData.IndexOf(':', attributeIndex);
-            endOfLineIndex = backgroundColorData.IndexOf('\n', dividerIndex);
-
-            G = byte.Parse(backgroundColorData.Substring(dividerIndex + 1, endOfLineIndex));
-
-            attributeIndex = backgroundColorData.IndexOf($"{nameof(B)}");
-            dividerIndex = backgroundColorData.IndexOf(':', attributeIndex);
-            endOfLineIndex = backgroundColorData.IndexOf('\n', dividerIndex);
-
-            B = byte.Parse(backgroundColorData.Substring(dividerIndex + 1, endOfLineIndex));
+            R = objectData.Get<byte>(nameof(R));
+            G = objectData.Get<byte>(nameof(G));
+            B = objectData.Get<byte>(nameof(B));
 
             return this;
         }

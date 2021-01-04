@@ -16,15 +16,11 @@ namespace PhotoBook.Model.Backgrounds
 
         public Background DeserializeObject(Serializer serializer, int objectID)
         {
-            string backgroundImageData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
-            int attributeIndex = backgroundImageData.IndexOf($"{nameof(Image)}");
-            int dividerIndex = backgroundImageData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = backgroundImageData.IndexOf('\n', dividerIndex);
+            int imageIndex = objectData.Get<int>(nameof(Image));
 
-            int backgroundImageID = int.Parse(backgroundImageData.Substring(dividerIndex + 2, endOfLineIndex));
-
-            Image = Image.DeserializeObject(serializer, backgroundImageID);
+            Image = Image.DeserializeObject(serializer, imageIndex);
 
             return this;
         }

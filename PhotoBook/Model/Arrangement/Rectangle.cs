@@ -29,32 +29,12 @@ namespace PhotoBook.Model.Arrangement
 
         public Rectangle DeserializeObject(Serializer serializer, int objectID)
         {
-            string rectangleData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
-            int attributeIndex = rectangleData.IndexOf($"{nameof(X)}");
-            int dividerIndex = rectangleData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
-
-            X = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
-
-            attributeIndex = rectangleData.IndexOf($"{nameof(Y)}");
-            dividerIndex = rectangleData.IndexOf(':', attributeIndex);
-            endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
-
-            Y = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
-
-            attributeIndex = rectangleData.IndexOf($"{nameof(Width)}");
-            dividerIndex = rectangleData.IndexOf(':', attributeIndex);
-            endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
-
-            Width = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
-
-            attributeIndex = rectangleData.IndexOf($"{nameof(Height)}");
-            dividerIndex = rectangleData.IndexOf(':', attributeIndex);
-            endOfLineIndex = rectangleData.IndexOf('\n', dividerIndex);
-
-            Height = int.Parse(rectangleData.Substring(dividerIndex + 1, endOfLineIndex));
-
+            X = objectData.Get<int>(nameof(X));
+            Y = objectData.Get<int>(nameof(Y));
+            Width = objectData.Get<int>(nameof(Width));
+            Height = objectData.Get<int>(nameof(Height));
 
             return this;
         }

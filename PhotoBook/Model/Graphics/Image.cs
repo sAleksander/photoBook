@@ -13,6 +13,11 @@ namespace PhotoBook.Model.Graphics
 {
     public class Image : SerializeInterface<Image>
     {
+        public Image()
+        {
+            // Constructor only for serialization purposes
+        }
+
         public Image(string path, int x, int y, int width, int height)
         {
             System.IO.FileAttributes attr = File.GetAttributes(OriginalPath);
@@ -137,38 +142,18 @@ namespace PhotoBook.Model.Graphics
 
         public Image DeserializeObject(Serializer serializer, int objectID)
         {
-            string imageData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
-            int attributeIndex = imageData.IndexOf($"{nameof(OriginalPath)}");
-            int dividerIndex = imageData.IndexOf(':', attributeIndex);
-            int endOfLineIndex = imageData.IndexOf('\n', dividerIndex);
-
-            OriginalPath = imageData.Substring(dividerIndex + 1, endOfLineIndex);
+            OriginalPath = objectData.Get<string>(nameof(OriginalPath));
             originalBitmap = new Bitmap(OriginalPath);
 
-            attributeIndex = imageData.IndexOf($"{nameof(DisplayedPath)}");
-            dividerIndex = imageData.IndexOf(':', attributeIndex);
-            endOfLineIndex = imageData.IndexOf('\n', dividerIndex);
-
-            DisplayedPath = imageData.Substring(dividerIndex + 1, endOfLineIndex);
+            DisplayedPath = objectData.Get<string>(nameof(DisplayedPath));
             editedBitmap = new Bitmap(editedBitmap);
 
-            attributeIndex = imageData.IndexOf($"{nameof(CroppingRectangle)}");
-            dividerIndex = imageData.IndexOf(':', attributeIndex);
-            int refIndex = imageData.IndexOf('&', dividerIndex);
-            endOfLineIndex = imageData.IndexOf("\n", refIndex);
-
-            int croppingRecIndex = int.Parse(imageData.Substring(refIndex + 1, endOfLineIndex));
-
+            int croppingRecIndex = objectData.Get<int>(nameof(CroppingRectangle));
             CroppingRectangle = CroppingRectangle.DeserializeObject(serializer, croppingRecIndex);
 
-            attributeIndex = imageData.IndexOf($"{nameof(CurrentFilter)}");
-            dividerIndex = imageData.IndexOf(':', attributeIndex);
-            refIndex = imageData.IndexOf('&', dividerIndex);
-            endOfLineIndex = imageData.IndexOf("\n", refIndex);
-
-            int currentFilterIndex = int.Parse(imageData.Substring(refIndex + 1, endOfLineIndex));
-
+            int currentFilterIndex = objectData.Get<int>(nameof(CurrentFilter));
             CurrentFilter = CurrentFilter.DeserializeObject(serializer, currentFilterIndex);
 
             return this;

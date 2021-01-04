@@ -40,15 +40,10 @@ namespace PhotoBook.Model.Pages
 
         public BackCover DeserializeObject(Serializer serializer, int objectID)
         {
-            string backCoverData = serializer.GetObjectData(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
 
-            int attributeIndex = backCoverData.IndexOf($"{nameof(Background)}");
-            int dividerIndex = backCoverData.IndexOf(':', attributeIndex);
-            int commaIndex = backCoverData.IndexOf(':', dividerIndex);
-            int endOfLineIndex = backCoverData.IndexOf("\n", commaIndex);
-
-            int backgroundIndex = int.Parse(backCoverData.Substring(dividerIndex + 2, commaIndex));
-            string backgroundType = backCoverData.Substring(commaIndex + 1, endOfLineIndex);
+            string backgroundType = objectData.Get<string>(nameof(Background));
+            int backgroundIndex = objectData.Get<int>(nameof(Background));
 
             switch (backgroundType)
             {

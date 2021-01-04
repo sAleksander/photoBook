@@ -88,6 +88,8 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
+    <Compile Include="Model\Serialization\ObjectDataRelay.cs" />
+    <Compile Include="Model\Serialization\ObjectDataRetrieverInterface.cs" />
     <Compile Include="Model\Serialization\SerializeInterface.cs" />
     <Compile Include="Model\Serialization\Serializer.cs" />
     <Compile Include="ViewModel\SettingsViewModel\BackCoverSettingsViewModel.cs" />
