@@ -9,9 +9,7 @@
     <Button Name="PickFileButton"
             Content="{Binding ButtonContent, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
             HorizontalContentAlignment="Left"
-            Background="Transparent" 
-            BorderBrush="Transparent"
-            Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+            FontSize="18px"
             Height="40"
             Click="PickFileButton_Click"/>
 </UserControl>

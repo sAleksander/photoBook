@@ -37,9 +37,8 @@
                     Content="Układ strony" 
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
-                    BorderBrush="White" 
-                    Background="Transparent"
-                    FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25"
                     Height="50">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -81,9 +80,8 @@
                     Content="Zmień motyw"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
-                    BorderBrush="White" 
-                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
-                    Background="Transparent" 
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25px"
                     Height="50"
                     Margin="0,1,0,1"/>
         <StackPanel Background="Transparent" Name="themeStackPanel">

@@ -17,9 +17,8 @@
                     Content="Zmień tytuł" 
                     VerticalAlignment="Top"
                     HorizontalContentAlignment="Left"
-                    BorderBrush="White" 
-                    Background="Transparent"
-                    FontSize="25" Foreground="White" FontFamily="Segoe UI Light" 
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25"
                     Height="50">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -39,9 +38,7 @@
             <Button Content="Zatwierdź" 
                         HorizontalAlignment="Right"
                         Margin="0,0,30,0"
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"
-                        Background="Transparent"
+                        FontSize="14px"
                         Command="{Binding ApplyTitle}"/>
         </StackPanel>
 
@@ -107,9 +104,8 @@
                     Content="Zmień motyw"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
-                    BorderBrush="White" 
-                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
-                    Background="Transparent" 
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25px"
                     Height="50"
                     Margin="0,1,0,1"/>
         <StackPanel Background="Transparent" Name="themeStackPanel">

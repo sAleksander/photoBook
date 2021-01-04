@@ -35,12 +35,8 @@
 
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
             <Button Content="Stwórz nową"
-                Background="Transparent"
-                BorderThickness="1"
-                BorderBrush="White"
-                FontFamily="Segoe UI Light"
+                Style="{StaticResource BorderButton}"
                 FontSize="20"
-                Foreground="White"
                 Height="50"
                 Margin="10,-50,0,0"
                 Width="200"
@@ -52,10 +48,7 @@
                 </Button.Resources>
             </Button>
             <Button Content="Otwórz istniejącą"
-                Background="Transparent"
-                BorderThickness="1"
-                BorderBrush="White"
-                FontFamily="Segoe UI Light"
+                Style="{StaticResource BorderButton}"
                 FontSize="20"
                 FontWeight="Bold"
                 Foreground="White"

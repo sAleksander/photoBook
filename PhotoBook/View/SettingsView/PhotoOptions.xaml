@@ -14,9 +14,8 @@
                     Content="Zdjęcie"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
-                    BorderBrush="White" 
-                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
-                    Background="Transparent" 
+                    FontSize="25px"
+                    Style="{StaticResource BorderButton}"
                     Height="50"
                     Margin="0,1,0,1"
                 Click="btnPhoto_Click"/>
@@ -33,9 +32,7 @@
             <Button Click="addDescription" 
                         Name="btnAddDesc"
                         Content="Dodaj opis"  
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
+                        FontSize="18px" 
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Name="addDescStackPanel">
@@ -52,9 +49,7 @@
                 <Button Content="Zatwierdź" 
                                 HorizontalAlignment="Right"
                                 Margin="0,0,30,0"
-                                BorderBrush="Transparent"
-                                Foreground="White" FontFamily="Segoe UI Light"  FontSize="14px"
-                                Background="Transparent"
+                                FontSize="14px"
                                 Command="{Binding ApplyDescription}"/>
             </StackPanel>
 
@@ -64,9 +59,7 @@
                         Name="btnAddFilter"
                         Content="Dodaj filtr" 
                         VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
+                        FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Background="Transparent" Name="filterStackPanel">
