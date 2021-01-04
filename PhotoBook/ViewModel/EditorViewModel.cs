@@ -114,10 +114,9 @@ namespace PhotoBook.ViewModel
                     {
                         model.DeletePages(currentContentPageIndex);
 
-                        if (model.NumOfContentPages == 0)
+                        if (currentContentPageIndex >= model.NumOfContentPages)
                         {
-                            currentPageType = PageType.FrontCover;
-                            currentContentPageIndex = 0;
+                            currentPageType = PageType.BackCover;
                         }
 
                         UpdateView();
