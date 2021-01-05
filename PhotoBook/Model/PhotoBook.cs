@@ -54,25 +54,26 @@ namespace PhotoBook.Model
 
             photoBook._contentPages = new List<ContentPage>(6);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
                 ContentPage contentPage = new ContentPage();
 
                 contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
 
-                var image = contentPage.LoadImage(0, @"..\placeholder_cropped.png");
-                image.CroppingRectangle = new Rectangle(
-                    0, 0, 600, 575
-                );
+                contentPage.LoadImage(0, @"..\placeholder_cropped.png");
+                contentPage.SetComment(0, $"Obrazek {3 * i}");
 
-                contentPage.SetComment(0, $"Obrazek {2 * i}");
+                contentPage.LoadImage(1, @"..\placeholder_original.png");
+                contentPage.SetComment(1, $"Obrazek {3 * i + 1}");
 
-                var image2 = contentPage.LoadImage(1, @"..\placeholder_original.png");
-                image2.CroppingRectangle = new Rectangle(
-                    203, 115, 697, 668
-                );
+                photoBook._contentPages.Add(contentPage);
 
-                contentPage.SetComment(1, $"Obrazek {2 * i + 1}");
+                contentPage = new ContentPage();
+
+                contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.OnePicture];
+
+                contentPage.LoadImage(0, @"..\placeholder_cropped.png");
+                contentPage.SetComment(0, $"Obrazek {3 * i + 2}");
 
                 photoBook._contentPages.Add(contentPage);
             }
@@ -82,8 +83,8 @@ namespace PhotoBook.Model
         
         public static string Font { get; } = "Arial";
 
-        public static int PageWidthInPixels { get; } = 800;
-        public static int PageHeightInPixels { get; } = 1500;
+        public static int PageWidthInPixels { get; } = 790;
+        public static int PageHeightInPixels { get; } = 1120;
 
         private List<ContentPage> _contentPages;
         
