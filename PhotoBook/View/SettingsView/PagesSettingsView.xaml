@@ -48,29 +48,27 @@
         </Button>
         <StackPanel Name="layoutStackPanel" 
                         Background="Transparent">
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
-                        Content="1 zdjęcie"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0"/>
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
-                        Content="2 zdjęcia pionowo"  
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
-                        Content="2 zdjęcia poziomo" 
-                        VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+
+            <ItemsControl ItemsSource="{
+                    Binding Path=Layouts,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Style="{DynamicResource {x:Type ToggleButton}}"
+                                     GroupName="layout"
+                                     Content="{Binding Name}"
+                                     HorizontalContentAlignment="Left"
+                                     Background="Transparent" 
+                                     BorderBrush="Transparent"
+                                     Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                                     Height="40"
+                                     Margin="40,0,0,0"
+                                     IsChecked="{Binding IsChecked}"
+                                     Command="{Binding Check}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
 
 

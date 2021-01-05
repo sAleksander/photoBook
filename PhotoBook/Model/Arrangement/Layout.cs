@@ -48,9 +48,8 @@ namespace PhotoBook.Model.Arrangement
         public static int CommentFontSize { get; } = 32;
         public static int CommentOffsetInPixels { get; } = 25;
 
-        // String, or enum Type? What is this even for?
         private string _name;
-        public string Name { get; }
+        public string Name { get => _name; }
 
         private int _numOfImages;
         public int NumOfImages { get => _numOfImages; }

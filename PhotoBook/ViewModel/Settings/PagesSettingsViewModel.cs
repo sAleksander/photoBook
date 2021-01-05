@@ -1,12 +1,17 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using PhotoBook.Model.Arrangement;
 using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Pages;
+using System;
 using System.Collections.ObjectModel;
+using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
 namespace PhotoBook.ViewModel.Settings
 {
     public class PagesSettingsViewModel : SettingsViewModel
     {
+        private PhotoBookModel model;
+
         private ContentPage leftPage;
         private ContentPage rightPage;
 
@@ -50,8 +55,17 @@ namespace PhotoBook.ViewModel.Settings
             set => Set(nameof(Images), ref images, value);
         }
 
-        public PagesSettingsViewModel(ContentPage leftPage, ContentPage rightPage)
+        private ObservableCollection<SelectableLayoutViewModel> layouts;
+        public ObservableCollection<SelectableLayoutViewModel> Layouts
         {
+            get => layouts;
+            set => Set(nameof(Layouts), ref layouts, value);
+        }
+
+        public PagesSettingsViewModel(PhotoBookModel model, ContentPage leftPage, ContentPage rightPage)
+        {
+            this.model = model;
+
             ResetPages(leftPage, rightPage);
         }
 
@@ -67,7 +81,11 @@ namespace PhotoBook.ViewModel.Settings
         private void SelectPage(ContentPage page)
         {
             selectedPage = page;
+            RefreshPageSettings(page);
+        }
 
+        private void RefreshPageSettings(ContentPage page)
+        {
             // TODO: Handle BackgroundImage as well
             BackgroundColor = selectedPage.Background as BackgroundColor;
 
@@ -77,6 +95,21 @@ namespace PhotoBook.ViewModel.Settings
                 newImages.Add(new ImageViewModel(page, imageIndex));
             }
             Images = newImages;
+
+            Layouts = new ObservableCollection<SelectableLayoutViewModel>();
+            foreach (var item in model.AvailableLayouts)
+            {
+                var layoutVM = new SelectableLayoutViewModel(item.Value, item.Key);
+                layoutVM.Selected += OnLayoutSelected;
+                if (page.Layout == item.Value) layoutVM.IsChecked = true;
+                layouts.Add(layoutVM);
+            }
+        }
+
+        private void OnLayoutSelected(Layout.Type layoutType)
+        {
+            selectedPage.Layout = model.AvailableLayouts[layoutType];
+            RefreshPageSettings(selectedPage);
         }
     }
 }

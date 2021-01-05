@@ -116,6 +116,7 @@
     <Compile Include="ViewModel\Navigator.cs" />
     <Compile Include="ViewModel\Settings\ImageViewModel.cs" />
     <Compile Include="ViewModel\Settings\PagesSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\SelectableLayoutViewModel.cs" />
     <Compile Include="ViewModel\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Pages\BackCover.xaml.cs">
