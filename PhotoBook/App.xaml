@@ -38,6 +38,10 @@
             <viewPages:BackCover/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:CropPhotoViewModel}">
+            <view:CropPhotoView/>
+        </DataTemplate>
+
         <Style TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="White"/>

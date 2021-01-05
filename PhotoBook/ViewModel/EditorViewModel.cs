@@ -196,7 +196,7 @@ namespace PhotoBook.ViewModel
             var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
             var contentPages = new Model.Pages.ContentPage[] { leftPage, rightPage };
 
-            SettingsViewModel = new PagesSettingsViewModel(leftPage, rightPage);
+            SettingsViewModel = new PagesSettingsViewModel(locator, leftPage, rightPage);
             BookViewModel = new PagesViewModel(contentPages);
         }
 
