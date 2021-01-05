@@ -39,6 +39,7 @@ namespace PhotoBook.View
             Canvas.SetTop(croppRectangle, imgCroppingRectangle.Y);
             croppRectangle.Width = imgCroppingRectangle.Width;
             croppRectangle.Height = imgCroppingRectangle.Height;
+
         }
 
         //Adjust cropping reectangle size
@@ -106,14 +107,22 @@ namespace PhotoBook.View
         private void croppRectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (croppRectangle.IsMouseCaptured)
+            {
                 croppRectangle.ReleaseMouseCapture();
+
+                int[] cooridnates = croppingRectangleCoordinates();
+                viewModel.CroppingRectangle = new Model.Arrangement.Rectangle(cooridnates[0], cooridnates[1], cooridnates[2], cooridnates[3]);
+            }
+
         }
 
-        private double [] croppingRectangleCoordinates()
+        private int [] croppingRectangleCoordinates()
         {
             //croppRectangle[0] - X, croppRectangle[1] - Y
-            double[] rectangle = new double[] { Canvas.GetLeft(croppRectangle), Canvas.GetTop(croppRectangle) };
-            Console.WriteLine($"x {rectangle[0]} y {rectangle[1]}");
+            int[] rectangle = new int[] { Convert.ToInt32(Canvas.GetLeft(croppRectangle)),
+                                        Convert.ToInt32(Canvas.GetTop(croppRectangle)), 
+                                        Convert.ToInt32(croppRectangle.ActualWidth), 
+                                        Convert.ToInt32(croppRectangle.ActualHeight) };
             return rectangle;
         }
 

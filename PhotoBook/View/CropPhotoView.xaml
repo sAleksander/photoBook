@@ -8,7 +8,8 @@
       d:DesignHeight="900" d:DesignWidth="1800"
       DataContext="{Binding Source={StaticResource Locator}, Path=CropPhoto}"
       Title="CropPhotoView"
-      Loaded="Page_Loaded">
+      Loaded="Page_Loaded"
+      >
 
     <Grid>
         <Grid.Background>
@@ -36,7 +37,8 @@
                    FontSize="20"
                    Foreground="White" 
                    HorizontalAlignment="Center" 
-                   VerticalAlignment="Bottom"/>
+                   VerticalAlignment="Bottom"
+                   Margin="0,10,0,20"/>
 
         
         <Viewbox Grid.Row="1">
@@ -67,10 +69,10 @@
                 BorderThickness="1"
                 BorderBrush="White"
                 FontFamily="Segoe UI Light"
-                FontSize="30"
+                FontSize="25"
                 Foreground="White"
-                Height="70"
-                Width="250"
+                Height="50"
+                Width="200"
                 Command="{Binding Apply}">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
