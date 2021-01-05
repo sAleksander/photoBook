@@ -64,12 +64,8 @@
 
         <Button Grid.Row="2"
                 Content="Zatwierdź"
-                Background="Transparent"
-                BorderThickness="1"
-                BorderBrush="White"
-                FontFamily="Segoe UI Light"
+                Style="{StaticResource BorderButton}"
                 FontSize="25"
-                Foreground="White"
                 Height="50"
                 Width="200"
                 Command="{Binding Apply}">
