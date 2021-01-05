@@ -121,7 +121,7 @@ namespace PhotoBook.Model.Exporters
                             margin: {percent(2)};
                         '>
                             <img src='{PHOTOS_DIRECTORY + photos[0]}' style='
-                                width: {customPercent(A4_WIDTH, 90)};
+                                width: {customPercent(A4_WIDTH, 80)};
                             '>
                                 <div style='
                                     height: {percent(10)};
