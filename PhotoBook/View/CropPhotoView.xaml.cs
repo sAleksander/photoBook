@@ -1,6 +1,7 @@
 ﻿using PhotoBook.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,24 +68,22 @@ namespace PhotoBook.View
         //Position of mouse when left side id clicked
         public Point MousePositionOnMouseDown; 
 
-        private void croppRectangle_MouseMove(object sender, MouseEventArgs e)
+        private void croppRectangle_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
             MousePositionOnMouseDown = e.GetPosition(this);
             if (!croppRectangle.IsMouseCaptured)
                 croppRectangle.CaptureMouse();
         }
 
-        private void croppRectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void croppRectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            if(croppRectangle.IsMouseCaptured)
+            if (croppRectangle.IsMouseCaptured)
             {
                 Point currentMousePosition = e.GetPosition(this);
 
                 double offsetX = currentMousePosition.X - MousePositionOnMouseDown.X;
                 double offsetY = currentMousePosition.Y - MousePositionOnMouseDown.Y;
 
-                Console.WriteLine($"Crop rectangle Left {Canvas.GetLeft(croppRectangle)}");
-                Console.WriteLine($"Crop rectangle Top {Canvas.GetTop(croppRectangle)}");
 
                 double rectangleX = Canvas.GetLeft(croppRectangle);
                 double rectangleY = Canvas.GetTop(croppRectangle);
@@ -104,7 +103,7 @@ namespace PhotoBook.View
             }
         }
 
-        private void croppRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void croppRectangle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (croppRectangle.IsMouseCaptured)
                 croppRectangle.ReleaseMouseCapture();
@@ -114,8 +113,10 @@ namespace PhotoBook.View
         {
             //croppRectangle[0] - X, croppRectangle[1] - Y
             double[] rectangle = new double[] { Canvas.GetLeft(croppRectangle), Canvas.GetTop(croppRectangle) };
+            Console.WriteLine($"x {rectangle[0]} y {rectangle[1]}");
             return rectangle;
         }
+
 
     }
 }

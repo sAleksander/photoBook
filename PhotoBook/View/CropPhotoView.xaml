@@ -26,17 +26,17 @@
         <TextBlock Grid.Row="0"
                    Text="Przytnij zdjęcie"
                    FontFamily="Segoe UI Light"
-                   FontSize="50"
+                   FontSize="40"
                    Foreground="White" 
                    HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" Margin="744,42,349.5,41"/>
+                   VerticalAlignment="Center"/>
         <TextBlock Grid.Row="0"
                    Text="Przytnij zdjęcie za pomocą prostokąta z czerwoną ramką"
                    FontFamily="Segoe UI Light"
-                   FontSize="30"
+                   FontSize="20"
                    Foreground="White" 
                    HorizontalAlignment="Center" 
-                   VerticalAlignment="Bottom" Margin="543,0,148.5,0"/>
+                   VerticalAlignment="Bottom"/>
 
         
         <Viewbox Grid.Row="1">
@@ -67,10 +67,10 @@
                 BorderThickness="1"
                 BorderBrush="White"
                 FontFamily="Segoe UI Light"
-                FontSize="40"
+                FontSize="30"
                 Foreground="White"
                 Height="70"
-                Width="250" Margin="775,40,380.5,40"
+                Width="250"
                 Command="{Binding Apply}">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
