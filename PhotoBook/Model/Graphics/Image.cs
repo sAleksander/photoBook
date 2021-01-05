@@ -7,8 +7,8 @@ namespace PhotoBook.Model.Graphics
 {
     public class Image
     {
-        public Bitmap originalBitmap { get; }
-        public Bitmap editedBitmap { get; private set; }
+        private Bitmap originalBitmap { get; }
+        private Bitmap editedBitmap { get; set; }
 
         public Rectangle CroppingRectangle { get; set; }
         public string OriginalPath { get; }
