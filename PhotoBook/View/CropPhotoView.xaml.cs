@@ -33,37 +33,15 @@ namespace PhotoBook.View
             viewModel = (CropPhotoViewModel)DataContext;
             imgCroppingRectangle = viewModel.CroppingRectangle;
 
-            originalImage.Source = new BitmapImage(new Uri(viewModel.ImagePath));
+            var bitmap = new BitmapImage(new Uri(viewModel.ImagePath));
+            originalImage.Source = bitmap;
+            originalImage.Width = bitmap.PixelWidth;
+            originalImage.Height = bitmap.PixelHeight;
 
             Canvas.SetLeft(croppRectangle, imgCroppingRectangle.X);
             Canvas.SetTop(croppRectangle, imgCroppingRectangle.Y);
             croppRectangle.Width = imgCroppingRectangle.Width;
             croppRectangle.Height = imgCroppingRectangle.Height;
-
-        }
-
-        //Adjust cropping reectangle size
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            double [] rectangleSize = AdjustCroppingRectangleDimensions(originalImage.ActualWidth, originalImage.ActualHeight, croppRectangle.ActualWidth, croppRectangle.ActualHeight);
-
-            croppRectangle.Width = rectangleSize[0];
-            croppRectangle.Height = rectangleSize[1];
-        }
-
-        // returns array of dimensions [0] - width [1] - height, Width/Height proportions is for aspect ration eg: 16:9, WidthProportion = 16, HeightProportion = 9
-        private double [] AdjustCroppingRectangleDimensions(double imageWidth, double imageHeight, double rectangleWidthProportion, double rectangleHeightProportion)
-        {
-            double[] dimensions = new double[2];
-            dimensions[0] = imageWidth;
-            dimensions[1] = imageWidth * (rectangleHeightProportion / rectangleWidthProportion);
-            if (dimensions[1] > imageHeight)
-            {
-                dimensions[0] = imageHeight * (rectangleWidthProportion / rectangleHeightProportion);
-                dimensions[1] = imageHeight;
-            }
-
-            return dimensions;
         }
 
         //Position of mouse when left side id clicked

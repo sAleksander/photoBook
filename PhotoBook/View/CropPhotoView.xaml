@@ -43,8 +43,8 @@
         
         <Viewbox Grid.Row="1">
             <Canvas x:Name="canvas"
-                    Width="{Binding ElementName=originalImage, Path=ActualWidth}"
-                    Height="{Binding ElementName=originalImage, Path=ActualHeight}">
+                    Width="{Binding ElementName=originalImage, Path=Width}"
+                    Height="{Binding ElementName=originalImage, Path=Height}">
                 <Image x:Name="originalImage" Source="Images/Witoldus.PNG"/>
             
                 <!-- Do width i Height z rectangla bindingi z Modelu -->
