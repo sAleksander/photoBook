@@ -1,7 +1,9 @@
-﻿using PhotoBook.ViewModel.Pages;
+﻿using PhotoBook.Model.Helpers;
+using PhotoBook.ViewModel.Pages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +60,8 @@ namespace PhotoBook.View.Pages
                 var fill = backgroundRectangle.Fill as SolidColorBrush;
                 var newColor = viewModel.Background;
                 fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
+
+                FontAdjuster.AdjustFont(titleLabel, newColor.R, newColor.G, newColor.B);
             }
         }
 
