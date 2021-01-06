@@ -40,60 +40,6 @@
                         Command="{Binding ApplyTitle}"/>
         </StackPanel>
 
-        <!--FontFamily-->
-
-        <!-- TODO: We don't have fonts yet
-                <Button Click="changeFontFamily"
-                    Name="btnChangeFont"
-                    Content="Zmień czcionkę" 
-                    VerticalAlignment="Top" 
-                    HorizontalContentAlignment="Left"
-                    BorderBrush="White" 
-                    Background="Transparent" 
-                    Foreground="White" FontFamily="Segoe UI Light"  FontSize="25px"
-                    Height="50"
-                    Margin="0,1,0,1" >
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="2"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <StackPanel Visibility="Collapsed" Background="Transparent" Name="fontStackPanel">
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
-                        Content="Segoe UI Light"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Content="Arial"  
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Arial" FontSize="18px" 
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Content="Bradley Hand" 
-                        VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Bradley Hand ITC"  FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Content="Yu Gothic UI Semibold" 
-                        VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Yu Gothic UI Semibold"  FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-                </StackPanel>
-                
-                -->
 
         <!--Theme-->
 
