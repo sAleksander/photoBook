@@ -54,7 +54,7 @@ namespace PhotoBook.ViewModel.Settings
                     ImageAdjuster.CropImage(
                         tmp.DisplayedPath,
                         tmp.CroppingRectangle.X,
-                        tmp.CroppingRectangle.Y,    
+                        tmp.CroppingRectangle.Y,
                         tmp.CroppingRectangle.Width,
                         tmp.CroppingRectangle.Height
                         );
@@ -73,6 +73,7 @@ namespace PhotoBook.ViewModel.Settings
             switch (model.FrontCover.Background)
             {
                 case Model.Backgrounds.BackgroundColor bgColor:
+                    ob.FONT_COLOR = FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B);
                     ob.CreateFrontCover(ToPdf.CssBackground(bgColor.R, bgColor.G, bgColor.B), model.FrontCover.Title);
                     break;
                 case Model.Backgrounds.BackgroundImage bgImage:
@@ -94,6 +95,7 @@ namespace PhotoBook.ViewModel.Settings
                 switch (model.GetContentPagesAt(i).Item1.Background)
                 {
                     case Model.Backgrounds.BackgroundColor bgColor:
+                        ob.FONT_COLOR = FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B);
                         ob.CreatePage(photos, descriptions, ToPdf.CssBackground(bgColor.R, bgColor.G, bgColor.B));
                         break;
                     case Model.Backgrounds.BackgroundImage bgImage:
@@ -113,6 +115,7 @@ namespace PhotoBook.ViewModel.Settings
                 switch (model.GetContentPagesAt(i).Item2.Background)
                 {
                     case Model.Backgrounds.BackgroundColor bgColor:
+                        ob.FONT_COLOR = FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B);
                         ob.CreatePage(photos, descriptions, ToPdf.CssBackground(bgColor.R, bgColor.G, bgColor.B));
                         break;
                     case Model.Backgrounds.BackgroundImage bgImage:
@@ -124,6 +127,7 @@ namespace PhotoBook.ViewModel.Settings
             switch (model.BackCover.Background)
             {
                 case Model.Backgrounds.BackgroundColor bgColor:
+                    ob.FONT_COLOR = FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B);
                     ob.CreateBackCover(ToPdf.CssBackground(bgColor.R, bgColor.G, bgColor.B));
                     break;
                 case Model.Backgrounds.BackgroundImage bgImage:
@@ -138,7 +142,9 @@ namespace PhotoBook.ViewModel.Settings
         {
             prepareImages();
 
-            ToHtml ob = new ToHtml(model.NumOfContentPages);
+            ToHtml.FONT_COLOR = "red";
+
+            ToHtml ob = new ToHtml(model.NumOfContentPages/2);
 
             string fileNameExporter(string path)
             {
@@ -149,6 +155,7 @@ namespace PhotoBook.ViewModel.Settings
             switch (model.FrontCover.Background)
             {
                 case Model.Backgrounds.BackgroundColor bgColor:
+                    ToHtml.FONT_COLOR = FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B);
                     ob.CreateFrontCover(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B), model.FrontCover.Title);
                     break;
                 case Model.Backgrounds.BackgroundImage bgImage:
@@ -156,14 +163,15 @@ namespace PhotoBook.ViewModel.Settings
                     break;
             }
 
-            for (int i = 0; i < model.NumOfContentPages; i++)
+            for (int i = 0; i < model.NumOfContentPages; i+=2)
             {
                 ToHtml.Page left = new ToHtml.Page(ToHtml.CssBackground(0, 0, 0));
 
                 switch (model.GetContentPagesAt(i).Item1.Background)
                 {
                     case Model.Backgrounds.BackgroundColor bgColor:
-                        left = new ToHtml.Page(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B));
+                        left = new ToHtml.Page(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B),
+                            FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B));
                         break;
                     case Model.Backgrounds.BackgroundImage bgImage:
                         left = new ToHtml.Page(ToHtml.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
@@ -183,7 +191,8 @@ namespace PhotoBook.ViewModel.Settings
                 switch (model.GetContentPagesAt(i).Item2.Background)
                 {
                     case Model.Backgrounds.BackgroundColor bgColor:
-                        right = new ToHtml.Page(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B));
+                        right = new ToHtml.Page(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B),
+                            FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B));
                         break;
                     case Model.Backgrounds.BackgroundImage bgImage:
                         right = new ToHtml.Page(ToHtml.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
@@ -204,6 +213,7 @@ namespace PhotoBook.ViewModel.Settings
             switch (model.BackCover.Background)
             {
                 case Model.Backgrounds.BackgroundColor bgColor:
+                    ToHtml.FONT_COLOR = FontAdjuster.AdjustFont(bgColor.R, bgColor.G, bgColor.B);
                     ob.CreateBackCover(ToHtml.CssBackground(bgColor.R, bgColor.G, bgColor.B));
                     break;
                 case Model.Backgrounds.BackgroundImage bgImage:

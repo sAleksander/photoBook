@@ -230,5 +230,6 @@ namespace PhotoBook.Model.Exporters
             return $@"background-color: rgb({R},{G},{B});";
         }
         #endregion
+
     }
 }

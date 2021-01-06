@@ -15,5 +15,10 @@ namespace PhotoBook.Model.Helpers
             if ((R + G + B) > 382) label.Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0));
             else label.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         }
+        public static string AdjustFont(int R, int G, int B)
+        {
+            if ((R + G + B) > 382) return "black";
+            else return "white";
+        }
     }
 }
