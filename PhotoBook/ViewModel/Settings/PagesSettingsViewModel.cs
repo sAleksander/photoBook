@@ -1,8 +1,7 @@
-﻿using GalaSoft.MvvmLight.Command;
-using PhotoBook.Model.Arrangement;
+﻿using PhotoBook.Model.Arrangement;
 using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Pages;
-using System;
+using PhotoBook.Services;
 using System.Collections.ObjectModel;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
@@ -11,6 +10,7 @@ namespace PhotoBook.ViewModel.Settings
     public class PagesSettingsViewModel : SettingsViewModel
     {
         private PhotoBookModel model;
+        private IDialogService dialogService;
 
         private ContentPage leftPage;
         private ContentPage rightPage;
@@ -62,8 +62,9 @@ namespace PhotoBook.ViewModel.Settings
             set => Set(nameof(Layouts), ref layouts, value);
         }
 
-        public PagesSettingsViewModel(PhotoBookModel model, ContentPage leftPage, ContentPage rightPage)
+        public PagesSettingsViewModel(IDialogService dialogService, PhotoBookModel model, ContentPage leftPage, ContentPage rightPage)
         {
+            this.dialogService = dialogService;
             this.model = model;
 
             ResetPages(leftPage, rightPage);
@@ -108,8 +109,21 @@ namespace PhotoBook.ViewModel.Settings
 
         private void OnLayoutSelected(Layout.Type layoutType)
         {
-            selectedPage.Layout = model.AvailableLayouts[layoutType];
-            RefreshPageSettings(selectedPage);
+            var dialogVM = new Dialogs.DialogYesNoViewModel("Zmiana układu strony spowoduje usunięcie zdjęć. Kontynuować?");
+            dialogService.OpenDialog(dialogVM);
+
+            if (dialogVM.Result == Dialogs.DialogResult.Yes)
+            {
+                selectedPage.Layout = model.AvailableLayouts[layoutType];
+                RefreshPageSettings(selectedPage);
+            }
+            else
+            {
+                foreach (var vm in layouts)
+                {
+                    vm.IsChecked = vm.Layout == selectedPage.Layout;
+                }
+            }
         }
     }
 }

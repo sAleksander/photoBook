@@ -5,8 +5,10 @@
              xmlns:viewModel="clr-namespace:PhotoBook.ViewModel"
              xmlns:viewModelSettings="clr-namespace:PhotoBook.ViewModel.Settings"
              xmlns:viewModelPages="clr-namespace:PhotoBook.ViewModel.Pages"
+             xmlns:viewModelDialogs="clr-namespace:PhotoBook.ViewModel.Dialogs"
              xmlns:view="clr-namespace:PhotoBook.View"
              xmlns:viewPages="clr-namespace:PhotoBook.View.Pages"
+             xmlns:viewDialogs="clr-namespace:PhotoBook.View.Dialogs"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <viewModel:ViewModelLocator x:Key="Locator"/>
@@ -36,6 +38,10 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModelPages:BackCoverViewModel}">
             <viewPages:BackCover/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelDialogs:DialogYesNoViewModel}">
+            <viewDialogs:DialogYesNo/>
         </DataTemplate>
 
         <Style TargetType="Button">

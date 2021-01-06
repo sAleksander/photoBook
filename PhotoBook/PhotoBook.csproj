@@ -104,6 +104,14 @@
     <Compile Include="Model\Pages\Page.cs" />
     <Compile Include="Model\PhotoBook.cs" />
     <Compile Include="Model\Arrangement\Rectangle.cs" />
+    <Compile Include="ViewModel\Dialogs\DialogResultEnum.cs" />
+    <Compile Include="ViewModel\Dialogs\DialogYesNoViewModel.cs" />
+    <Compile Include="View\Dialogs\DialogWindow.xaml.cs">
+      <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\WPFDialogService.cs" />
+    <Compile Include="ViewModel\Dialogs\DialogViewModelBase.cs" />
     <Compile Include="ViewModel\Pages\BackCoverViewModel.cs" />
     <Compile Include="ViewModel\Pages\BookViewModel.cs" />
     <Compile Include="ViewModel\Pages\FrontCoverViewModel.cs" />
@@ -119,6 +127,9 @@
     <Compile Include="ViewModel\Settings\SelectableLayoutViewModel.cs" />
     <Compile Include="ViewModel\Settings\SettingsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Dialogs\DialogYesNo.xaml.cs">
+      <DependentUpon>DialogYesNo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Pages\BackCover.xaml.cs">
       <DependentUpon>BackCover.xaml</DependentUpon>
     </Compile>
@@ -168,6 +179,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Dialogs\DialogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dialogs\DialogYesNo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Pages\BackCover.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -268,5 +287,6 @@
   <ItemGroup>
     <Resource Include="View\Images\Motyw2.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,6 +16,11 @@ namespace PhotoBook.ViewModel.Settings
 
         public event Action<Layout.Type> Selected;
 
+        public Layout Layout
+        {
+            get => layout;
+        }
+
         private bool isChecked;
         public bool IsChecked
         {
