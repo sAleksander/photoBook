@@ -2,6 +2,7 @@
 using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,17 +34,12 @@ namespace PhotoBook.Model.Exporters
         #region Percent functions
         private string percent(float percentage)
         {
-            return $"{A4_HEIGHT * (percentage / 100)}px";
-        }
-
-        private float rawPercent(float percentage)
-        {
-            return A4_HEIGHT * (percentage / 100);
+            return (A4_HEIGHT * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo)+"px";
         }
 
         private string customPercent(float parentHeight, float percentage)
         {
-            return $"{parentHeight * (percentage / 100)}px";
+            return (parentHeight * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo)+"px";
         }
         #endregion
 
@@ -72,7 +68,6 @@ namespace PhotoBook.Model.Exporters
 
         public void CreatePage(List<string> photos, List<string> descriptions, string cssBackground)
         {
-            const float max_height = 98;
             const float margins_height = 2;
             const float description_height = 10;
 
