@@ -28,13 +28,11 @@
         </Button>
         <StackPanel Name="titleStackPanel" >
             <Label Content="Wpisz tytuł"
-                       Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
+                       FontSize="14px"
                        Margin="40,0,0,0"/>
-            <TextBox Background="#e8e8e8"
-                         Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
-                         Height="70"
-                         Margin="40,0,15,0"
-                         Text="{Binding Title}"/>
+            <TextBox Height="70"
+                     Margin="40,0,15,0"
+                     Text="{Binding Title}"/>
             <Button Content="Zatwierdź" 
                         HorizontalAlignment="Right"
                         Margin="0,0,30,0"
@@ -110,50 +108,20 @@
                     Margin="0,1,0,1"/>
         <StackPanel Background="Transparent" Name="themeStackPanel">
             <!--
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+                    <RadioButton Style="{StaticResource OptionButton}"
                         Name="btnColor"
                         Content="Kolor"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0"/>
                     -->
             <settingsview:ColorPicker x:Name="BackgroundColorPicker"
                                               BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}"/>
-
+            
             <!-- TODO: Bind it to view model somehow
-                    <Label Content="Motyw 1"
-                           Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
-                           Margin="45,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Name="btnTheme1"
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
-                        Height="70"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left">
-                        <RadioButton.Background>
-                            <ImageBrush ImageSource="/PhotoBook;component/View/Images/Motyw1.png" TileMode="Tile"/>
-                        </RadioButton.Background>
-                    </RadioButton>
-                    
-                    <Label Content="Motyw 2"
-                           Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
-                           Margin="45,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Name="btnTheme2"
-                        VerticalAlignment="Top" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
-                        Height="70"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left">
-                        <RadioButton.Background>
-                            <ImageBrush ImageSource="/PhotoBook;component/View/Images/Motyw2.png"/>
-                        </RadioButton.Background>
-                    </RadioButton>
-                    
-                    -->
+                    Themes buttons are in userContol -> ChangeBackgroundImage.xaml -->
+            
+            
         </StackPanel>
     </StackPanel>
 </UserControl>

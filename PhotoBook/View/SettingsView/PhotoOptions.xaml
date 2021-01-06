@@ -30,27 +30,24 @@
 
             <!--Add Description-->
             <Button Click="addDescription" 
-                        Name="btnAddDesc"
-                        Content="Dodaj opis"  
-                        FontSize="18px" 
-                        Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                    Name="btnAddDesc"
+                    Content="Dodaj opis"  
+                    FontSize="18px" 
+                    Height="40"
+                    Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Name="addDescStackPanel">
                 <Label Content="Wpisz opis"
-                               Foreground="White" 
-                               FontFamily="Segoe UI Light" FontSize="14px"
-                                Margin="60,0,0,0"/>
+                       FontSize="14px"
+                       Margin="60,0,0,0"/>
                 <TextBox Name="DescriptionTextBox"
-                                Background="#e8e8e8"
-                                Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
-                                Height="70"
-                                Margin="60,0,15,0"
-                                Text="{Binding Description}"/>
+                         Height="70"
+                         Margin="60,0,15,0"
+                         Text="{Binding Description}"/>
                 <Button Content="Zatwierdź" 
-                                HorizontalAlignment="Right"
-                                Margin="0,0,30,0"
-                                FontSize="14px"
-                                Command="{Binding ApplyDescription}"/>
+                        HorizontalAlignment="Right"
+                        Margin="0,0,30,0"
+                        FontSize="14px"
+                        Command="{Binding ApplyDescription}"/>
             </StackPanel>
 
 
@@ -63,38 +60,26 @@
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Background="Transparent" Name="filterStackPanel">
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+                <RadioButton Style="{StaticResource OptionButton}"
                         Content="Brak"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0"/>
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                <RadioButton Style="{StaticResource OptionButton}" 
                         Content="Ciepły"  
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        HorizontalContentAlignment="Left"
+                        FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0"/>
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                <RadioButton Style="{StaticResource OptionButton}" 
                         Content="Zimny" 
                         VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        HorizontalContentAlignment="Left"
+                        FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0" />
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                <RadioButton Style="{StaticResource OptionButton}" 
                         Content="Czarno-biały" 
                         VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        HorizontalContentAlignment="Left"
+                        FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0"/>
             </StackPanel>

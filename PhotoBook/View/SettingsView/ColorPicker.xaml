@@ -9,7 +9,7 @@
     <StackPanel IsEnabled="True" Name="colorPickerStackPanel" Margin="45,0,10,0">
         <!--R-->
         <Label Content="R"
-               Foreground="White" FontFamily="Segoe UI Light" FontSize="16px"/>
+               FontSize="16px"/>
         <Slider Name="Rslider"
                 Maximum="255" Minimum="0" 
                 TickFrequency="2" 
@@ -19,7 +19,7 @@
                 ValueChanged="Rslider_ValueChanged"/>
         <!--G-->
         <Label Content="G"
-               Foreground="White" FontFamily="Segoe UI Light" FontSize="16px"/>
+               FontSize="16px"/>
         <Slider Name="Gslider"
                 Maximum="255" Minimum="0" 
                 TickFrequency="2" 
@@ -29,7 +29,7 @@
                 ValueChanged="Gslider_ValueChanged"/>
         <!--B-->
         <Label Content="B"
-               Foreground="White" FontFamily="Segoe UI Light" FontSize="16px"/>
+               FontSize="16px"/>
         <Slider Name="Bslider"
                 Maximum="255" Minimum="0" 
                 TickFrequency="2" 
@@ -38,13 +38,5 @@
                 AutoToolTipPrecision="0"
                 ValueChanged="Bslider_ValueChanged"/>
 
-        <!-- Confirm -->
-        <!-- TODO: Do we need it?
-        <Button Content="Zatwierdź" 
-                HorizontalAlignment="Right"
-                Margin="0,0,30,0"
-                BorderBrush="Transparent"
-                Foreground="Black" FontFamily="Segoe UI Light"  FontSize="14px"/>
-        -->
     </StackPanel>
 </UserControl>

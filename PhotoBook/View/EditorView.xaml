@@ -21,15 +21,9 @@
                 <MenuItem Header="Zapisz"/>
                 <MenuItem Header="Wyjdź" Command="{Binding Exit}"/>
             </MenuItem>
-        </Menu>   
-        
-        <Grid>
-            <Grid.Background>
-                <LinearGradientBrush>
-                    <GradientStop Color="#a6a6a4" Offset="1"/>
-                        <GradientStop Color="#4e8d7c"/>
-                </LinearGradientBrush>
-            </Grid.Background>
+        </Menu>
+
+        <Grid Style="{StaticResource GridBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="4*"/>
@@ -44,10 +38,8 @@
                            Margin="20"/>
                     <TextBlock Name="headerName"
                                Text="FotoKsiążka"
-                               HorizontalAlignment="Center"
                                FontSize="35" 
-                               FontFamily="Comic Sans MS"
-                               Foreground="White"/>
+                               Style="{StaticResource HeaderText}"/>
                 </StackPanel>
                 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -85,10 +77,8 @@
                                    HorizontalAlignment="Left"
                                    Margin="10,0,0,0"/>
                             <Label Name="labelPrev"
-                                   Content="Poprzednia" 
-                                   Foreground="White"
+                                   Content="Poprzednia"
                                    FontSize="20px"
-                                   FontFamily="Segoe UI Light"
                                    Margin="10" HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Button>
@@ -116,9 +106,7 @@
                                    Width="18px" Height="22"/>
                             <Label Name="labelDelete"
                                    Content="Usuń strony"
-                                   Foreground="White"
-                                   FontSize="20px"
-                                   FontFamily="Segoe UI Light"/>
+                                   FontSize="20px"/>
                         </StackPanel>
                     </Button>
 
@@ -132,9 +120,7 @@
                                    Width="18px" Height="22"/>
                             <Label Name="labelAdd"
                                    Content="Dodaj strony" 
-                                   Foreground="White"
-                                   FontSize="20px"
-                                   FontFamily="Segoe UI Light"/>
+                                   FontSize="20px"/>
                         </StackPanel>
                     </Button>
                     
@@ -146,9 +132,7 @@
                         <StackPanel Orientation="Horizontal">
                             <Label Name="labelNext"
                                    Content="Następna" 
-                                   Foreground="White"
                                    FontSize="20px"
-                                   FontFamily="Segoe UI Light"
                                    Margin="10" HorizontalAlignment="Right"/>
                             <Image Name="imageNext"
                                    Source="Images/arrowRight.png"
