@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Arrangement;
+using PhotoBook.Services;
 using PhotoBook.ViewModel.Pages;
 using PhotoBook.ViewModel.Settings;
 using Page = PhotoBook.Model.Pages.Page;
@@ -18,6 +19,7 @@ namespace PhotoBook.ViewModel
     public class EditorViewModel : ViewModelBase
     {
         private PhotoBookModel model = PhotoBookModel.CreateMockup();
+        private IDialogService dialogService;
         private ViewModelLocator locator;
 
         private int currentContentPageIndex = 0;
@@ -42,12 +44,12 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(SettingsViewModel), ref settingsViewModel, value);
         }
 
-        public EditorViewModel(ViewModelLocator locator)
+        public EditorViewModel(ViewModelLocator locator, IDialogService dialogService)
         {
             this.locator = locator;
+            this.dialogService = dialogService;
 
             UpdateView();
-
         }
 
         public RelayCommand NextPage => new RelayCommand(() =>
@@ -196,7 +198,7 @@ namespace PhotoBook.ViewModel
             var (leftPage, rightPage) = model.GetContentPagesAt(currentContentPageIndex);
             var contentPages = new Model.Pages.ContentPage[] { leftPage, rightPage };
 
-            SettingsViewModel = new PagesSettingsViewModel(locator, leftPage, rightPage);
+            SettingsViewModel = new PagesSettingsViewModel(dialogService, locator, model, leftPage, rightPage);
             BookViewModel = new PagesViewModel(contentPages);
         }
 

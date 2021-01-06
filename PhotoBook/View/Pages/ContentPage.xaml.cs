@@ -42,7 +42,8 @@ namespace PhotoBook.View.Pages
             DrawContentPages();
 
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
-            viewModel.BackgroundChanged += OnViewModelBaackgroundChanged;
+            viewModel.Redraw += OnViewModelRedraw;
+            viewModel.BackgroundChanged += OnViewModelBackgroundChanged;
             viewModel.ImageChanged += OnViewModelImageChanged;
             viewModel.CommentChanged += OnViewModelCommentChanged;
         }
@@ -55,7 +56,12 @@ namespace PhotoBook.View.Pages
             }
         }
 
-        private void OnViewModelBaackgroundChanged(int pageIndex)
+        private void OnViewModelRedraw(int pageIndex)
+        {
+            DrawContentPages();
+        }
+
+        private void OnViewModelBackgroundChanged(int pageIndex)
         {
             var fill = backgrounds[pageIndex].Fill as SolidColorBrush;
             var newColor = viewModel.ContentPages[pageIndex].Background as Model.Backgrounds.BackgroundColor;

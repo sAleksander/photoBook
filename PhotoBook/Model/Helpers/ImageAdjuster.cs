@@ -17,7 +17,6 @@ namespace PhotoBook.Model.Helpers
 
         static public void InitializeProcessedImageDirectory()
         {
-            Debug.WriteLine("===== Inicjalizacja =====");
             if (Directory.Exists(PROCESSED_PHOTOS_DIRECTORY))
             {
                 Directory.Delete(PROCESSED_PHOTOS_DIRECTORY, true);
@@ -31,8 +30,6 @@ namespace PhotoBook.Model.Helpers
         }
         static public void CropImage(string path, int startX, int startY, int width, int height)
         {
-            Debug.WriteLine("===== Przycinanie =====");
-
             Image loaded = Image.FromFile(path);
             Bitmap bmpImg = new Bitmap(loaded);
             Bitmap bmpCrop = bmpImg.Clone(new Rectangle(startX, startY, width, height), bmpImg.PixelFormat);

@@ -1,6 +1,7 @@
 using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using PhotoBook.Services;
 using PhotoBook.ViewModel.Pages;
 using PhotoBook.ViewModel.Settings;
 
@@ -36,6 +37,8 @@ namespace PhotoBook.ViewModel
             SimpleIoc.Default.Register<EditorViewModel>();
 
             SimpleIoc.Default.Register<CropPhotoViewModel>();
+
+            SimpleIoc.Default.Register<IDialogService>(() => new WPFDialogService());
 
             // Used to pass ViewModelLocator to view models so that they can navigate
             // to other VMs.

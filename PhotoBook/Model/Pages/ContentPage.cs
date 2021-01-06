@@ -29,6 +29,7 @@ namespace PhotoBook.Model.Pages
                 layout = value;
                 _images = new Image[layout.NumOfImages];
                 _comments = new string[layout.NumOfImages];
+                InvokePropertyChanged(nameof(Layout));
             }
         }
 

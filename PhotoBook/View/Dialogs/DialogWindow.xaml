@@ -1,0 +1,21 @@
+﻿<Window x:Class="PhotoBook.View.Dialogs.DialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PhotoBook.Services"
+        mc:Ignorable="d"
+        Title="Uwaga!" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="#a6a6a4" Offset="1"/>
+                <GradientStop Color="#4e8d7c"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        
+        <ContentPresenter x:Name="ContentPresenter" Content="{Binding}"/>
+    </Grid>
+</Window>
