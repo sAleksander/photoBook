@@ -49,6 +49,20 @@ namespace PhotoBook.View.Pages
             viewModel.CommentChanged += OnViewModelCommentChanged;
         }
 
+        private void setFontColor()
+        {
+            var leftPage = viewModel.ContentPages[0].Background as Model.Backgrounds.BackgroundColor;
+            foreach (var item in labels[0])
+            {
+                FontAdjuster.AdjustFont(item, leftPage.R, leftPage.G, leftPage.B);
+            }
+            var rightPage = viewModel.ContentPages[1].Background as Model.Backgrounds.BackgroundColor;
+            foreach (var item in labels[1])
+            {
+                FontAdjuster.AdjustFont(item, rightPage.R, rightPage.G, rightPage.B);
+            }
+        }
+
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName.Equals(nameof(viewModel.ContentPages)))
@@ -62,10 +76,7 @@ namespace PhotoBook.View.Pages
             var fill = backgrounds[pageIndex].Fill as SolidColorBrush;
             var newColor = viewModel.ContentPages[pageIndex].Background as Model.Backgrounds.BackgroundColor;
             fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
-            foreach (var item in labels[pageIndex])
-            {
-                FontAdjuster.AdjustFont(item, newColor.R, newColor.G, newColor.B);
-            }
+            setFontColor();
         }
 
         private void OnViewModelImageChanged(int pageIndex, int layoutIndex)
