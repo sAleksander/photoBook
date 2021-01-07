@@ -16,7 +16,7 @@ namespace PhotoBook.Model.Backgrounds
 
         public Background DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             int imageIndex = objectData.Get<int>(nameof(Image));
 
@@ -27,7 +27,7 @@ namespace PhotoBook.Model.Backgrounds
 
         public int SerializeObject(Serializer serializer)
         {
-            string backgroundImage = $"{nameof(Image)}:&{Image.SerializeObject(serializer)}\n";
+            string backgroundImage = $"{nameof(Image)}:&{Image.SerializeObject(serializer)}";
 
             int backgroundImageID = serializer.AddObject(backgroundImage);
 

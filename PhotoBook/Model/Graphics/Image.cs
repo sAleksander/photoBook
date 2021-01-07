@@ -8,6 +8,7 @@ using System.Drawing;
 using Rectangle = PhotoBook.Model.Arrangement.Rectangle;
 using PhotoBook.Model.Serialization;
 using System.IO;
+using System.Diagnostics;
 
 namespace PhotoBook.Model.Graphics
 {
@@ -20,7 +21,7 @@ namespace PhotoBook.Model.Graphics
 
         public Image(string path, int x, int y, int width, int height)
         {
-            System.IO.FileAttributes attr = File.GetAttributes(OriginalPath);
+            System.IO.FileAttributes attr = File.GetAttributes(path);
 
             const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -32,11 +33,14 @@ namespace PhotoBook.Model.Graphics
             if (!Directory.Exists("\\OriginalImages"))
                 Directory.CreateDirectory("OriginalImages");
 
-            if (!File.Exists($"\\OriginalImages\\{Path.GetFileName(path)}"))
+            if (!File.Exists($"OriginalImages\\{Path.GetFileName(path)}"))
             {
-                File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
-                OriginalPath = $"\\OriginalImages\\{Path.GetFileName(path)}";
-                originalBitmap = new Bitmap(OriginalPath);
+                //File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
+                File.Copy(path, $"OriginalImages\\{Path.GetFileName(path)}");
+
+                OriginalPath = $"OriginalImages\\{Path.GetFileName(path)}";
+
+                originalBitmap = new Bitmap(path);
             }
             else
             {
@@ -47,11 +51,13 @@ namespace PhotoBook.Model.Graphics
                 {
                     random = new Random();
                     newRandomName = new string(Enumerable.Repeat(characters, 10).Select(s => s[random.Next(s.Length)]).ToArray());
-                } while (File.Exists($"\\OriginalImages\\{newRandomName}"));
+                } while (File.Exists($"OriginalImages\\{newRandomName}"));
 
-                File.Copy(path, $"\\OriginalImages\\{newRandomName}");
-                OriginalPath = $"\\OriginalImages\\{newRandomName}";
-                originalBitmap = new Bitmap(OriginalPath);
+                string extension = Path.GetExtension(path);
+
+                File.Copy(path, $"OriginalImages\\{newRandomName}{extension}");
+                OriginalPath = $"OriginalImages\\{newRandomName}{extension}";
+                originalBitmap = new Bitmap(path);
             }
 
             CroppingRectangle = new Rectangle(x, y, width, height);
@@ -63,9 +69,9 @@ namespace PhotoBook.Model.Graphics
             if (!Directory.Exists("\\UsedImages"))
                 Directory.CreateDirectory("UsedImages");
 
-            if (!File.Exists($"\\UsedImages\\{Path.GetFileName(path)}")) {
-                editedBitmap.Save($"\\UsedImages\\{Path.GetFileName(path)}");
-                DisplayedPath = $"\\UsedImages\\{Path.GetFileName(path)}";
+            if (!File.Exists($"UsedImages\\{Path.GetFileName(path)}")) {
+                editedBitmap.Save($"UsedImages\\{Path.GetFileName(path)}");
+                DisplayedPath = $"UsedImages\\{Path.GetFileName(path)}";
             }
             else
             {
@@ -76,10 +82,12 @@ namespace PhotoBook.Model.Graphics
                 {
                     random = new Random();
                     newRandomName = new string(Enumerable.Repeat(characters, 10).Select(s => s[random.Next(s.Length)]).ToArray());
-                } while (File.Exists($"\\OriginalImages\\{newRandomName}"));
+                } while (File.Exists($"UsedImages\\{newRandomName}"));
 
-                editedBitmap.Save($"\\UsedImages\\{newRandomName}");
-                DisplayedPath = $"\\UsedImages\\{newRandomName}";
+                string extension = Path.GetExtension(path);
+
+                editedBitmap.Save($"UsedImages\\{newRandomName}{extension}");
+                DisplayedPath = $"UsedImages\\{newRandomName}{extension}";
             }
 
             Width = originalBitmap.Width;
@@ -105,7 +113,7 @@ namespace PhotoBook.Model.Graphics
         public void SetFilter(Filter.Type filterType)
         {
             #region Mockup
-            throw new NotImplementedException("Not available in mockup version");
+            //throw new NotImplementedException("Not available in mockup version");
             #endregion
 
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(CroppingRectangle.X, CroppingRectangle.Y, CroppingRectangle.Width, CroppingRectangle.Height);
@@ -132,7 +140,7 @@ namespace PhotoBook.Model.Graphics
 
             image += $"{nameof(OriginalPath)}:{OriginalPath}\n";
             image += $"{nameof(DisplayedPath)}:{DisplayedPath}\n";
-            image += $"{nameof(CroppingRectangle)}:&{CroppingRectangle.SerializeObject(serializer)}";
+            image += $"{nameof(CroppingRectangle)}:&{CroppingRectangle.SerializeObject(serializer)}\n";
             image += $"{nameof(CurrentFilter)}:&{CurrentFilter.SerializeObject(serializer)}";
 
             int imageID = serializer.AddObject(image);
@@ -142,16 +150,19 @@ namespace PhotoBook.Model.Graphics
 
         public Image DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            if (objectID == -1)
+                return this;
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             OriginalPath = objectData.Get<string>(nameof(OriginalPath));
             originalBitmap = new Bitmap(OriginalPath);
 
             DisplayedPath = objectData.Get<string>(nameof(DisplayedPath));
-            editedBitmap = new Bitmap(editedBitmap);
+            editedBitmap = new Bitmap(DisplayedPath);
 
             int croppingRecIndex = objectData.Get<int>(nameof(CroppingRectangle));
-            CroppingRectangle = CroppingRectangle.DeserializeObject(serializer, croppingRecIndex);
+
+            CroppingRectangle = new Rectangle(0, 0, 1, 1).DeserializeObject(serializer, croppingRecIndex);
 
             int currentFilterIndex = objectData.Get<int>(nameof(CurrentFilter));
             CurrentFilter = CurrentFilter.DeserializeObject(serializer, currentFilterIndex);

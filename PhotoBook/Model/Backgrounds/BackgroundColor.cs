@@ -29,7 +29,7 @@ namespace PhotoBook.Model.Backgrounds
 
         public Background DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             R = objectData.Get<byte>(nameof(R));
             G = objectData.Get<byte>(nameof(G));
@@ -42,7 +42,7 @@ namespace PhotoBook.Model.Backgrounds
         {
             string backgroundColor = $"{nameof(R)}:{R}\n";
             backgroundColor += $"{nameof(G)}:{G}\n";
-            backgroundColor += $"{nameof(B)}:{B}\n";
+            backgroundColor += $"{nameof(B)}:{B}";
 
             int backgroundColorID = serializer.AddObject(backgroundColor);
 

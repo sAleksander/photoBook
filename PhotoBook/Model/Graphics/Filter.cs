@@ -1,6 +1,7 @@
 ﻿using PhotoBook.Model.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -70,9 +71,12 @@ namespace PhotoBook.Model.Graphics
 
         public Bitmap applyFilter(Bitmap originalBitmap)
         {
+
             Bitmap editedBitmap = originalBitmap;
             BitmapData bitmapData = editedBitmap.LockBits(new Rectangle(0, 0, editedBitmap.Width, editedBitmap.Height),
             ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+            Debug.WriteLine("in");
 
             unsafe
             {
@@ -108,7 +112,7 @@ namespace PhotoBook.Model.Graphics
 
         public int SerializeObject(Serializer serializer)
         {
-            string filter = $"{nameof(currentType)}:{currentType}\n";
+            string filter = $"{nameof(currentType)}:{currentType}";
 
             int filterTypeID = serializer.AddObject(filter);
 
@@ -117,22 +121,22 @@ namespace PhotoBook.Model.Graphics
 
         public Filter DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             string filter = objectData.Get<string>(nameof(currentType));
 
             switch (filter)
             {
-                case "Filter.Type.Cold":
+                case "Cold":
                     currentType = Filter.Type.Cold;
                     break;
-                case "Filter.Type.Greyscale":
+                case "Greyscale":
                     currentType = Filter.Type.Greyscale;
                     break;
-                case "Filter.Type.None":
+                case "None":
                     currentType = Filter.Type.None;
                     break;
-                case "Filter.Type.Warm":
+                case "Warm":
                     currentType = Filter.Type.Warm;
                     break;
                 default:

@@ -97,8 +97,6 @@ namespace PhotoBook.Model.Pages
                 throw new Exception("Adding, setting or editing a comment to an index of out range is not possible!");
 
             _comments[commentIndex] = commentContent;
-
-            // Inform about changes
         }
 
         public string GetComment(int commentIndex)
@@ -135,14 +133,31 @@ namespace PhotoBook.Model.Pages
             }
         }
 
+        public override void setBackground(int R = -1, int G = -1, int B = -1, string path = "", int X = -1, int Y = -1, int Width = -1, int Height = -1)
+        {
+            if ((R == -1 || G == -1 || B == -1) && (path == "" || X == -1 || Y == -1 || Width == -1 || Height == -1))
+                throw new Exception("Incorect data sent to setBackground method for FrontCover");
+
+            if (R == -1 || G == -1 || B == -1)
+                Background = new BackgroundImage(new Graphics.Image(path, X, Y, Width, Height));
+            else
+                Background = new BackgroundColor((byte)R, (byte)G, (byte)B);
+        }
+
         public int SerializeObject(Serializer serializer)
         {
-            string contentPage = $"{Images}:\n";
+            string contentPage = $"{nameof(Images)}:\n";
 
-            foreach (Image image in _images)
-                contentPage += $"-&{image.SerializeObject(serializer)}\n";
+            if (_images.Length > 0)
+                foreach (Image image in _images)
+                {
+                    if (image != null)
+                        contentPage += $"-&{image.SerializeObject(serializer)}\n";
+                    else
+                        contentPage += $"-&-1\n";
+                }
 
-            contentPage += $"{Comments}:\n";
+            contentPage += $"{nameof(Comments)}:\n";
 
             foreach (string comment in _comments)
                 contentPage += $"-\"{comment}\"\n";
@@ -172,7 +187,7 @@ namespace PhotoBook.Model.Pages
 
         public ContentPage DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             List<Image> tempImageList = new List<Image>();
             List<int> tempImageIndexesList = objectData.Get<List<int>>(nameof(Images));
@@ -180,7 +195,7 @@ namespace PhotoBook.Model.Pages
             foreach (int tempImageIndex in tempImageIndexesList)
             {
                 tempImageList.Add(new Image());
-                tempImageList[-1] = tempImageList[-1].DeserializeObject(serializer, tempImageIndex);
+                tempImageList[tempImageList.Count - 1] = tempImageList[tempImageList.Count - 1].DeserializeObject(serializer, tempImageIndex);
             }
 
             _images = tempImageList.ToArray();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,9 @@ namespace PhotoBook.Model.Arrangement
 
         public Rectangle DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
+
+            Debug.WriteLine(objectData == null);
 
             X = objectData.Get<int>(nameof(X));
             Y = objectData.Get<int>(nameof(Y));
@@ -44,7 +47,7 @@ namespace PhotoBook.Model.Arrangement
             string rectangle = $"{nameof(X)}:{X}\n";
             rectangle += $"{nameof(Y)}:{Y}\n";
             rectangle += $"{nameof(Width)}:{Width}\n";
-            rectangle += $"{nameof(Height)}:{Height}\n";
+            rectangle += $"{nameof(Height)}:{Height}";
 
             int rectangleID = serializer.AddObject(rectangle);
 

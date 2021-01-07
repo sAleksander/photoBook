@@ -9,11 +9,37 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PhotoBook.Model.Serialization;
+using System.Diagnostics;
 
 namespace PhotoBook.Model
 {
     public class PhotoBook : SerializeInterface<PhotoBook>
     {
+        public static PhotoBook CreateNew(string projectDirPath)
+        {
+            if (!Directory.Exists(projectDirPath))
+                Directory.CreateDirectory(projectDirPath);
+            else
+            {
+                System.IO.FileAttributes attr = File.GetAttributes(projectDirPath);
+                var extension = Path.GetExtension(projectDirPath);
+
+                if (!attr.HasFlag(FileAttributes.Directory))
+                    throw new Exception("The given path for photobook location isn't a directory");
+                if (extension != string.Empty)
+                    throw new Exception("File location provided when creating a new PhotoBook object");
+            }
+
+            Directory.SetCurrentDirectory(projectDirPath);
+            PhotoBook photoBook = new PhotoBook();
+            photoBook.SavePath = Path.GetFullPath(projectDirPath);
+
+            photoBook.FrontCover = new FrontCover();
+            photoBook.BackCover = new BackCover();
+
+            return photoBook;
+        }
+
         public PhotoBook(string savePath) {
             if (!Directory.Exists(savePath))
                 throw new Exception("Provided directory path doesn't exist!");
@@ -30,7 +56,7 @@ namespace PhotoBook.Model
         public static int PageHeightInPixels { get; }
 
 
-        private List<ContentPage> _contentPages;
+        private List<ContentPage> _contentPages = new List<ContentPage>();
 
         public FrontCover FrontCover { get; private set; }
         public BackCover BackCover { get; private set; }
@@ -45,10 +71,14 @@ namespace PhotoBook.Model
             PageHeightInPixels = 1500;
         }
 
+
         public PhotoBook()
         {
-            if (!Directory.Exists("\\Images"))
-                Directory.CreateDirectory("Images");
+            if (!Directory.Exists("\\OriginalImages"))
+                Directory.CreateDirectory("OriginalImages");
+
+            if (!Directory.Exists("\\UsedImages"))
+                Directory.CreateDirectory("UsedImages");
 
             FrontCover = new Pages.FrontCover();
             FrontCover.Title = "Moja fotoksiążka";
@@ -56,28 +86,6 @@ namespace PhotoBook.Model
 
             BackCover = new Pages.BackCover();
             BackCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
-
-            _contentPages = new List<ContentPage>(6);
-
-            for (int i = 0; i < 6; i++)
-            {
-                ContentPage contentPage = new ContentPage();
-
-                contentPage.Layout = AvailableLayouts[Layout.Type.TwoPictures];
-                contentPage.Background = new Backgrounds.BackgroundColor(83, 83, 66);
-
-                for (int j = 0; j < 2; j++)
-                {
-                    var image = contentPage.LoadImage(j, "placeholder_cropped.png");
-                    image.CroppingRectangle = new Rectangle(
-                        0, 0, image.Width, image.Height
-                    );
-
-                    contentPage.SetComment(j, $"Obrazek {j}");
-                }
-
-                _contentPages.Add(contentPage);
-            }
         }
         #endregion
 
@@ -122,413 +130,40 @@ namespace PhotoBook.Model
 
         public void LoadPhotoBook()
         {
-            if (!Directory.Exists(SavePath))
-                throw new Exception("Provided path directory doesn't exist!");
-            if (File.Exists(SavePath))
-                File.Delete(SavePath);
+            SavePath = "C:\\Users\\Wojtek\\Desktop\\MyPhotoBook";
 
-            var photoBookSaveFile = File.ReadAllLines(SavePath);
+            serializer = new Serializer();
 
-            string currentPage = "";
-            Stack<string> currentProperty = new Stack<string>();
+            serializer.LoadData($"{SavePath}\\saveFile.pbf");
 
-            byte R = new byte();
-            byte G = new byte();
-            byte B = new byte();
-
-            string path = "";
-            int x = 0;
-            int y = 0;
-            int width = 0;
-            int height = 0;
-
-            int layoutImages = 0;
-            List<Image> tempImages = new List<Image>();
-            List<string> tempComments = new List<string>();
-
-            FrontCover tempFrontCover = new FrontCover();
-            ContentPage tempContentPage = new ContentPage();
-            List<ContentPage> tempContentPages = new List<ContentPage>();
-            BackCover tempBackCover = new BackCover();
-
-
-            foreach (string line in photoBookSaveFile)
-            {
-                if (line.Trim() == "")
-                    continue;
-
-                else
-                {
-                    if (line.Contains(":"))
-                    {
-                        var separator = line.Trim().LastIndexOf("\":");
-
-                        var element = line.Trim().Substring(1, separator - 1);
-                        var value = line.Trim().Substring(separator + 3);
-
-                        if (element == "FrontCover" || element == "ContentPages" || element == "BackCover")
-                            currentPage = element;
-                        else
-                        {
-                            switch (currentPage)
-                            {
-                                case "FrontCover":
-                                    switch (element)
-                                    {
-                                        case "Title":
-                                            tempFrontCover.Title = value;
-                                            break;
-                                        case "R":
-                                            currentProperty.Push("BackgroundColor");
-                                            R = Convert.ToByte(value);
-                                            break;
-                                        case "G":
-                                            G = Convert.ToByte(value);
-                                            break;
-                                        case "B":
-                                            B = Convert.ToByte(value);
-                                            tempFrontCover.Background = new BackgroundColor(R, G, B);
-                                            currentProperty.Pop();
-                                            break;
-                                        case "Path":
-                                            path = value;
-                                            break;
-                                        case "X":
-                                            x = Convert.ToInt32(value);
-                                            break;
-                                        case "Y":
-                                            y = Convert.ToInt32(value);
-                                            break;
-                                        case "Width":
-                                            width = Convert.ToInt32(value);
-                                            break;
-                                        case "Height":
-                                            height = Convert.ToInt32(value);
-                                            tempFrontCover.Background = new BackgroundImage(new Image(path, x, y, width, height));
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    break;
-                                case "ContentPages":
-                                    switch (element)
-                                    {
-                                        case "BackgroundImage":
-                                            currentProperty.Push("BackgroundImage");
-                                            break;
-                                        case "Images":
-                                            currentProperty.Push("Images");
-                                            break;
-                                        case "R":
-                                            R = Convert.ToByte(value);
-                                            break;
-                                        case "G":
-                                            G = Convert.ToByte(value);
-                                            break;
-                                        case "B":
-                                            B = Convert.ToByte(value);
-                                            tempContentPage.Background = new BackgroundColor(R, G, B);
-                                            break;
-                                        case "Path":
-                                            path = value;
-                                            break;
-                                        case "X":
-                                            if (currentProperty.Peek() == "Images")
-                                                currentProperty.Push("Image");
-                                            x = Convert.ToInt32(value);
-                                            break;
-                                        case "Y":
-                                            y = Convert.ToInt32(value);
-                                            break;
-                                        case "Width":
-                                            width = Convert.ToInt32(value);
-                                            break;
-                                        case "Height":
-                                            height = Convert.ToInt32(value);
-
-                                            if (currentProperty.Peek() == "BackgroundImage")
-                                                tempContentPage.Background = new BackgroundImage(new Image(path, x, y, width, height));
-
-                                            currentProperty.Pop();
-                                            break;
-                                        case "CurrentFilter":
-                                            tempImages.Add(new Image(path, x, y, width, height));
-
-                                            switch (value) {
-                                                case "Filter.Type.Warm":
-                                                    tempImages[-1].SetFilter(Filter.Type.Warm);
-                                                    break;
-                                                case "Filter.Type.Cold":
-                                                    tempImages[-1].SetFilter(Filter.Type.Cold);
-                                                    break;
-                                                case "Filter.Type.Greyscale":
-                                                    tempImages[-1].SetFilter(Filter.Type.Greyscale);
-                                                    break;
-                                                }
-
-                                            currentProperty.Pop();
-                                            if (tempImages.Count == layoutImages)
-                                                currentProperty.Pop();
-                                            break;
-
-                                        case "Comment":
-                                            tempComments.Add(value);
-                                            break;
-
-                                        default:
-                                            if(currentPage == "ContentPages" && currentProperty.Count == 0 && tempComments.Count == layoutImages)
-                                            {
-                                                tempContentPages.Add(new ContentPage(tempContentPage, tempImages.ToArray(), tempComments.ToArray()));
-                                                tempImages.Clear();
-                                                tempComments.Clear();
-                                            }
-                                            break;
-                                    }
-                                    break;
-
-                                case "BackCover":
-                                    tempBackCover.Background = tempFrontCover.Background;
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            FrontCover = tempFrontCover;
-            _contentPages = tempContentPages;
-            BackCover = tempBackCover;
+            DeserializeObject(serializer);
         }
 
         public void SavePhotoBook()
         {
-            // List of turples storing paths of original images and their used counterparts
-            List<(string, string)> usedImagesPaths = new List<(string, string)>();
+            SerializeObject(serializer);
 
-            // Deleting those images from project directory that aren't used anymore
-
-            switch (FrontCover.Background)
-            {
-                case BackgroundImage bgi:
-                    usedImagesPaths.Add((bgi.Image.OriginalPath, bgi.Image.OriginalPath));
-                    break;
-                default:
-                    break;
-            }
-
-            foreach(ContentPage contentPage in _contentPages)
-                foreach(Image image in contentPage.Images)
-                    if (!usedImagesPaths.Contains((image.OriginalPath, image.DisplayedPath)))
-                        usedImagesPaths.Add((image.OriginalPath, image.DisplayedPath));
-
-            // TODO: In the future combine below two searches into one
-            List<string> allOriginalImagesPaths = Directory.GetFiles("OriginalImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
-            List<string> allUsedImagesPaths = Directory.GetFiles("UsedImages", "([^\\s]+(\\.(?i)(jpg|png))$)").ToList();
-
-
-            var firstPaths = usedImagesPaths.Select(t => t.Item1).ToList();
-            var secondPaths = usedImagesPaths.Select(t => t.Item2).ToList();
-
-            for (int i = 0; i <= allOriginalImagesPaths.Count; i++)
-                if (!firstPaths.Contains(allOriginalImagesPaths[i]))
-                    File.Delete(allOriginalImagesPaths[i]);
-
-            for (int i = 0; i <= allUsedImagesPaths.Count; i++)
-                if (!secondPaths.Contains(allUsedImagesPaths[i]))
-                    File.Delete(allUsedImagesPaths[i]);
-
-            // Saving photoBookData
-
-            if (!File.Exists(SavePath))
-                File.Delete(SavePath);
-
-            StringBuilder jsonContent = new StringBuilder();
-            var lvl = 0;
-
-            jsonContent.AppendLine("{");
-            lvl++;
-
-            jsonContent.AppendLine("\t\"FrontCover\" : {");
-            lvl++;
-
-            void addIndenting(int direction = 0)
-            {
-                for (int i = 0; i < lvl; i++)
-                    jsonContent.Append("\t");
-
-                if (direction > 0)
-                    lvl++;
-                else if (direction < 0)
-                    lvl--;
-            }
-
-            addIndenting(1);
-            jsonContent.AppendLine($"Title : {FrontCover.Title},");
-
-
-            switch (FrontCover.Background)
-            {
-                case BackgroundColor bgc:
-                    addIndenting(1);
-                    jsonContent.AppendLine("BackgroundColor : {");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"R : {bgc.R},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"G : {bgc.G},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"B : {bgc.B},");
-                    break;
-
-                case BackgroundImage bgi:
-                    addIndenting(1);
-                    jsonContent.AppendLine("BackgroundImage : {");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"Path : {bgi.Image.OriginalPath},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"X : {bgi.Image.CroppingRectangle.X},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"Y : {bgi.Image.CroppingRectangle.Y},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"Width : {bgi.Image.CroppingRectangle.Width},");
-
-                    addIndenting(-1);
-                    jsonContent.AppendLine($"Height : {bgi.Image.CroppingRectangle.Height},");
-                    break;
-            }
-
-            addIndenting();
-            jsonContent.AppendLine("},");
-
-            addIndenting(1);
-            jsonContent.AppendLine("\"ContentPages\" : [");
-
-            foreach(ContentPage page in _contentPages) {
-
-                addIndenting(1);
-                jsonContent.AppendLine("{");
-
-                switch (page.Background)
-                {
-                    case BackgroundColor bgc:
-                        addIndenting(1);
-                        jsonContent.AppendLine("BackgroundColor : {");
-
-                        addIndenting();
-                        jsonContent.AppendLine($"R : {bgc.R},");
-
-                        addIndenting();
-                        jsonContent.AppendLine($"G : {bgc.G},");
-
-                        addIndenting(-1);
-                        jsonContent.AppendLine($"B : {bgc.B},");
-                        break;
-
-                    case BackgroundImage bgi:
-                        addIndenting(1);
-                        jsonContent.AppendLine("BackgroundImage : {");
-                        lvl++;
-
-                        addIndenting();
-                        jsonContent.AppendLine($"Path : {bgi.Image.OriginalPath},");
-
-                        addIndenting();
-                        jsonContent.AppendLine($"X : {bgi.Image.CroppingRectangle.X},");
-
-                        addIndenting();
-                        jsonContent.AppendLine($"Y : {bgi.Image.CroppingRectangle.Y},");
-
-                        addIndenting();
-                        jsonContent.AppendLine($"Width : {bgi.Image.CroppingRectangle.Width},");
-
-                        addIndenting(-1);
-                        jsonContent.AppendLine($"Height : {bgi.Image.CroppingRectangle.Height},");
-                        break;
-                }
-
-                addIndenting();
-                jsonContent.AppendLine("},");
-
-                addIndenting();
-                jsonContent.AppendLine($"\"Layout\" : {page.Layout.Name},");
-
-                addIndenting(1);
-                jsonContent.AppendLine("\"Images\" : [");
-
-                foreach(Image image in page.Images)
-                {
-                    addIndenting();
-                    jsonContent.AppendLine("{");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"\"X\" : {image.CroppingRectangle.X},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"\"Y\" : {image.CroppingRectangle.Y},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"\"Width\" : {image.CroppingRectangle.Width},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"\"Height\" : {image.CroppingRectangle.Height}");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"\"OriginalPath\" : {image.OriginalPath},");
-
-                    addIndenting();
-                    jsonContent.AppendLine($"\"CurrentFilter\" : {image.CurrentFilter.currentType}");
-
-                    addIndenting(-1);
-                    jsonContent.AppendLine("},");
-                }
-
-                addIndenting();
-                jsonContent.AppendLine("],");
-
-                addIndenting(1);
-                jsonContent.AppendLine("\"Comments\" : [");
-
-                foreach(string comment in page.Comments)
-                {
-                    addIndenting(-1); ;
-                    jsonContent.AppendLine($"\"Comment\" : \"{comment}\"");
-                }
-
-                addIndenting();
-                jsonContent.AppendLine("\"]\"");
-            }
-
-            lvl--;
-            addIndenting();
-            jsonContent.AppendLine("\"]\"");
-
-            jsonContent.AppendLine("}");
-
-            File.WriteAllText(SavePath, jsonContent.ToString());
+            serializer.SaveObjects($"{SavePath}\\saveFile.pbf");
         }
+
+        public Serializer serializer;
 
         public int SerializeObject(Serializer s)
         {
-            Serializer serializer = new Serializer();
+            serializer = new Serializer();
 
             string photoBook = $"{nameof(SavePath)}:{SavePath}\n";
 
             photoBook += $"{nameof(Font)}:{Font}\n";
 
-            photoBook += $"{nameof(FrontCover)}:{FrontCover.SerializeObject(serializer)}\n";
+            photoBook += $"{nameof(FrontCover)}:&{FrontCover.SerializeObject(serializer)}\n";
 
             photoBook += $"{nameof(_contentPages)}:\n";
 
             foreach (ContentPage content_page in _contentPages)
                 photoBook += $"-&{content_page.SerializeObject(serializer)}\n";
 
-            photoBook += $"{nameof(BackCover)}:{BackCover.SerializeObject(serializer)}\n";
+            photoBook += $"{nameof(BackCover)}:&{BackCover.SerializeObject(serializer)}";
 
             serializer.AddObject(photoBook);
 
@@ -539,9 +174,7 @@ namespace PhotoBook.Model
 
         public PhotoBook DeserializeObject(Serializer serializer, int objectID = -1)
         {
-            serializer.LoadData(SavePath);
-
-            ObjectDataRelay objectData = serializer.GetObjectData2(-1);
+            ObjectDataRelay objectData = serializer.GetObjectData(-1);
 
             Font = objectData.Get<string>(nameof(Font));
 
@@ -555,10 +188,10 @@ namespace PhotoBook.Model
 
             List<int> contentPagesIndexes = objectData.Get<List<int>>(nameof(_contentPages));
 
-            foreach(var contentPageIndex in contentPagesIndexes)
+            foreach (var contentPageIndex in contentPagesIndexes)
             {
                 _contentPages.Add(new ContentPage());
-                _contentPages[-1] = _contentPages[-1].DeserializeObject(serializer, contentPageIndex);
+                _contentPages[_contentPages.Count - 1] = _contentPages[_contentPages.Count - 1].DeserializeObject(serializer, contentPageIndex);
             }
 
             // Back cover

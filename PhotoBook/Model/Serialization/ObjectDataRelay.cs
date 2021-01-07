@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace PhotoBook.Model.Serialization
             {
                 string backgroundString = objectData[propertyName];
 
-                int backgroundID = int.Parse(backgroundString.Substring(backgroundString.IndexOf('&') + 1, backgroundString.IndexOf(',')));
+                int backgroundID = int.Parse(backgroundString.Substring(backgroundString.IndexOf('&') + 1, backgroundString.IndexOf(',') - 1));
 
                 return (T)Convert.ChangeType(backgroundID, typeof(T));
             }
@@ -47,14 +48,16 @@ namespace PhotoBook.Model.Serialization
                 int charIterator = pageIndexesString.IndexOf('&');
                 int index = 0;
 
-                while(charIterator != -1 && charIterator < pageIndexesString.Length)
+                while (charIterator != -1 && charIterator < pageIndexesString.Length)
                 {
                     // charIterator + 1 - to get avoid & sign
-                    index = int.Parse(pageIndexesString.Substring(charIterator + 1, pageIndexesString.IndexOf('\n', charIterator)));
+                    index = int.Parse(pageIndexesString.Substring(charIterator + 1, pageIndexesString.IndexOf("\n", charIterator) - (charIterator + 1)));
 
                     pageIndexes.Add(index);
 
-                    charIterator = pageIndexesString.IndexOf('&', charIterator);
+                    charIterator = pageIndexesString.IndexOf('&', charIterator + 1);
+                    if (charIterator < 0)
+                        break;
                 }
 
                 return (T)Convert.ChangeType(pageIndexes, typeof(T));
@@ -65,7 +68,7 @@ namespace PhotoBook.Model.Serialization
             {
                 string commentsString = objectData[propertyName];
 
-                List<string> comments= new List<string>();
+                List<string> comments = new List<string>();
 
                 int charIterator = commentsString.IndexOf('\"');
                 string comment = "";
@@ -82,9 +85,21 @@ namespace PhotoBook.Model.Serialization
 
                 return (T)Convert.ChangeType(comments, typeof(T));
             }
+            else if (typeof(T) == typeof(int))
+            {
+                var result = objectData[propertyName];
+
+                if (result.StartsWith("&"))
+                    result = result.Substring(1);
+
+                if (result.Contains("\n"))
+                    result = result.Trim('\n');
+
+                return (T)Convert.ChangeType(result, typeof(T));
+            }
 
             else if (typeof(T) == typeof(string) || typeof(T) == typeof(int))
-                return (T)Convert.ChangeType(objectData[propertyName], typeof(T));
+                return (T)Convert.ChangeType(objectData[propertyName].Trim(), typeof(T));
 
             else
                 throw new Exception("Wrong data passed to get method when deserializing!");

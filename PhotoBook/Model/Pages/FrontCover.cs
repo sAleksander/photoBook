@@ -10,6 +10,13 @@ namespace PhotoBook.Model.Pages
 {
     public class FrontCover : Page, SerializeInterface<FrontCover>
     {
+        public FrontCover()
+        {
+            Title = "Example";
+            //setBackground(255, 255, 255);
+            setBackground(-1, -1, -1, $"C:\\Users\\Wojtek\\Desktop\\a.jpg", 0, 0, 10, 10);
+        }
+
         // In pixels
         public static int FontSize { get; private set; } = 18;
         public string Title { get; set; }
@@ -47,7 +54,7 @@ namespace PhotoBook.Model.Pages
 
         public FrontCover DeserializeObject(Serializer serializer, int objectID)
         {
-            ObjectDataRelay objectData = serializer.GetObjectData2(objectID);
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
             FontSize = objectData.Get<int>(nameof(FontSize));
 
             Title = objectData.Get<string>(nameof(Title));
@@ -68,7 +75,7 @@ namespace PhotoBook.Model.Pages
             return this;
         }
 
-        public override void setBackground(int R = -1, int G = -1, int B = -1, string path = "", int X = -1, int Y =- 1, int Width = -1, int Height = -1)
+        public override void setBackground(int R = -1, int G = -1, int B = -1, string path = "", int X = -1, int Y = -1, int Width = -1, int Height = -1)
         {
             if((R == -1 || G == -1 || B == -1) && (path == "" || X == -1 || Y == -1 || Width == -1 || Height == -1))
                 throw new Exception("Incorect data sent to setBackground method for FrontCover");

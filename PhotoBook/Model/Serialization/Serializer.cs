@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ namespace PhotoBook.Model.Serialization
     {
         private int id = 0;
 
-        Dictionary<int, string> objectsData = new Dictionary<int, string>();
+        // zmien pozniej na prywatny
+        private Dictionary<int, string> objectsData = new Dictionary<int, string>();
 
         public int ID
         {
@@ -50,7 +52,7 @@ namespace PhotoBook.Model.Serialization
 
             foreach(string line in saveFileContent)
             {
-                if (line == "\n")
+                if (line == "")
                 {
                     tempID = int.Parse(idLine.Substring(idLine.LastIndexOf(":") + 1));
 
@@ -67,27 +69,11 @@ namespace PhotoBook.Model.Serialization
                 if (idLine == "")
                     idLine = line;
                 else
-                    stringObjectBuilder.Append(line);
+                    stringObjectBuilder.Append($"{line}\n");
             }
         }
 
-        public string GetObjectData(int objectID)
-        {
-            if (objectID < -1)
-                throw new Exception("Incorrect object id provided!");
-
-            string data = "";
-            int corectID = objectID;
-
-            if (objectID == -1)
-                corectID = objectsData.Keys.Last();
-
-            data = objectsData[corectID];
-
-            return data;
-        }
-
-        public ObjectDataRelay GetObjectData2(int objectID)
+        public ObjectDataRelay GetObjectData(int objectID)
         {
             if (objectID < -1)
                 throw new Exception("Incorrect object id provided!");
@@ -107,11 +93,12 @@ namespace PhotoBook.Model.Serialization
             int colonBehindArrayIndex = 0;
             int endOfLineIndex = 0;
             string key;
-            string value;
+            string value = "";
 
             while(charIterator < objectString.Length)
             {
                 colonIndex = objectString.IndexOf(":", charIterator);
+
                 key = objectString.Substring(charIterator, colonIndex - charIterator);
 
                 endOfLineIndex = objectString.IndexOf('\n', colonIndex);
@@ -119,23 +106,31 @@ namespace PhotoBook.Model.Serialization
                 // Case with arrays
                 if (colonIndex + 1 == endOfLineIndex)
                 {
-                    // Get rid of minus sign from array values
-                    if (key.StartsWith("-"))
-                        key = key.Substring(1);
+                    value = "";
 
                     colonBehindArrayIndex = objectString.IndexOf(':', endOfLineIndex);
-                    endOfLineIndex = objectString.LastIndexOf('\n', endOfLineIndex, colonBehindArrayIndex);
-                    value = objectString.Substring(objectString.IndexOf('\n', colonIndex) + 2, endOfLineIndex - objectString.IndexOf('\n', colonIndex));
+                    endOfLineIndex = objectString.LastIndexOf("\n", colonBehindArrayIndex);
+
+                    // Iterate over all lines in an array
+                    for (int valueStringIndex = colonIndex + 3; valueStringIndex < endOfLineIndex; valueStringIndex += 2)
+                    {
+                        var tempEndLine = objectString.IndexOf("\n", valueStringIndex);
+
+                        // to avoid minus sign
+                        value += $"{objectString.Substring(valueStringIndex, tempEndLine - valueStringIndex)}\n";
+
+                        valueStringIndex = tempEndLine;
+                    }
                 }
 
-                // General property
+                // General properties
                 else
                     value = objectString.Substring(colonIndex + 1, endOfLineIndex - colonIndex);
 
                 passedDictionary.Add(key, value);
 
-                // Pass the \n sign
-                charIterator = endOfLineIndex + 2;
+                // Pass the end of line
+                charIterator = endOfLineIndex + 1;
             }
 
             data = new ObjectDataRelay(passedDictionary);
