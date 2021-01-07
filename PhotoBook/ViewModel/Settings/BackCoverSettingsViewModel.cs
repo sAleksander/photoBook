@@ -95,8 +95,16 @@ namespace PhotoBook.ViewModel.Settings
 
                 for (int j = 0; j < model.GetContentPagesAt(i).Item1.Layout.NumOfImages; j++)
                 {
-                    photos.Add(fileNameExporter(model.GetContentPagesAt(i).Item1.GetImage(j).DisplayedPath));
-                    descriptions.Add(model.GetContentPagesAt(i).Item1.GetComment(j));
+                    if (model.GetContentPagesAt(i).Item1.GetImage(j) != null)
+                    {
+                        photos.Add(fileNameExporter(model.GetContentPagesAt(i).Item1.GetImage(j).DisplayedPath));
+                        descriptions.Add(model.GetContentPagesAt(i).Item1.GetComment(j));
+                    }
+                    else
+                    {
+                        photos.Add("");
+                        descriptions.Add("");
+                    }
                 }
 
                 switch (model.GetContentPagesAt(i).Item1.Background)
@@ -115,8 +123,16 @@ namespace PhotoBook.ViewModel.Settings
 
                 for (int j = 0; j < model.GetContentPagesAt(i).Item2.Layout.NumOfImages; j++)
                 {
-                    photos.Add(fileNameExporter(model.GetContentPagesAt(i).Item2.GetImage(j).DisplayedPath));
-                    descriptions.Add(model.GetContentPagesAt(i).Item2.GetComment(j));
+                    if (model.GetContentPagesAt(i).Item2.GetImage(j) != null)
+                    {
+                        photos.Add(fileNameExporter(model.GetContentPagesAt(i).Item2.GetImage(j).DisplayedPath));
+                        descriptions.Add(model.GetContentPagesAt(i).Item2.GetComment(j));
+                    }
+                    else
+                    {
+                        photos.Add("");
+                        descriptions.Add("");
+                    }
                 }
 
                 switch (model.GetContentPagesAt(i).Item2.Background)
@@ -216,7 +232,7 @@ namespace PhotoBook.ViewModel.Settings
 
                 for (int j = 0; j < model.GetContentPagesAt(i).Item2.Layout.NumOfImages; j++)
                 {
-                    if (model.GetContentPagesAt(i).Item2.GetImage(j)!= null)
+                    if (model.GetContentPagesAt(i).Item2.GetImage(j) != null)
                     {
                         right.AddPhotoWithDescription(
                             fileNameExporter(model.GetContentPagesAt(i).Item2.GetImage(j).DisplayedPath),

@@ -34,12 +34,12 @@ namespace PhotoBook.Model.Exporters
         #region Percent functions
         private string percent(float percentage)
         {
-            return (A4_HEIGHT * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo)+"px";
+            return (A4_HEIGHT * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo) + "px";
         }
 
         private string customPercent(float parentHeight, float percentage)
         {
-            return (parentHeight * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo)+"px";
+            return (parentHeight * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo) + "px";
         }
         #endregion
 
@@ -89,10 +89,25 @@ namespace PhotoBook.Model.Exporters
                             <div style='
                                 height: {percent(freeSpace)};
                                 margin: {percent(2)};
-                            '>
+                            '>";
+
+                        if (photos[i] != "")
+                        {
+                            result += $@"
                                 <img src='{PHOTOS_DIRECTORY + photos[i]}' style='
                                     height: {percent(freeSpace)};
-                                '>
+                                '
+                                alt=''
+                                >
+                            ";
+                        }
+                        else
+                        {
+                            result += $@"
+                                <div style='height: {percent(freeSpace)}'></div>
+                            ";
+                        }
+                        result += $@"
                                 <div style='
                                     height: {percent(10)};
                                     font-size: {percent(2)};
@@ -114,10 +129,22 @@ namespace PhotoBook.Model.Exporters
                         <div style='
                             height: {percent(freeSpace)};
                             margin: {percent(2)};
-                        '>
+                        '>";
+                    if (photos[0] != "")
+                    {
+                        result += $@"
                             <img src='{PHOTOS_DIRECTORY + photos[0]}' style='
                                 width: {customPercent(A4_WIDTH, 80)};
-                            '>
+                            alt=''
+                            >
+                        ";
+                    } else
+                    {
+                        result += $@"
+                                <div style='height: {percent(freeSpace)}'></div>
+                            ";
+                    }
+                    result += $@"
                                 <div style='
                                     height: {percent(10)};
                                     font-size: {percent(2)};
@@ -127,7 +154,7 @@ namespace PhotoBook.Model.Exporters
                                     {descriptions[0]}
                                 </div>
                             </div>
-                    ";
+                        ";
 
                     return result;
                 }
