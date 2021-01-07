@@ -1,6 +1,7 @@
 ﻿using PhotoBook.ViewModel.Settings;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,6 +61,23 @@ namespace PhotoBook.View.SettingsView
 
             btnPhoto.SetValue(FontSizeProperty, 25 * percentage);
 
+        }
+    }
+
+    class ImageIndexToStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int == false) throw new Exception(
+                $"{nameof(ImageIndexToStringConverter)}: value must be int");
+
+            int imageIndex = (int)value;
+            return $"Zdjęcie {imageIndex + 1}";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new Exception($"{nameof(ImageIndexToStringConverter)} doesn't support ConvertBack");
         }
     }
 }

@@ -6,12 +6,15 @@
              xmlns:local="clr-namespace:PhotoBook.View.SettingsView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500">
+    <UserControl.Resources>
+        <local:ImageIndexToStringConverter x:Key="ImageIndexToStringConverter"/>
+    </UserControl.Resources>
 
     <StackPanel CanVerticallyScroll="True">
         <!--Photo options-->
 
         <Button Name="btnPhoto"
-                    Content="Zdjęcie"
+                    Content="{Binding ImageIndex, Mode=OneWay, Converter={StaticResource ImageIndexToStringConverter}}"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
                     FontSize="25px"

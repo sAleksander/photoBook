@@ -9,7 +9,9 @@ namespace PhotoBook.ViewModel.Settings
         private ViewModelLocator locator;
 
         private ContentPage page;
+
         private int imageIndex;
+        public int ImageIndex { get => imageIndex; }
 
         private string description = "";
         public string Description
