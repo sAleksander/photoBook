@@ -21,19 +21,6 @@ namespace PhotoBook.View.SettingsView
     /// </summary>
     public partial class PhotoOptions : UserControl
     {
-        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-            nameof(Description),
-            typeof(string),
-            typeof(PhotoOptions),
-            new PropertyMetadata("")
-        );
-
-        public string Description
-        {
-            get { return (string)GetValue(DescriptionProperty); }
-            set { SetValue(DescriptionProperty, value); }
-        }
-
         public PhotoOptions()
         {
             InitializeComponent();

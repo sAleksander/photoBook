@@ -136,8 +136,7 @@
                     UpdateSourceTrigger=PropertyChanged}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <settingsview:PhotoOptions
-                                Description="{Binding Description, Mode=TwoWay}"/>
+                    <settingsview:PhotoOptions/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
