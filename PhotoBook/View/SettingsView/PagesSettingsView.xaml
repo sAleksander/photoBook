@@ -83,7 +83,7 @@
                     -->
             <settingsview:ColorPicker x:Name="BackgroundColorPicker"
                                               BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}"/>
-
+            
             <!-- TODO: Bind it to view model somehow
                     Themes buttons are in userContol -> ChangeBackgroundImage.xaml -->
                     

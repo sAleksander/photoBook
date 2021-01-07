@@ -33,20 +33,46 @@ namespace PhotoBook.View.SettingsView
             get => (BackgroundColor)GetValue(BackgroundColorProperty);
             set => SetValue(BackgroundColorProperty, value);
         }
-
         public ColorPicker()
         {
             InitializeComponent();
         }
 
+        private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            if(colorPicker.SelectedColor.HasValue)
+            {
+                Color c = colorPicker.SelectedColor.Value;
+                var red = c.R;
+                var green = c.G;
+                var blue = c.B;
+
+                BackgroundColor = new BackgroundColor(
+                    red,
+                    green,
+                    blue
+                    );
+            }
+        }
+
         private static void OnBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var newColor = d as ColorPicker;
+            
+            
+
+        }
+
+        /*private static void OnBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
             var colorPicker = d as ColorPicker;
             colorPicker.Rslider.Value = colorPicker.BackgroundColor.R;
             colorPicker.Gslider.Value = colorPicker.BackgroundColor.G;
             colorPicker.Bslider.Value = colorPicker.BackgroundColor.B;
         }
-
+        
+        
         // TODO: How to get rid of this mess?
         private void Rslider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -73,6 +99,6 @@ namespace PhotoBook.View.SettingsView
                 BackgroundColor.G,
                 (byte)Bslider.Value
             );
-        }
+        }*/
     }
 }

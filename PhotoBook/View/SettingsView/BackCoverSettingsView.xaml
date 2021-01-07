@@ -33,19 +33,5 @@
                     Command="{Binding ExportToHtml}"
                     Height="50"
                     Margin="0,1,0,1"/>
-        <Button Name="btnDocs"
-                    Content="Eksportuj do DOCS" 
-                    VerticalAlignment="Top"
-                    HorizontalContentAlignment="Left"
-                    Style="{StaticResource BorderButton}"
-                    FontSize="25px"
-                    Height="50"
-                    Margin="0,1,0,1">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="2"/>
-                </Style>
-            </Button.Resources>
-        </Button>
     </StackPanel>
 </UserControl>
