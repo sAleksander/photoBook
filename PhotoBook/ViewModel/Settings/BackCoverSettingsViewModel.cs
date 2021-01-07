@@ -4,6 +4,7 @@ using PhotoBook.Model.Exporters;
 using PhotoBook.Model.Helpers;
 using PhotoBook.Model.Pages;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
 
 namespace PhotoBook.ViewModel.Settings
@@ -81,7 +82,7 @@ namespace PhotoBook.ViewModel.Settings
                     break;
             }
 
-            for (int i = 0; i < model.NumOfContentPages; i++)
+            for (int i = 0; i < model.NumOfContentPages; i+=2)
             {
                 List<string> photos = new List<string>();
                 List<string> descriptions = new List<string>();
@@ -122,6 +123,7 @@ namespace PhotoBook.ViewModel.Settings
                         ob.CreatePage(photos, descriptions, ToPdf.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
                         break;
                 }
+
             }
 
             switch (model.BackCover.Background)

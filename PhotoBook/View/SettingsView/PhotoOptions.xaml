@@ -6,12 +6,15 @@
              xmlns:local="clr-namespace:PhotoBook.View.SettingsView"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="500">
+    <UserControl.Resources>
+        <local:ImageIndexToStringConverter x:Key="ImageIndexToStringConverter"/>
+    </UserControl.Resources>
 
     <StackPanel CanVerticallyScroll="True">
         <!--Photo options-->
 
         <Button Name="btnPhoto"
-                    Content="Zdjęcie"
+                    Content="{Binding ImageIndex, Mode=OneWay, Converter={StaticResource ImageIndexToStringConverter}}"
                     VerticalAlignment="Top" 
                     HorizontalContentAlignment="Left"
                     FontSize="25px"
@@ -35,7 +38,7 @@
                         FontSize="18px" 
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-            <StackPanel Name="addDescStackPanel">
+            <StackPanel Visibility="Collapsed" Name="addDescStackPanel">
                 <Label Content="Wpisz opis"
                                Foreground="White" 
                                FontFamily="Segoe UI Light" FontSize="14px"
@@ -45,7 +48,7 @@
                                 Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
                                 Height="70"
                                 Margin="60,0,15,0"
-                                Text="{Binding Description}"/>
+                                Text="{Binding Description, Mode=TwoWay}"/>
                 <Button Content="Zatwierdź" 
                                 HorizontalAlignment="Right"
                                 Margin="0,0,30,0"
@@ -62,7 +65,7 @@
                         FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
-            <StackPanel Background="Transparent" Name="filterStackPanel">
+            <StackPanel Visibility="Collapsed" Background="Transparent" Name="filterStackPanel">
                 <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
                         Content="Brak"
                         HorizontalContentAlignment="Left"

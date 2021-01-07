@@ -6,8 +6,12 @@ namespace PhotoBook.ViewModel.Settings
 {
     public class ImageViewModel : ViewModelBase
     {
+        private ViewModelLocator locator;
+
         private ContentPage page;
+
         private int imageIndex;
+        public int ImageIndex { get => imageIndex; }
 
         private string description = "";
         public string Description
@@ -34,6 +38,10 @@ namespace PhotoBook.ViewModel.Settings
                     () =>
                     {
                         page.LoadImage(imageIndex, ChosenFilePath);
+
+                        var cropPhotoVM = locator.CropPhoto;
+                        cropPhotoVM.ImageToCrop = page.GetImage(imageIndex);
+                        MainViewModel.Navigator.ChangeCurrentVM(cropPhotoVM);
                     }));
             }
         }
@@ -44,8 +52,9 @@ namespace PhotoBook.ViewModel.Settings
             page.SetComment(imageIndex, Description);
         });
 
-        public ImageViewModel(ContentPage page, int imageIndex)
+        public ImageViewModel(ViewModelLocator locator, ContentPage page, int imageIndex)
         {
+            this.locator = locator;
             this.page = page;
             this.imageIndex = imageIndex;
 

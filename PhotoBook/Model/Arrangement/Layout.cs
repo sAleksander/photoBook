@@ -11,45 +11,33 @@ namespace PhotoBook.Model.Arrangement
         public enum Type
         {
             OnePicture,
-            TwoPictures,
-            ThreePictures
+            TwoPictures
         }
 
         public static Dictionary<Type, Layout> CreateAvailableLayouts() => new Dictionary<Type, Layout>
         {
-            #region Mockup
+            {
+                Layout.Type.OnePicture, new Layout("Jedno zdjęcie")
+                {
+                    _numOfImages = 1,
+                    _imageConstraints = new Rectangle[]
+                    {
+                        new Rectangle(120, 160, 560, 800),
+                    }   
+                }
+            },
             {
                 Layout.Type.TwoPictures, new Layout("Dwa zdjęcia")
                 {
                     _numOfImages = 2,
                     _imageConstraints = new Rectangle[]
                     {
-                        new Rectangle(
-                            100,
-                            50,
-                            PhotoBook.PageWidthInPixels - 200, // 600
-                            (PhotoBook.PageHeightInPixels - (50 + 150 + 150)) / 2 // 575
-                        ),
-                        new Rectangle(
-                            100,
-                            50 + (PhotoBook.PageHeightInPixels - (50 + 150 + 150)) / 2 + 150, // 725
-                            PhotoBook.PageWidthInPixels - 200, // 600
-                            (PhotoBook.PageHeightInPixels - (50 + 150 + 150)) / 2 // 575
-                        ),
+                        new Rectangle(120, 100, 560, 400),
+                        new Rectangle(120, 620, 560, 400),
                     }
-                    
                 }
-            },
-            #endregion
+            }
         };
-
-        #region Mockup
-        static Layout()
-        {
-            CommentFontSize = 32;
-            CommentOffsetInPixels = 50;
-        }
-        #endregion
 
         private Layout(string nameOfLayout)
         {
@@ -57,12 +45,11 @@ namespace PhotoBook.Model.Arrangement
         }
 
 
-        public static int CommentFontSize { get; }
-        public static int CommentOffsetInPixels { get; }
+        public static int CommentFontSize { get; } = 32;
+        public static int CommentOffsetInPixels { get; } = 25;
 
-        // String, or enum Type? What is this even for?
         private string _name;
-        public string Name { get; }
+        public string Name { get => _name; }
 
         private int _numOfImages;
         public int NumOfImages { get => _numOfImages; }

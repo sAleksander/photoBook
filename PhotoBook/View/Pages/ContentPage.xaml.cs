@@ -31,7 +31,7 @@ namespace PhotoBook.View.Pages
         private Canvas canvas;
 
         private Rectangle[] backgrounds = new Rectangle[2];
-        private Image[][] images = new Image[2][];
+        private UIElement[][][] images = new UIElement[2][][];
         private Label[][] labels = new Label[2][];
 
         public ContentPage()
@@ -44,7 +44,8 @@ namespace PhotoBook.View.Pages
             DrawContentPages();
 
             viewModel.PropertyChanged += OnViewModelPropertyChanged;
-            viewModel.BackgroundChanged += OnViewModelBaackgroundChanged;
+            viewModel.Redraw += OnViewModelRedraw;
+            viewModel.BackgroundChanged += OnViewModelBackgroundChanged;
             viewModel.ImageChanged += OnViewModelImageChanged;
             viewModel.CommentChanged += OnViewModelCommentChanged;
         }
@@ -71,7 +72,12 @@ namespace PhotoBook.View.Pages
             }
         }
 
-        private void OnViewModelBaackgroundChanged(int pageIndex)
+        private void OnViewModelRedraw(int pageIndex)
+        {
+            DrawContentPages();
+        }
+
+        private void OnViewModelBackgroundChanged(int pageIndex)
         {
             var fill = backgrounds[pageIndex].Fill as SolidColorBrush;
             var newColor = viewModel.ContentPages[pageIndex].Background as Model.Backgrounds.BackgroundColor;
@@ -81,7 +87,10 @@ namespace PhotoBook.View.Pages
 
         private void OnViewModelImageChanged(int pageIndex, int layoutIndex)
         {
-            canvas.Children.Remove(images[pageIndex][layoutIndex]);
+            foreach (var child in images[pageIndex][layoutIndex])
+            {
+                canvas.Children.Remove(child);
+            }
 
             var page = viewModel.ContentPages[pageIndex];
 
@@ -89,7 +98,14 @@ namespace PhotoBook.View.Pages
             var imgConstraints = page.Layout.ImageConstraints[layoutIndex];
             var leftOffset = pageIndex * PhotoBookModel.PageWidthInPixels;
 
-            images[pageIndex][layoutIndex] = DrawImage(image, imgConstraints, leftOffset);
+            if (image != null)
+            {
+                images[pageIndex][layoutIndex] = DrawImage(image, imgConstraints, leftOffset);
+            }
+            else
+            {
+                images[pageIndex][layoutIndex] = DrawPlaceholderImage(imgConstraints, leftOffset);
+            }
         }
 
         private void OnViewModelCommentChanged(int pageIndex, int layoutIndex)
@@ -122,7 +138,7 @@ namespace PhotoBook.View.Pages
             backgrounds[pageIndex] = bgRectangle;
 
             var layout = page.Layout;
-            images[pageIndex] = new Image[layout.NumOfImages];
+            images[pageIndex] = new UIElement[layout.NumOfImages][];
             labels[pageIndex] = new Label[layout.NumOfImages];
 
             for (int imgIndex = 0; imgIndex < layout.NumOfImages; imgIndex++)
@@ -134,12 +150,16 @@ namespace PhotoBook.View.Pages
                 {
                     images[pageIndex][imgIndex] = DrawImage(image, imgConstraints, leftOffset);
                 }
+                else
+                {
+                    images[pageIndex][imgIndex] = DrawPlaceholderImage(imgConstraints, leftOffset);
+                }
 
                 labels[pageIndex][imgIndex] = DrawImageComment(page.GetComment(imgIndex), imgConstraints, leftOffset);
             }
         }
 
-        private Image DrawImage(
+        private UIElement[] DrawImage(
             PhotoBook.Model.Graphics.Image image,
             PhotoBook.Model.Arrangement.Rectangle imgConstraints,
             int leftOffset)
@@ -164,7 +184,41 @@ namespace PhotoBook.View.Pages
 
             canvas.Children.Add(wpfImage);
 
-            return wpfImage;
+            return new UIElement[] { wpfImage };
+        }
+
+        private UIElement[] DrawPlaceholderImage(
+            PhotoBook.Model.Arrangement.Rectangle imgConstraints,
+            int leftOffset)
+        {
+            var placeholder = new Rectangle()
+            {
+                Width = imgConstraints.Width,
+                Height = imgConstraints.Height,
+                Fill = new SolidColorBrush(Color.FromRgb(75, 75, 75)),
+            };
+
+            Canvas.SetLeft(placeholder, leftOffset + imgConstraints.X);
+            Canvas.SetTop(placeholder, imgConstraints.Y);
+
+            var label = new Label()
+            {
+                Width = imgConstraints.Width,
+                Height = imgConstraints.Height,
+                Foreground = Brushes.White,
+                Content = "Brak zdjęcia",
+                HorizontalContentAlignment = HorizontalAlignment.Center,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                FontSize = 20,
+            };
+
+            Canvas.SetLeft(label, leftOffset + imgConstraints.X);
+            Canvas.SetTop(label, imgConstraints.Y);
+
+            canvas.Children.Add(placeholder);
+            canvas.Children.Add(label);
+
+            return new UIElement[] { placeholder, label };
         }
 
         private Label DrawImageComment(

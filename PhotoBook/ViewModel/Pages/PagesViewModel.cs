@@ -1,5 +1,5 @@
-﻿using GalaSoft.MvvmLight;
-using PhotoBook.Model.Pages;
+﻿using PhotoBook.Model.Pages;
+using System;
 using System.ComponentModel;
 using static PhotoBook.Model.Pages.ContentPage;
 
@@ -7,6 +7,9 @@ namespace PhotoBook.ViewModel.Pages
 {
     public class PagesViewModel : BookViewModel
     {
+        public delegate void RedrawEventHandler(int pageIndex);
+        public event RedrawEventHandler Redraw;
+
         public delegate void BackgroundChangedEventHandler(int pageIndex);
         public event BackgroundChangedEventHandler BackgroundChanged;
 
@@ -59,6 +62,10 @@ namespace PhotoBook.ViewModel.Pages
             if (propertyName.Equals(nameof(ContentPage.Background)))
             {
                 BackgroundChanged?.Invoke(pageIndex);
+            }
+            else if (propertyName.Equals(nameof(ContentPage.Layout)))
+            {
+                Redraw?.Invoke(pageIndex);
             }
         }
 
