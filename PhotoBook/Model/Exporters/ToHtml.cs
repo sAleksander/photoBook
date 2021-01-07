@@ -57,7 +57,6 @@ namespace PhotoBook.Model.Exporters
 
         public void CreateFrontCover(string cssBackground = "", string title = "")
         {
-            Debug.WriteLine($"Front: {FONT_COLOR}");
             string page = $@"
             <!doctype html>
             <html lang='pl' style='height: 100%;'>
@@ -95,7 +94,6 @@ namespace PhotoBook.Model.Exporters
 
         public void CreateBackCover(string cssBackground = "", string legalInfo = "Photo book created using PhotoBook")
         {
-            Debug.WriteLine($"Back: {FONT_COLOR}");
             string page = $@"
             <!doctype html>
             <html lang='pl' style='height: 100%;'>
@@ -153,8 +151,6 @@ namespace PhotoBook.Model.Exporters
             }
             public string GeneratePhotosOnPage()
             {
-            Debug.WriteLine($"Page: {FONT_COLOR}");
-
                 string singlePhoto()
                 {
                     string tmp = $@"
