@@ -49,7 +49,7 @@ namespace PhotoBook.Model.Exporters
 
             Directory.CreateDirectory(PHOTOS_DIRECTORY);
 
-            foreach (var item in Directory.GetFiles(IMPORT_PHOTOS_DIRECTORY, "*.png", SearchOption.TopDirectoryOnly))
+            foreach (var item in Directory.GetFiles(IMPORT_PHOTOS_DIRECTORY, "*.*", SearchOption.TopDirectoryOnly))
             {
                 File.Copy(item, PHOTOS_DIRECTORY + "\\" + Path.GetFileName(item), true);
             }
@@ -69,7 +69,7 @@ namespace PhotoBook.Model.Exporters
             <div style='height: 100%; flex-grow:1;'>
             <div style='height: 95%; display: flex;'>
             <div style='margin-left: 25%; margin-right: 25%; width: 50%; {cssBackground}'>
-            <div style='text-align: center; font-size: 4vw; margin-top: 20vh; color: {FONT_COLOR}; font-family: {FONT_FAMILY}'>
+            <div style='text-align: center; font-size: 4vw; margin-top: 45vh; color: {FONT_COLOR}; font-family: {FONT_FAMILY}'>
             {title}
             </div>
             </div>
@@ -159,7 +159,7 @@ namespace PhotoBook.Model.Exporters
                 {
                     string tmp = $@"
                         <div style='height: 90%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: auto; height: 80vh;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: auto; height: 80vh;' alt=''>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {LOCAL_FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[0]}
                         </div>
@@ -172,14 +172,14 @@ namespace PhotoBook.Model.Exporters
                 {
                     string tmp = $@"
                         <div style='height: 44%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: 20vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: 30vw; height: auto;' alt=''>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {LOCAL_FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[0]}
                         </div>
                         </div>
 
                         <div style='height: 44%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[1]}' style='width: 20vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[1]}' style='width: 30vw; height: auto;' alt=''>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {LOCAL_FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[1]}
                         </div>
@@ -192,19 +192,19 @@ namespace PhotoBook.Model.Exporters
                 {
                     string tmp = $@"
                         <div style='height: 27%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: 26vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[0]}' style='width: 26vw; height: auto;' alt=''>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {LOCAL_FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[0]}
                         </div>
                         </div>
                         <div style='height: 27%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[1]}' style='width: 26vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[1]}' style='width: 26vw; height: auto;' alt=''>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {LOCAL_FONT_COLOR}; font-family: {FONT_FAMILY}';>
                         {descriptions[1]}
                         </div>
                         </div>
                         <div style='height: 27%; margin: 2%;'>
-                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[2]}' style='width: 26vw; height: auto;'>
+                        <img src='{RELATIVE_PHOTOS_DIRECTORY}/{photos[2]}' style='width: 26vw; height: auto;' alt=''>
                         <div style='text-align: center; height: 10%; font-size: 2vh; color: {LOCAL_FONT_COLOR}; font-family: {FONT_FAMILY};'>
                         {descriptions[2]}
                         </div>

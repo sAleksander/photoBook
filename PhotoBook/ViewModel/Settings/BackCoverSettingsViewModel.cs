@@ -41,24 +41,30 @@ namespace PhotoBook.ViewModel.Settings
                 for (int j = 0; j < model.GetContentPagesAt(i).Item1.Layout.NumOfImages; j++)
                 {
                     PhotoBook.Model.Graphics.Image tmp = model.GetContentPagesAt(i).Item1.GetImage(j);
-                    ImageAdjuster.CropImage(
-                        tmp.DisplayedPath,
-                        tmp.CroppingRectangle.X,
-                        tmp.CroppingRectangle.Y,
-                        tmp.CroppingRectangle.Width,
-                        tmp.CroppingRectangle.Height
-                        );
+                    if (tmp != null)
+                    {
+                        ImageAdjuster.CropImage(
+                            tmp.DisplayedPath,
+                            tmp.CroppingRectangle.X,
+                            tmp.CroppingRectangle.Y,
+                            tmp.CroppingRectangle.Width,
+                            tmp.CroppingRectangle.Height
+                            );
+                    }
                 }
                 for (int j = 0; j < model.GetContentPagesAt(i).Item2.Layout.NumOfImages; j++)
                 {
                     PhotoBook.Model.Graphics.Image tmp = model.GetContentPagesAt(i).Item2.GetImage(j);
-                    ImageAdjuster.CropImage(
-                        tmp.DisplayedPath,
-                        tmp.CroppingRectangle.X,
-                        tmp.CroppingRectangle.Y,
-                        tmp.CroppingRectangle.Width,
-                        tmp.CroppingRectangle.Height
-                        );
+                    if (tmp != null)
+                    {
+                        ImageAdjuster.CropImage(
+                            tmp.DisplayedPath,
+                            tmp.CroppingRectangle.X,
+                            tmp.CroppingRectangle.Y,
+                            tmp.CroppingRectangle.Width,
+                            tmp.CroppingRectangle.Height
+                            );
+                    }
                 }
             }
         }
@@ -82,7 +88,7 @@ namespace PhotoBook.ViewModel.Settings
                     break;
             }
 
-            for (int i = 0; i < model.NumOfContentPages; i+=2)
+            for (int i = 0; i < model.NumOfContentPages; i += 2)
             {
                 List<string> photos = new List<string>();
                 List<string> descriptions = new List<string>();
@@ -146,7 +152,7 @@ namespace PhotoBook.ViewModel.Settings
 
             ToHtml.FONT_COLOR = "red";
 
-            ToHtml ob = new ToHtml(model.NumOfContentPages/2);
+            ToHtml ob = new ToHtml(model.NumOfContentPages / 2);
 
             string fileNameExporter(string path)
             {
@@ -165,7 +171,7 @@ namespace PhotoBook.ViewModel.Settings
                     break;
             }
 
-            for (int i = 0; i < model.NumOfContentPages; i+=2)
+            for (int i = 0; i < model.NumOfContentPages; i += 2)
             {
                 ToHtml.Page left = new ToHtml.Page(ToHtml.CssBackground(0, 0, 0));
 
@@ -182,10 +188,17 @@ namespace PhotoBook.ViewModel.Settings
 
                 for (int j = 0; j < model.GetContentPagesAt(i).Item1.Layout.NumOfImages; j++)
                 {
-                    left.AddPhotoWithDescription(
-                        fileNameExporter(model.GetContentPagesAt(i).Item1.GetImage(j).DisplayedPath),
-                        model.GetContentPagesAt(i).Item1.GetComment(j)
-                        );
+                    if (model.GetContentPagesAt(i).Item1.GetImage(j) != null)
+                    {
+                        left.AddPhotoWithDescription(
+                            fileNameExporter(model.GetContentPagesAt(i).Item1.GetImage(j).DisplayedPath),
+                            model.GetContentPagesAt(i).Item1.GetComment(j)
+                            );
+                    }
+                    else
+                    {
+                        left.AddPhotoWithDescription("", "");
+                    }
                 }
 
                 ToHtml.Page right = new ToHtml.Page(ToHtml.CssBackground(0, 0, 0));
@@ -203,10 +216,17 @@ namespace PhotoBook.ViewModel.Settings
 
                 for (int j = 0; j < model.GetContentPagesAt(i).Item2.Layout.NumOfImages; j++)
                 {
-                    right.AddPhotoWithDescription(
-                        fileNameExporter(model.GetContentPagesAt(i).Item2.GetImage(j).DisplayedPath),
-                        model.GetContentPagesAt(i).Item2.GetComment(j)
-                        );
+                    if (model.GetContentPagesAt(i).Item2.GetImage(j)!= null)
+                    {
+                        right.AddPhotoWithDescription(
+                            fileNameExporter(model.GetContentPagesAt(i).Item2.GetImage(j).DisplayedPath),
+                            model.GetContentPagesAt(i).Item2.GetComment(j)
+                            );
+                    }
+                    else
+                    {
+                        right.AddPhotoWithDescription("", "");
+                    }
                 }
 
                 ob.AddBookPages(left, right);
