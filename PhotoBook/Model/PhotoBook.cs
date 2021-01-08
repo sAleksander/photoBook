@@ -1,15 +1,11 @@
 ﻿using PhotoBook.Model.Arrangement;
-using PhotoBook.Model.Backgrounds;
-using PhotoBook.Model.Graphics;
 using PhotoBook.Model.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PhotoBook.Model.Serialization;
-using System.Diagnostics;
+using System.Runtime.Serialization;
+
 
 namespace PhotoBook.Model
 {
@@ -17,6 +13,7 @@ namespace PhotoBook.Model
     {
         public static PhotoBook CreateNew(string projectDirPath)
         {
+
             if (!Directory.Exists(projectDirPath))
                 Directory.CreateDirectory(projectDirPath);
             else
@@ -29,65 +26,89 @@ namespace PhotoBook.Model
                 if (extension != string.Empty)
                     throw new Exception("File location provided when creating a new PhotoBook object");
             }
-
-            Directory.SetCurrentDirectory(projectDirPath);
+            
             PhotoBook photoBook = new PhotoBook();
-            photoBook.SavePath = Path.GetFullPath(projectDirPath);
-
-            photoBook.FrontCover = new FrontCover();
-            photoBook.BackCover = new BackCover();
+            photoBook.SaveDirectory = Path.GetFullPath(projectDirPath);
+            Directory.SetCurrentDirectory(projectDirPath);
 
             return photoBook;
         }
 
-        public PhotoBook(string savePath) {
-            if (!Directory.Exists(savePath))
-                throw new Exception("Provided directory path doesn't exist!");
+        public static PhotoBook Load(string configFilePath)
+        {
+            PhotoBook photoBook = new PhotoBook();
+            photoBook.SaveDirectory = Path.GetDirectoryName(Path.GetFullPath(configFilePath));
+            Directory.SetCurrentDirectory(configFilePath);
 
-            SavePath = savePath;
-            Directory.SetCurrentDirectory(savePath);
-            LoadPhotoBook();
+            photoBook.LoadPhotoBook();
+
+            return photoBook;
         }
+        public static PhotoBook CreateMockup()
+        {
+            if (Directory.Exists("mockup_project"))
+            {
+                Directory.Delete("mockup_project", true);
+            }
 
-        public string SavePath { get; private set; }
-        public static string Font { get; private set; } = "Arial";
+            Directory.CreateDirectory("mockup_project");
+            Directory.SetCurrentDirectory("mockup_project");
 
-        public static int PageWidthInPixels { get; }
-        public static int PageHeightInPixels { get; }
+            PhotoBook photoBook = new PhotoBook();
+            photoBook.SaveDirectory = Path.GetFullPath(Directory.GetCurrentDirectory());
 
+            photoBook.FrontCover = new Pages.FrontCover();
+            photoBook.FrontCover.Title = "Moja fotoksiążka";
+            photoBook.FrontCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
 
-        private List<ContentPage> _contentPages = new List<ContentPage>();
+            photoBook.BackCover = new Pages.BackCover();
+            photoBook.BackCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
 
+            photoBook._contentPages = new List<ContentPage>(6);
+
+            for (int i = 0; i < 2; i++)
+            {
+                ContentPage contentPage = new ContentPage();
+
+                contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
+
+                contentPage.LoadImage(0, @"..\placeholder_cropped.png");
+                contentPage.SetComment(0, $"Obrazek {3 * i}");
+
+                contentPage.LoadImage(1, @"..\placeholder_original.png");
+                contentPage.SetComment(1, $"Obrazek {3 * i + 1}");
+
+                photoBook._contentPages.Add(contentPage);
+
+                contentPage = new ContentPage();
+
+                contentPage.Layout = photoBook.AvailableLayouts[Layout.Type.OnePicture];
+
+                contentPage.LoadImage(0, @"..\placeholder_cropped.png");
+                contentPage.SetComment(0, $"Obrazek {3 * i + 2}");
+
+                photoBook._contentPages.Add(contentPage);
+            }
+
+            return photoBook;
+        }
+        
+        public static string Font { get; } = "Arial";
+
+        public static int PageWidthInPixels { get; } = 790;
+        public static int PageHeightInPixels { get; } = 1120;
+
+        private List<ContentPage> _contentPages;
+        
         public FrontCover FrontCover { get; private set; }
         public BackCover BackCover { get; private set; }
         public int NumOfContentPages { get => _contentPages.Count; }
 
+        public string SaveDirectory { get; private set; }
+
         public Dictionary<Layout.Type, Layout> AvailableLayouts { get; } = Layout.CreateAvailableLayouts();
 
-        #region Mockup
-        static PhotoBook()
-        {
-            PageWidthInPixels = 800;
-            PageHeightInPixels = 1500;
-        }
-
-
-        public PhotoBook()
-        {
-            if (!Directory.Exists("\\OriginalImages"))
-                Directory.CreateDirectory("OriginalImages");
-
-            if (!Directory.Exists("\\UsedImages"))
-                Directory.CreateDirectory("UsedImages");
-
-            FrontCover = new Pages.FrontCover();
-            FrontCover.Title = "Moja fotoksiążka";
-            FrontCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
-
-            BackCover = new Pages.BackCover();
-            BackCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
-        }
-        #endregion
+        private PhotoBook() { }
 
         public (ContentPage, ContentPage) GetContentPagesAt(int index)
         {
@@ -98,20 +119,25 @@ namespace PhotoBook.Model
             return (_contentPages[adjustedIndex], _contentPages[adjustedIndex + 1]);
         }
 
-        public void CreateNewPages(int index = -1)
+        public (ContentPage, ContentPage) CreateNewPages(int index = -1)
         {
+            var left = new ContentPage();
+            var right = new ContentPage();
+
             if (index == -1) {
-                _contentPages.Add(new ContentPage());
-                _contentPages.Add(new ContentPage());
-                return;
+                _contentPages.Add(left);
+                _contentPages.Add(right);
+                return (left, right);
             }
 
-            if (index < 0 || index >= _contentPages.Count)
+            if (index < 0 || index > _contentPages.Count)
                 throw new Exception("Wrong insert page index chosen!");
 
             var adjustedIndex = GetAdjustedIndex(index);
-            _contentPages.Insert(adjustedIndex, new ContentPage());
-            _contentPages.Insert(adjustedIndex, new ContentPage());
+            _contentPages.Insert(adjustedIndex, right);
+            _contentPages.Insert(adjustedIndex, left);
+
+            return (left, right);
         }
 
         public void DeletePages(int index)
@@ -130,11 +156,9 @@ namespace PhotoBook.Model
 
         public void LoadPhotoBook()
         {
-            SavePath = "C:\\Users\\Wojtek\\Desktop\\MyPhotoBook";
-
             serializer = new Serializer();
 
-            serializer.LoadData($"{SavePath}\\saveFile.pbf");
+            serializer.LoadData($"{SaveDirectory}\\saveFile.pbf");
 
             DeserializeObject(serializer);
         }
@@ -143,8 +167,9 @@ namespace PhotoBook.Model
         {
             SerializeObject(serializer);
 
-            serializer.SaveObjects($"{SavePath}\\saveFile.pbf");
+            serializer.SaveObjects($"{SaveDirectory}\\saveFile.pbf");
         }
+
 
         public Serializer serializer;
 
@@ -152,9 +177,7 @@ namespace PhotoBook.Model
         {
             serializer = new Serializer();
 
-            string photoBook = $"{nameof(SavePath)}:{SavePath}\n";
-
-            photoBook += $"{nameof(Font)}:{Font}\n";
+            string photoBook = $"{nameof(SaveDirectory)}:{SaveDirectory}\n";
 
             photoBook += $"{nameof(FrontCover)}:&{FrontCover.SerializeObject(serializer)}\n";
 
@@ -167,7 +190,7 @@ namespace PhotoBook.Model
 
             serializer.AddObject(photoBook);
 
-            serializer.SaveObjects(SavePath);
+            serializer.SaveObjects($"{SaveDirectory}\\saveFile.pbf");
 
             return 0;
         }
@@ -176,11 +199,9 @@ namespace PhotoBook.Model
         {
             ObjectDataRelay objectData = serializer.GetObjectData(-1);
 
-            Font = objectData.Get<string>(nameof(Font));
-
             // Front cover
 
-            FrontCover = FrontCover.DeserializeObject(serializer, objectData.Get<int>(nameof(FrontCover)));
+            FrontCover.DeserializeObject(serializer, objectData.Get<int>(nameof(FrontCover)));
 
             // Content pages
 
@@ -198,7 +219,7 @@ namespace PhotoBook.Model
 
             BackCover = BackCover.DeserializeObject(serializer, objectData.Get<int>(nameof(BackCover)));
 
-            return new PhotoBook();
+            return null;
         }
     }
 }

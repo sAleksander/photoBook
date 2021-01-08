@@ -18,11 +18,23 @@ namespace PhotoBook.View
     /// <summary>
     /// Interaction logic for BackCoverSettingsView.xaml
     /// </summary>
-    public partial class BackCoverSettingsView : Page
+    public partial class BackCoverSettingsView : UserControl
     {
         public BackCoverSettingsView()
         {
             InitializeComponent();
         }
+
+        public const int defaultWidth = 385;
+
+        public void PageSizeChange(object senser, SizeChangedEventArgs e)
+        {
+            double percentage = (ActualWidth / defaultWidth);
+
+            btnPdf.SetValue(FontSizeProperty, 25 * percentage);
+            btnDocs.SetValue(FontSizeProperty, 25 * percentage);
+            btnHtml.SetValue(FontSizeProperty, 25 * percentage);
+        }
+
     }
 }

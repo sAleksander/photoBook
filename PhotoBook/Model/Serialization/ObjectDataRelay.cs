@@ -23,7 +23,7 @@ namespace PhotoBook.Model.Serialization
             {
                 string backgroundString = objectData[propertyName];
 
-                int backgroundID = int.Parse(backgroundString.Substring(backgroundString.IndexOf('&') + 1, backgroundString.IndexOf(',') - 1));
+                int backgroundID = int.Parse(backgroundString.Substring(backgroundString.IndexOf('&') + 1, backgroundString.IndexOf(',') - (backgroundString.IndexOf('&') + 1)));
 
                 return (T)Convert.ChangeType(backgroundID, typeof(T));
             }
@@ -33,7 +33,7 @@ namespace PhotoBook.Model.Serialization
             {
                 string backgroundString = objectData[propertyName];
 
-                string backgroundType = backgroundString.Substring(backgroundString.IndexOf(',') + 1);
+                string backgroundType = backgroundString.Substring(backgroundString.IndexOf(',') + 1, backgroundString.Length - 1 - (backgroundString.IndexOf(',') + 1));
 
                 return (T)Convert.ChangeType(backgroundType, typeof(T));
             }
@@ -75,17 +75,24 @@ namespace PhotoBook.Model.Serialization
 
                 while (charIterator != -1 && charIterator < commentsString.Length)
                 {
-                    // charIterator + 1 - to get avoid quotation signs
-                    comment = commentsString.Substring(charIterator + 1, commentsString.IndexOf("\"\n", charIterator));
+                    comment = commentsString.Substring(charIterator + 1, commentsString.IndexOf("\"\n", charIterator) - (charIterator + 1));
+
+                    if (comment.Contains("\n"))
+                        comment = comment.Trim('\n');
+
+                    if (comment.Contains("\""))
+                        comment = comment.Trim('\"');
+
 
                     comments.Add(comment);
 
-                    charIterator = commentsString.IndexOf('&', charIterator);
+                    charIterator = commentsString.IndexOf('\"', commentsString.IndexOf("\"\n", charIterator) + 1);
                 }
 
                 return (T)Convert.ChangeType(comments, typeof(T));
             }
-            else if (typeof(T) == typeof(int))
+
+            else if (typeof(T) == typeof(int) || typeof(T) == typeof(byte))
             {
                 var result = objectData[propertyName];
 
@@ -98,8 +105,24 @@ namespace PhotoBook.Model.Serialization
                 return (T)Convert.ChangeType(result, typeof(T));
             }
 
-            else if (typeof(T) == typeof(string) || typeof(T) == typeof(int))
-                return (T)Convert.ChangeType(objectData[propertyName].Trim(), typeof(T));
+            else if (typeof(T) == typeof(int))            
+                return (T)Convert.ChangeType(objectData[propertyName].Trim(), typeof(T));            
+
+            else if (typeof(T) == typeof(string))
+            {
+                var result = objectData[propertyName];
+
+                if (result.StartsWith("&"))
+                    result = result.Substring(1);
+
+                if (result.Contains("\n"))
+                    result = result.Trim('\n');
+
+                if (result.Contains("\""))
+                    result = result.Trim('\"');
+
+                return (T)Convert.ChangeType(result, typeof(T));
+            }
 
             else
                 throw new Exception("Wrong data passed to get method when deserializing!");

@@ -12,15 +12,10 @@ namespace PhotoBook.Model.Arrangement
     {
         public Rectangle(int x, int y, int width, int height)
         {
-            if (width <= 0 || height <= 0)
-                throw new Exception("Width & height of a rectangle must be longer than 0!");
-            else
-            {
-                X = x;
-                Y = y;
-                Width = width;
-                Height = height;
-            }
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
         }
 
         public int X { get; private set; }
@@ -31,8 +26,6 @@ namespace PhotoBook.Model.Arrangement
         public Rectangle DeserializeObject(Serializer serializer, int objectID)
         {
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
-
-            Debug.WriteLine(objectData == null);
 
             X = objectData.Get<int>(nameof(X));
             Y = objectData.Get<int>(nameof(Y));

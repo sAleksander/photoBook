@@ -1,15 +1,51 @@
-﻿<Page x:Class="PhotoBook.View.BackCoverSettingsView"
+﻿<UserControl x:Class="PhotoBook.View.BackCoverSettingsView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PhotoBook.View"
-      DataContext="{Binding Source={StaticResource Locator}, Path=BackCoverSettings}"
+      DataContext="{Binding Source={StaticResource Locator}, Path=BackCoverSettings, Mode=OneTime}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="BackCoverSettingsView">
+      d:DesignHeight="450" d:DesignWidth="500"
+      SizeChanged="PageSizeChange">
 
-    <Grid>
-        <Label Content="BackCoverSettings"/>
-    </Grid>
-</Page>
+    <StackPanel CanVerticallyScroll="True">
+        <Button Name="btnPdf"
+                    Content="Eksportuj do PDF" 
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding ExportToPdf}"
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25"
+                    Height="50">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Name="btnHtml"
+                    Content="Eksportuj do HTML"
+                    VerticalAlignment="Top" 
+                    HorizontalContentAlignment="Left"
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25px"
+                    Command="{Binding ExportToHtml}"
+                    Height="50"
+                    Margin="0,1,0,1"/>
+        <Button Name="btnDocs"
+                    Content="Eksportuj do DOCS" 
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Left"
+                    Style="{StaticResource BorderButton}"
+                    FontSize="25px"
+                    Height="50"
+                    Margin="0,1,0,1">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="2"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </StackPanel>
+</UserControl>

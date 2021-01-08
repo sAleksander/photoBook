@@ -10,9 +10,16 @@ namespace PhotoBook.ViewModel
 {
     public class HomeViewModel : ViewModelBase
     {
+        private ViewModelLocator locator;
+
+        public HomeViewModel(ViewModelLocator locator)
+        {
+            this.locator = locator;
+        }
+
         public RelayCommand Edit => new RelayCommand(() =>
         {
-            MainViewModel.Navigator.ChangeCurrentVM<EditorViewModel>();
+            MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
         });
     }
 }

@@ -1,13 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhotoBook.ViewModel
+namespace PhotoBook.ViewModel.Dialogs
 {
-    public class SettingsViewModel : ViewModelBase
+    public enum DialogResult
     {
+        Yes,
+        No,
     }
 }

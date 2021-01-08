@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="PhotoBook.View.SettingsView.PhotoOptions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PhotoBook.View.SettingsView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500">
+    <UserControl.Resources>
+        <local:ImageIndexToStringConverter x:Key="ImageIndexToStringConverter"/>
+    </UserControl.Resources>
+
+    <StackPanel CanVerticallyScroll="True">
+        <!--Photo options-->
+
+        <Button Name="btnPhoto"
+                    Content="{Binding ImageIndex, Mode=OneWay, Converter={StaticResource ImageIndexToStringConverter}}"
+                    VerticalAlignment="Top" 
+                    HorizontalContentAlignment="Left"
+                    FontSize="25px"
+                    Style="{StaticResource BorderButton}"
+                    Height="50"
+                    Margin="0,1,0,1"
+                Click="btnPhoto_Click"/>
+        <StackPanel Visibility="Visible" Background="Transparent" Name="photoOptionStackPanel">
+            <local:FilePickerButton
+                Margin="40,0,0,0"
+                ButtonContent="Dodaj zdjęcie"
+                Filter="{Binding ImageFilter, Mode=OneWay}"
+                ChosenFile="{Binding ChosenFilePath, Mode=OneWayToSource}"
+                FileChosenCommand="{Binding FileChosen}"
+                />
+
+            <!--Add Description-->
+            <Button Click="addDescription" 
+                        Name="btnAddDesc"
+                        Content="Dodaj opis"  
+                        FontSize="18px" 
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+            <StackPanel Visibility="Collapsed" Name="addDescStackPanel">
+                <Label Content="Wpisz opis"
+                               Foreground="White" 
+                               FontFamily="Segoe UI Light" FontSize="14px"
+                                Margin="60,0,0,0"/>
+                <TextBox Name="DescriptionTextBox"
+                                Background="#e8e8e8"
+                                Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
+                                Height="70"
+                                Margin="60,0,15,0"
+                                Text="{Binding Description, Mode=TwoWay}"/>
+                <Button Content="Zatwierdź" 
+                                HorizontalAlignment="Right"
+                                Margin="0,0,30,0"
+                                FontSize="14px"
+                                Command="{Binding ApplyDescription}"/>
+            </StackPanel>
+
+
+            <!--Add Filter-->
+            <Button Click="addFilter"
+                        Name="btnAddFilter"
+                        Content="Dodaj filtr" 
+                        VerticalAlignment="Top" 
+                        FontSize="18px"
+                        Height="40"
+                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+            <StackPanel Visibility="Collapsed" Background="Transparent" Name="filterStackPanel">
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+                        Content="Brak"
+                        HorizontalContentAlignment="Left"
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        Height="40"
+                        Margin="60,0,0,0"/>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Content="Ciepły"  
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        HorizontalContentAlignment="Left"
+                        Height="40"
+                        Margin="60,0,0,0"/>
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Content="Zimny" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        HorizontalContentAlignment="Left"
+                        Height="40"
+                        Margin="60,0,0,0" />
+                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+                        Content="Czarno-biały" 
+                        VerticalAlignment="Top" 
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                        HorizontalContentAlignment="Left"
+                        Height="40"
+                        Margin="60,0,0,0"/>
+            </StackPanel>
+
+
+        </StackPanel>
+    </StackPanel>
+</UserControl>

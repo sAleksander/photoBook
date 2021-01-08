@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PhotoBook.View
+namespace PhotoBook.View.Dialogs
 {
     /// <summary>
-    /// Interaction logic for BookView.xaml
+    /// Interaction logic for DialogYesNo.xaml
     /// </summary>
-    public partial class BookView : Page
+    public partial class DialogYesNo : UserControl
     {
-        public BookView()
+        public DialogYesNo()
         {
             InitializeComponent();
         }

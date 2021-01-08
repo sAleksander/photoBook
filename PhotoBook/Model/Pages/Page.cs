@@ -1,16 +1,31 @@
 ﻿using PhotoBook.Model.Backgrounds;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Pages
 {
-    public abstract class Page
+    public abstract class Page : INotifyPropertyChanged
     {
-        public Background Background { get; set; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public virtual void setBackground(int R, int G, int B, string path, int X, int Y, int Width, int Height) { }
+        private Background background;
+        public Background Background
+        {
+            get => background;
+            set
+            {
+                background = value;
+                InvokePropertyChanged(nameof(Background));
+            }
+        }
+
+        protected void InvokePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PhotoBook.Model.Arrangement;
 using System.Drawing;
 using Rectangle = PhotoBook.Model.Arrangement.Rectangle;
 using PhotoBook.Model.Serialization;
@@ -14,81 +9,46 @@ namespace PhotoBook.Model.Graphics
 {
     public class Image : SerializeInterface<Image>
     {
-        public Image()
-        {
-            // Constructor only for serialization purposes
-        }
+        private Bitmap originalBitmap { get; set;}
+        private Bitmap editedBitmap { get; set; }
+
+        public Rectangle CroppingRectangle { get; set; }
+        public string OriginalPath { get; private set; }
+        public string OriginalAbsolutePath { get => Path.GetFullPath(OriginalPath); }
+        public string DisplayedPath { get; private set; }
+        public string DisplayedAbsolutePath { get => Path.GetFullPath(DisplayedPath); }
+
+        public int Width { get; }
+        public int Height { get; }
+
+        public Filter CurrentFilter { get; private set; } = new Filter();
 
         public Image(string path, int x, int y, int width, int height)
         {
             System.IO.FileAttributes attr = File.GetAttributes(path);
-
-            const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var extension = Path.GetExtension(path);
 
             if (attr.HasFlag(FileAttributes.Directory))
                 throw new Exception("Correct image path was not provided");
-            if (Path.GetExtension(path) != ".jpg" && Path.GetExtension(path) != ".png")
+            if (extension != ".jpg" && extension != ".png")
                 throw new Exception("File/image with wrong exception provided");
 
-            if (!Directory.Exists("\\OriginalImages"))
-                Directory.CreateDirectory("OriginalImages");
 
-            if (!File.Exists($"OriginalImages\\{Path.GetFileName(path)}"))
+            var randomFilename = GenerateRandomFilename(extension);
+            var destinationFilename = $"OriginalImages\\{randomFilename}";
+
+            while (File.Exists(destinationFilename))
             {
-                //File.Copy(path, $"\\OriginalImages\\{Path.GetFileName(path)}");
-                File.Copy(path, $"OriginalImages\\{Path.GetFileName(path)}");
-
-                OriginalPath = $"OriginalImages\\{Path.GetFileName(path)}";
-
-                originalBitmap = new Bitmap(path);
-            }
-            else
-            {
-                Random random;
-                string newRandomName;
-
-                do
-                {
-                    random = new Random();
-                    newRandomName = new string(Enumerable.Repeat(characters, 10).Select(s => s[random.Next(s.Length)]).ToArray());
-                } while (File.Exists($"OriginalImages\\{newRandomName}"));
-
-                string extension = Path.GetExtension(path);
-
-                File.Copy(path, $"OriginalImages\\{newRandomName}{extension}");
-                OriginalPath = $"OriginalImages\\{newRandomName}{extension}";
-                originalBitmap = new Bitmap(path);
+                randomFilename = GenerateRandomFilename(extension);
+                destinationFilename = $"OriginalImages\\{randomFilename}";
             }
 
-            CroppingRectangle = new Rectangle(x, y, width, height);
+            Directory.CreateDirectory("OriginalImages");
+            File.Copy(path, destinationFilename, false);
 
-            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(x, y, width, height);
-            System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
-            editedBitmap = originalBitmap.Clone(rectangle, format);
-
-            if (!Directory.Exists("\\UsedImages"))
-                Directory.CreateDirectory("UsedImages");
-
-            if (!File.Exists($"UsedImages\\{Path.GetFileName(path)}")) {
-                editedBitmap.Save($"UsedImages\\{Path.GetFileName(path)}");
-                DisplayedPath = $"UsedImages\\{Path.GetFileName(path)}";
-            }
-            else
-            {
-                Random random;
-                string newRandomName;
-
-                do
-                {
-                    random = new Random();
-                    newRandomName = new string(Enumerable.Repeat(characters, 10).Select(s => s[random.Next(s.Length)]).ToArray());
-                } while (File.Exists($"UsedImages\\{newRandomName}"));
-
-                string extension = Path.GetExtension(path);
-
-                editedBitmap.Save($"UsedImages\\{newRandomName}{extension}");
-                DisplayedPath = $"UsedImages\\{newRandomName}{extension}";
-            }
+            OriginalPath = destinationFilename;
+            DisplayedPath = destinationFilename;
+            originalBitmap = new Bitmap(path);
 
             Width = originalBitmap.Width;
             Height = originalBitmap.Height;
@@ -98,24 +58,12 @@ namespace PhotoBook.Model.Graphics
 
         public Image(string path) : this(path, 0, 0, 0, 0) { }
 
-        public Bitmap originalBitmap { get; private set; }
-        public Bitmap editedBitmap { get; private set; }
+        public Image()
+        {
+        }
 
-        public Rectangle CroppingRectangle { get; set; }
-        public string OriginalPath { get; private set; }
-        public string DisplayedPath { get; private set; }
-
-        // TODO: Think even more whether the width & height will be necessary (due to the use of bitmap)
-        public int Width { get; } // TODO: Think whether it will even be required
-        public int Height { get; } // TODO: Think whether it will even be required
-
-        public Filter CurrentFilter { get; private set; } = new Filter();
         public void SetFilter(Filter.Type filterType)
         {
-            #region Mockup
-            //throw new NotImplementedException("Not available in mockup version");
-            #endregion
-
             System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(CroppingRectangle.X, CroppingRectangle.Y, CroppingRectangle.Width, CroppingRectangle.Height);
             System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
 
@@ -151,7 +99,7 @@ namespace PhotoBook.Model.Graphics
         public Image DeserializeObject(Serializer serializer, int objectID)
         {
             if (objectID == -1)
-                return this;
+                return null;
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             OriginalPath = objectData.Get<string>(nameof(OriginalPath));
@@ -168,6 +116,30 @@ namespace PhotoBook.Model.Graphics
             CurrentFilter = CurrentFilter.DeserializeObject(serializer, currentFilterIndex);
 
             return this;
+        }
+
+        private static Random random = new Random();
+        private string GenerateRandomFilename(string extension)
+        {
+            var availableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var chars = new char[8];
+
+            for (int i = 0; i < chars.Length; i++)
+            {
+                chars[i] = availableChars[random.Next(availableChars.Length)];
+            }
+
+            return new string(chars) + extension;
+        }
+
+        private void CropBitmap()
+        {
+            System.Drawing.Rectangle rectangle = new System.Drawing.Rectangle(
+                CroppingRectangle.X, CroppingRectangle.Y,
+                CroppingRectangle.Width == 0 ? originalBitmap.Width : CroppingRectangle.Width,
+                CroppingRectangle.Height == 0 ? originalBitmap.Height : CroppingRectangle.Height);
+            System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
+            editedBitmap = originalBitmap.Clone(rectangle, format);
         }
     }
 }

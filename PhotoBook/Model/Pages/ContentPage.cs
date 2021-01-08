@@ -1,4 +1,5 @@
 ﻿using PhotoBook.Model.Arrangement;
+using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Graphics;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,11 @@ namespace PhotoBook.Model.Pages
 {
     public class ContentPage : Page, SerializeInterface<ContentPage>
     {
-        // TOOD: Should layout be required for creating a ContentPage?
-        public ContentPage()
-        {
-        }
+        public delegate void ImageChangedEventHandler(int layoutIndex);
+        public event ImageChangedEventHandler ImageChanged;
 
-        // TODO: This constructor is used when loading ContentPage from JSON,
-        //       but it doesn't initialize the Layout
-        public ContentPage(ContentPage cPage, Image[] images, string[] comments)
-        {
-            Background = cPage.Background;
-            _images = images;
-            _comments = comments;
-        }
+        public delegate void CommentChangedEventHandler(int layoutIndex);
+        public event CommentChangedEventHandler CommentChanged;
 
         private Layout layout;
         public Layout Layout
@@ -38,6 +31,7 @@ namespace PhotoBook.Model.Pages
                 layout = value;
                 _images = new Image[layout.NumOfImages];
                 _comments = new string[layout.NumOfImages];
+                InvokePropertyChanged(nameof(Layout));
             }
         }
 
@@ -49,6 +43,7 @@ namespace PhotoBook.Model.Pages
                 _images = value;
             }
         }
+
         private string[] _comments;
         public string[] Comments
         {
@@ -57,6 +52,21 @@ namespace PhotoBook.Model.Pages
             {
                 _comments = value;
             }
+        }
+
+        // TOOD: Should layout be required for creating a ContentPage?
+        public ContentPage()
+        {
+            Background = new BackgroundColor(83, 83, 66);
+        }
+
+        // TODO: This constructor is used when loading ContentPage from JSON,
+        //       but it doesn't initialize the Layout
+        public ContentPage(ContentPage cPage, Image[] images, string[] comments)
+        {
+            Background = cPage.Background;
+            _images = images;
+            _comments = comments;
         }
 
         #region Image functionality
@@ -73,6 +83,8 @@ namespace PhotoBook.Model.Pages
             AutoCropImage(newImage, Layout.ImageConstraints[layoutImageIndex]);
 
             _images[layoutImageIndex] = newImage;
+
+            ImageChanged?.Invoke(layoutImageIndex);
 
             return newImage;
         }
@@ -97,6 +109,9 @@ namespace PhotoBook.Model.Pages
                 throw new Exception("Adding, setting or editing a comment to an index of out range is not possible!");
 
             _comments[commentIndex] = commentContent;
+
+            CommentChanged?.Invoke(commentIndex);
+
         }
 
         public string GetComment(int commentIndex)
@@ -112,36 +127,25 @@ namespace PhotoBook.Model.Pages
 
         private void AutoCropImage(Image image, Arrangement.Rectangle imageConstraints)
         {
-            double scaleX = imageConstraints.Width / image.Width;
-            double scaleY = imageConstraints.Height / image.Height;
+            double constraintsRatio = (double)imageConstraints.Width / imageConstraints.Height;
+            double imageRatio = (double)image.Width / image.Height;
 
-            if (scaleX < scaleY)
+            if (constraintsRatio > imageRatio)
             {
                 image.CroppingRectangle = new Arrangement.Rectangle(
                     0, 0,
-                    (int)(scaleX * image.Width),
-                    (int)(scaleX * image.Height)
+                    (int)(image.Width),
+                    (int)(image.Width / constraintsRatio)
                 );
             }
             else
             {
                 image.CroppingRectangle = new Arrangement.Rectangle(
                     0, 0,
-                    (int)(scaleY * image.Width),
-                    (int)(scaleY * image.Height)
+                    (int)(image.Height * constraintsRatio),
+                    (int)(image.Height)
                 );
             }
-        }
-
-        public override void setBackground(int R = -1, int G = -1, int B = -1, string path = "", int X = -1, int Y = -1, int Width = -1, int Height = -1)
-        {
-            if ((R == -1 || G == -1 || B == -1) && (path == "" || X == -1 || Y == -1 || Width == -1 || Height == -1))
-                throw new Exception("Incorect data sent to setBackground method for FrontCover");
-
-            if (R == -1 || G == -1 || B == -1)
-                Background = new BackgroundImage(new Graphics.Image(path, X, Y, Width, Height));
-            else
-                Background = new BackgroundColor((byte)R, (byte)G, (byte)B);
         }
 
         public int SerializeObject(Serializer serializer)
@@ -156,6 +160,8 @@ namespace PhotoBook.Model.Pages
                     else
                         contentPage += $"-&-1\n";
                 }
+
+            contentPage += $"{nameof(Layout)}:{Layout.SerializeObject(serializer)}\n";
 
             contentPage += $"{nameof(Comments)}:\n";
 
@@ -189,6 +195,8 @@ namespace PhotoBook.Model.Pages
         {
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
+            Layout = (new Layout()).DeserializeObject(serializer, objectData.Get<int>(nameof(Layout)));
+
             List<Image> tempImageList = new List<Image>();
             List<int> tempImageIndexesList = objectData.Get<List<int>>(nameof(Images));
 
@@ -198,7 +206,17 @@ namespace PhotoBook.Model.Pages
                 tempImageList[tempImageList.Count - 1] = tempImageList[tempImageList.Count - 1].DeserializeObject(serializer, tempImageIndex);
             }
 
-            _images = tempImageList.ToArray();
+            // check if image list contains only nulls;
+            var nullCount = 0;
+
+            foreach (var value in tempImageList)
+            {
+                if (value == null)
+                    nullCount++;
+            }
+
+            if(nullCount != tempImageList.Count)
+                _images = tempImageList.ToArray();            
 
             Comments = objectData.Get<List<string>>(nameof(Comments)).ToArray();
 

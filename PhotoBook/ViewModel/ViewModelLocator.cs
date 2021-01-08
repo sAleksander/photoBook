@@ -1,5 +1,9 @@
 using CommonServiceLocator;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using PhotoBook.Services;
+using PhotoBook.ViewModel.Pages;
+using PhotoBook.ViewModel.Settings;
 
 namespace PhotoBook.ViewModel
 {
@@ -32,22 +36,40 @@ namespace PhotoBook.ViewModel
             SimpleIoc.Default.Register<HomeViewModel>();
             SimpleIoc.Default.Register<EditorViewModel>();
 
-            SimpleIoc.Default.Register<FrontCoverSettingsViewModel>();
-            SimpleIoc.Default.Register<BackCoverSettingsViewModel>();
-            SimpleIoc.Default.Register<PagesSettingsViewModel>();
+            SimpleIoc.Default.Register<CropPhotoViewModel>();
 
-            SimpleIoc.Default.Register<BookViewModel>();
+            SimpleIoc.Default.Register<IDialogService>(() => new WPFDialogService());
+
+            // Used to pass ViewModelLocator to view models so that they can navigate
+            // to other VMs.
+            SimpleIoc.Default.Register(() => this);
+        }
+
+        public void DestroyViewModel<T>() where T : ViewModelBase
+        {
+            SimpleIoc.Default.Unregister<T>();
+            SimpleIoc.Default.Register<T>();
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public HomeViewModel Home => ServiceLocator.Current.GetInstance<HomeViewModel>();
         public EditorViewModel Editor => ServiceLocator.Current.GetInstance<EditorViewModel>();
 
-        public FrontCoverSettingsViewModel FrontCoverSettings => ServiceLocator.Current.GetInstance<FrontCoverSettingsViewModel>();
-        public BackCoverSettingsViewModel BackCoverSettings => ServiceLocator.Current.GetInstance<BackCoverSettingsViewModel>();
-        public PagesSettingsViewModel PagesSettings => ServiceLocator.Current.GetInstance<PagesSettingsViewModel>();
+        public FrontCoverSettingsViewModel FrontCoverSettings => (FrontCoverSettingsViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().SettingsViewModel;
+        public BackCoverSettingsViewModel BackCoverSettings => (BackCoverSettingsViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().SettingsViewModel;
+        public PagesSettingsViewModel PagesSettings => (PagesSettingsViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().SettingsViewModel;
 
-        public BookViewModel Book => ServiceLocator.Current.GetInstance<BookViewModel>();
+        public FrontCoverViewModel FrontCover => (FrontCoverViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().BookViewModel;
+        public BackCoverViewModel BackCover => (BackCoverViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().BookViewModel;
+        public PagesViewModel Pages => (PagesViewModel)
+            ServiceLocator.Current.GetInstance<EditorViewModel>().BookViewModel;
+
+        public CropPhotoViewModel CropPhoto => ServiceLocator.Current.GetInstance<CropPhotoViewModel>();
 
         public static void Cleanup()
         {

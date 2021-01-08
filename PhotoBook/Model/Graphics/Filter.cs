@@ -56,11 +56,11 @@ namespace PhotoBook.Model.Graphics
                     break;
 
                 case Filter.Type.Greyscale:
-                    _settings.Clear();
                     _settings.Add("R", 0.114);
                     _settings.Add("G", 0.587);
                     _settings.Add("B", 0.299);
                     break;
+
                 case Filter.Type.None:
                     _settings.Add("R", 1);
                     _settings.Add("G", 1);
@@ -74,9 +74,7 @@ namespace PhotoBook.Model.Graphics
 
             Bitmap editedBitmap = originalBitmap;
             BitmapData bitmapData = editedBitmap.LockBits(new Rectangle(0, 0, editedBitmap.Width, editedBitmap.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-
-            Debug.WriteLine("in");
+            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);            
 
             unsafe
             {

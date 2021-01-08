@@ -12,7 +12,6 @@ namespace PhotoBook.Model.Serialization
     {
         private int id = 0;
 
-        // zmien pozniej na prywatny
         private Dictionary<int, string> objectsData = new Dictionary<int, string>();
 
         public int ID

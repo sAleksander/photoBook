@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhotoBook.ViewModel
+namespace PhotoBook.ViewModel.Settings
 {
-    public class BookViewModel : ViewModelBase
+    public class SettingsViewModel : ViewModelBase
     {
     }
 }
