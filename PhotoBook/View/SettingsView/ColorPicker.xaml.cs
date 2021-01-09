@@ -58,8 +58,6 @@ namespace PhotoBook.View.SettingsView
         private static void OnBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var newColor = d as ColorPicker;
-            
-            
 
         }
 

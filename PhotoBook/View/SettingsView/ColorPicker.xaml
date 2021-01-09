@@ -10,39 +10,8 @@
     <StackPanel IsEnabled="True" Name="colorPickerStackPanel" Margin="45,0,10,0">
         <Label Content="Wybierz kolor" FontSize="14px" Margin="5,0,0,0"/>
         <xctk:ColorPicker x:Name="colorPicker"
-                          
+                          DropDownBackground="Transparent"
                           AvailableColorsSortingMode="HueSaturationBrightness"
                           SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
-        <!--R-->
-        <!--"<Label Content="R"
-               FontSize="16px"/>
-        <Slider Name="Rslider"
-                Maximum="255" Minimum="0" 
-                TickFrequency="2" 
-                IsSnapToTickEnabled="True"
-                AutoToolTipPlacement="TopLeft"
-                AutoToolTipPrecision="0"
-                ValueChanged="Rslider_ValueChanged"/>
-        
-        <Label Content="G"
-               FontSize="16px"/>
-        <Slider Name="Gslider"
-                Maximum="255" Minimum="0" 
-                TickFrequency="2" 
-                IsSnapToTickEnabled="True"
-                AutoToolTipPlacement="TopLeft"
-                AutoToolTipPrecision="0"
-                ValueChanged="Gslider_ValueChanged"/>
-        
-        <Label Content="B"
-               FontSize="16px"/>
-        <Slider Name="Bslider"
-                Maximum="255" Minimum="0" 
-                TickFrequency="2" 
-                IsSnapToTickEnabled="True"
-                AutoToolTipPlacement="TopLeft"
-                AutoToolTipPrecision="0"
-                ValueChanged="Bslider_ValueChanged"/>
-        -->
     </StackPanel>
 </UserControl>
