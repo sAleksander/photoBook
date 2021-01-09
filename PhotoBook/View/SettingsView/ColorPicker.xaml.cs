@@ -58,45 +58,14 @@ namespace PhotoBook.View.SettingsView
         private static void OnBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var newColor = d as ColorPicker;
+            Color bColor = new Color();
+            bColor = Color.FromRgb(0,0,0);
+
+            
+            Console.WriteLine($"Color before change {newColor.BackgroundColor.R}");
+            newColor.colorPicker.SelectedColor = Color.FromRgb(newColor.BackgroundColor.R, newColor.BackgroundColor.G, newColor.BackgroundColor.B);
 
         }
 
-        /*private static void OnBackgroundColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-
-            var colorPicker = d as ColorPicker;
-            colorPicker.Rslider.Value = colorPicker.BackgroundColor.R;
-            colorPicker.Gslider.Value = colorPicker.BackgroundColor.G;
-            colorPicker.Bslider.Value = colorPicker.BackgroundColor.B;
-        }
-        
-        
-        // TODO: How to get rid of this mess?
-        private void Rslider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            BackgroundColor = new BackgroundColor(
-                (byte)Rslider.Value,
-                BackgroundColor.G,
-                BackgroundColor.B
-            );
-        }
-
-        private void Gslider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            BackgroundColor = new BackgroundColor(
-                BackgroundColor.R,
-                (byte)Gslider.Value,
-                BackgroundColor.B
-            );
-        }
-
-        private void Bslider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            BackgroundColor = new BackgroundColor(
-                BackgroundColor.R,
-                BackgroundColor.G,
-                (byte)Bslider.Value
-            );
-        }*/
     }
 }

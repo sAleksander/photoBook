@@ -10,7 +10,7 @@
     <StackPanel IsEnabled="True" Name="colorPickerStackPanel" Margin="45,0,10,0">
         <Label Content="Wybierz kolor" FontSize="14px" Margin="5,0,0,0"/>
         <xctk:ColorPicker x:Name="colorPicker"
-                          DropDownBackground="Transparent"
+                          DropDownBackground="#e8e8e8"
                           AvailableColorsSortingMode="HueSaturationBrightness"
                           SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
     </StackPanel>
