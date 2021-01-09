@@ -195,28 +195,26 @@ namespace PhotoBook.Model.Pages
         {
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
-            Layout = (new Layout()).DeserializeObject(serializer, objectData.Get<int>(nameof(Layout)));
+            Layout = serializer.Deserialize<Layout>(objectData.Get<int>(nameof(Layout)));
 
             List<Image> tempImageList = new List<Image>();
             List<int> tempImageIndexesList = objectData.Get<List<int>>(nameof(Images));
 
             foreach (int tempImageIndex in tempImageIndexesList)
-            {
-                tempImageList.Add(new Image());
-                tempImageList[tempImageList.Count - 1] = tempImageList[tempImageList.Count - 1].DeserializeObject(serializer, tempImageIndex);
-            }
+                tempImageList.Add(serializer.Deserialize<Image>(tempImageIndex));
 
-            // check if image list contains only nulls;
-            var nullCount = 0;
+            // Checking if image list contains only null values;
+            var nullImagesCount = 0;
 
-            foreach (var value in tempImageList)
-            {
-                if (value == null)
-                    nullCount++;
-            }
+            for(int i = 0; i < tempImageList.Count; i++)
+                if(tempImageList[i].DisplayedPath == null)
+                {
+                    nullImagesCount++;
+                    tempImageList[i] = null;
+                }
 
-            if(nullCount != tempImageList.Count)
-                _images = tempImageList.ToArray();            
+            if (nullImagesCount != tempImageList.Count)
+                _images = tempImageList.ToArray();
 
             Comments = objectData.Get<List<string>>(nameof(Comments)).ToArray();
 
@@ -226,10 +224,10 @@ namespace PhotoBook.Model.Pages
             switch (backgroundType)
             {
                 case "BackgroundColor":
-                    Background = (Background as BackgroundColor).DeserializeObject(serializer, backgroundIndex);
+                    Background = serializer.Deserialize<BackgroundColor>(backgroundIndex);
                     break;
                 case "BackgroundImage":
-                    Background = (Background as BackgroundImage).DeserializeObject(serializer, backgroundIndex);
+                    Background = serializer.Deserialize<BackgroundImage>(backgroundIndex);
                     break;
             }
 

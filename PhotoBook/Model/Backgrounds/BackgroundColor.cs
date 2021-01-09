@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Backgrounds
 {
-    public class BackgroundColor : Background, SerializeInterface<Background>
+    public class BackgroundColor : Background, SerializeInterface<BackgroundColor>
     {
         public BackgroundColor()
         {
@@ -27,7 +27,7 @@ namespace PhotoBook.Model.Backgrounds
         public byte G { get; set; }
         public byte B { get; set; }
 
-        public Background DeserializeObject(Serializer serializer, int objectID)
+        public BackgroundColor DeserializeObject(Serializer serializer, int objectID)
         {
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 

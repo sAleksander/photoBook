@@ -24,7 +24,7 @@ namespace PhotoBook.Model.Arrangement
                     _imageConstraints = new Rectangle[]
                     {
                         new Rectangle(120, 160, 560, 800),
-                    }   
+                    }
                 }
             },
             {
@@ -38,7 +38,7 @@ namespace PhotoBook.Model.Arrangement
                     }
                 }
             }
-        };        
+        };
 
         private Layout(string nameOfLayout)
         {
@@ -75,7 +75,7 @@ namespace PhotoBook.Model.Arrangement
                     break;
                 default:
                     throw new Exception("Wrong type of layout chosen!");
-            }            
+            }
 
             int layoutID = serializer.AddObject(layout);
 
@@ -99,7 +99,7 @@ namespace PhotoBook.Model.Arrangement
                 case "TwoPictures":
                     _numOfImages = tempDictionary[Layout.Type.TwoPictures]._numOfImages;
                     _imageConstraints = tempDictionary[Layout.Type.TwoPictures]._imageConstraints;
-                    break;                
+                    break;
                 default:
                     throw new Exception("Wrong layout type when deserializing layout!");
             }

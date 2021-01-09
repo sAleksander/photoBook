@@ -149,5 +149,15 @@ namespace PhotoBook.Model.Serialization
 
             File.WriteAllText(saveFilePath, saveFileContent);
         }
+
+        public T Deserialize<T>(int objectID)
+            where T : class, SerializeInterface<T>, new()
+        {
+            var deserializedObject = new T();
+
+            deserializedObject.DeserializeObject(this, objectID);
+
+            return deserializedObject;
+        }
     }
 }

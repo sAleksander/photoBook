@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Backgrounds
 {
-    public class BackgroundImage : Background, SerializeInterface<Background>
+    public class BackgroundImage : Background, SerializeInterface<BackgroundImage>
     {
+        public BackgroundImage() { }
         public BackgroundImage(Image image) { Image = image; }
 
         public Image Image { set; get; }
 
-        public Background DeserializeObject(Serializer serializer, int objectID)
+        public BackgroundImage DeserializeObject(Serializer serializer, int objectID)
         {
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             int imageIndex = objectData.Get<int>(nameof(Image));
 
-            Image = Image.DeserializeObject(serializer, imageIndex);
+            Image = serializer.Deserialize<Image>(imageIndex);
 
             return this;
         }

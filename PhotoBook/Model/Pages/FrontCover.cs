@@ -67,14 +67,14 @@ namespace PhotoBook.Model.Pages
             switch (backgroundType)
             {
                 case "BackgroundColor":
-                    Background = (Background as BackgroundColor).DeserializeObject(serializer, backgroundIndex);
+                    Background = serializer.Deserialize<BackgroundColor>(backgroundIndex);
                     break;
                 case "BackgroundImage":
-                    Background = (Background as BackgroundImage).DeserializeObject(serializer, backgroundIndex);
+                    Background = serializer.Deserialize<BackgroundImage>(backgroundIndex);
                     break;
             }
 
             return this;
-        }        
+        }
     }
 }

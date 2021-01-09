@@ -26,7 +26,7 @@ namespace PhotoBook.Model
                 if (extension != string.Empty)
                     throw new Exception("File location provided when creating a new PhotoBook object");
             }
-            
+
             PhotoBook photoBook = new PhotoBook();
             photoBook.SaveDirectory = Path.GetFullPath(projectDirPath);
             Directory.SetCurrentDirectory(projectDirPath);
@@ -92,14 +92,14 @@ namespace PhotoBook.Model
 
             return photoBook;
         }
-        
+
         public static string Font { get; } = "Arial";
 
         public static int PageWidthInPixels { get; } = 790;
         public static int PageHeightInPixels { get; } = 1120;
 
         private List<ContentPage> _contentPages;
-        
+
         public FrontCover FrontCover { get; private set; }
         public BackCover BackCover { get; private set; }
         public int NumOfContentPages { get => _contentPages.Count; }
@@ -200,24 +200,18 @@ namespace PhotoBook.Model
             ObjectDataRelay objectData = serializer.GetObjectData(-1);
 
             // Front cover
-
-            FrontCover.DeserializeObject(serializer, objectData.Get<int>(nameof(FrontCover)));
+            FrontCover = serializer.Deserialize<FrontCover>(objectData.Get<int>(nameof(FrontCover)));
 
             // Content pages
-
             _contentPages.Clear();
 
             List<int> contentPagesIndexes = objectData.Get<List<int>>(nameof(_contentPages));
 
             foreach (var contentPageIndex in contentPagesIndexes)
-            {
-                _contentPages.Add(new ContentPage());
-                _contentPages[_contentPages.Count - 1] = _contentPages[_contentPages.Count - 1].DeserializeObject(serializer, contentPageIndex);
-            }
+                _contentPages.Add(serializer.Deserialize<ContentPage>(contentPageIndex));
 
             // Back cover
-
-            BackCover = BackCover.DeserializeObject(serializer, objectData.Get<int>(nameof(BackCover)));
+            BackCover = serializer.Deserialize<BackCover>(objectData.Get<int>(nameof(BackCover)));
 
             return null;
         }

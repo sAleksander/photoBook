@@ -83,7 +83,6 @@ namespace PhotoBook.Model.Serialization
                     if (comment.Contains("\""))
                         comment = comment.Trim('\"');
 
-
                     comments.Add(comment);
 
                     charIterator = commentsString.IndexOf('\"', commentsString.IndexOf("\"\n", charIterator) + 1);
@@ -105,8 +104,8 @@ namespace PhotoBook.Model.Serialization
                 return (T)Convert.ChangeType(result, typeof(T));
             }
 
-            else if (typeof(T) == typeof(int))            
-                return (T)Convert.ChangeType(objectData[propertyName].Trim(), typeof(T));            
+            else if (typeof(T) == typeof(int))
+                return (T)Convert.ChangeType(objectData[propertyName].Trim(), typeof(T));
 
             else if (typeof(T) == typeof(string))
             {

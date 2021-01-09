@@ -100,20 +100,21 @@ namespace PhotoBook.Model.Graphics
         {
             if (objectID == -1)
                 return null;
+
             ObjectDataRelay objectData = serializer.GetObjectData(objectID);
 
             OriginalPath = objectData.Get<string>(nameof(OriginalPath));
             originalBitmap = new Bitmap(OriginalPath);
 
             DisplayedPath = objectData.Get<string>(nameof(DisplayedPath));
+
             editedBitmap = new Bitmap(DisplayedPath);
 
             int croppingRecIndex = objectData.Get<int>(nameof(CroppingRectangle));
-
-            CroppingRectangle = new Rectangle(0, 0, 1, 1).DeserializeObject(serializer, croppingRecIndex);
+            CroppingRectangle = serializer.Deserialize<Rectangle>(croppingRecIndex);
 
             int currentFilterIndex = objectData.Get<int>(nameof(CurrentFilter));
-            CurrentFilter = CurrentFilter.DeserializeObject(serializer, currentFilterIndex);
+            CurrentFilter = serializer.Deserialize<Filter>(currentFilterIndex);
 
             return this;
         }

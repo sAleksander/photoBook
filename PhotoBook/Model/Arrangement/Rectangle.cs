@@ -10,6 +10,8 @@ namespace PhotoBook.Model.Arrangement
 {
     public class Rectangle : SerializeInterface<Rectangle>
     {
+        public Rectangle() { }
+
         public Rectangle(int x, int y, int width, int height)
         {
             X = x;
