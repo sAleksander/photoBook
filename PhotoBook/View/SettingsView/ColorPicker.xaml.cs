@@ -61,10 +61,7 @@ namespace PhotoBook.View.SettingsView
             Color bColor = new Color();
             bColor = Color.FromRgb(0,0,0);
 
-            
-            Console.WriteLine($"Color before change {newColor.BackgroundColor.R}");
             newColor.colorPicker.SelectedColor = Color.FromRgb(newColor.BackgroundColor.R, newColor.BackgroundColor.G, newColor.BackgroundColor.B);
-
         }
 
     }

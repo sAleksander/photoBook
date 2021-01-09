@@ -12,6 +12,7 @@
         <xctk:ColorPicker x:Name="colorPicker"
                           DropDownBackground="#e8e8e8"
                           AvailableColorsSortingMode="HueSaturationBrightness"
-                          SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
+                          SelectedColorChanged="ColorPicker_SelectedColorChanged"
+                          Margin="0,0,0,10" />
     </StackPanel>
 </UserControl>

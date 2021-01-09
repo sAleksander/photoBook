@@ -12,21 +12,17 @@
 
         <!--Right/left side options-->
         <StackPanel Orientation="Horizontal">
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+            <RadioButton Style="{StaticResource OptionButton}"
                         Name="btnLeftSide"
-                        Content="Lewa strona"
-                        BorderBrush="White" 
-                        Background="Transparent"
-                        FontSize="20" Foreground="White" FontFamily="Segoe UI Light"
-                        Width="130"
+                        Content=" Lewa strona"
+                        FontSize="20"
+                        Width="120"
                         IsChecked="{Binding IsLeftPageChecked, Mode=TwoWay}"/>
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+            <RadioButton Style="{StaticResource OptionButton}" 
                         Name="btnRightSide"
-                        Content="Prawa strona"
-                        BorderBrush="White" 
-                        Background="Transparent"
-                        FontSize="20" Foreground="White" FontFamily="Segoe UI Light" 
-                        Width="130"
+                        Content=" Prawa strona"
+                        FontSize="20" 
+                        Width="120"
                         IsChecked="{Binding IsRightPageChecked, Mode=TwoWay}"/>
         </StackPanel>
 
@@ -49,15 +45,15 @@
         <StackPanel Name="layoutStackPanel" 
                         Background="Transparent">
             <RadioButton Style="{StaticResource OptionButton}"
-                        Content="Jedno zdjęcie"
+                        Content=" Jedno zdjęcie"
                         FontSize="18px"
                         Height="40"
                         Margin="40,0,0,0"/>
             <RadioButton Style="{StaticResource OptionButton}"
-                        Content="Dwa zdjęcia"
+                        Content=" Dwa zdjęcia"
                         FontSize="18px" 
                         Height="40"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
+                        Margin="40,0,0,0" />
         </StackPanel>
 
 
@@ -72,15 +68,6 @@
                     Height="50"
                     Margin="0,1,0,1"/>
         <StackPanel Background="Transparent" Name="themeStackPanel">
-            <!--
-                    <RadioButton Style="{StaticResource OptionButton}"
-                        Checked="showColorPicker"
-                        Name="btnColor"
-                        Content="Kolor"
-                        FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0"/>
-                    -->
             <settingsview:ColorPicker x:Name="BackgroundColorPicker"
                                               BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}"/>
             

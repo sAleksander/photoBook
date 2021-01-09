@@ -45,7 +45,7 @@
                          Text="{Binding Description}"/>
                 <Button Content="Zatwierdź" 
                         HorizontalAlignment="Right"
-                        Margin="0,0,30,0"
+                        Margin="0,5,30,5"
                         FontSize="14px"
                         Command="{Binding ApplyDescription}"/>
             </StackPanel>
@@ -61,23 +61,23 @@
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Background="Transparent" Name="filterStackPanel">
                 <RadioButton Style="{StaticResource OptionButton}"
-                        Content="Brak"
+                        Content=" Brak"
                         FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0"/>
                 <RadioButton Style="{StaticResource OptionButton}" 
-                        Content="Ciepły"  
+                        Content=" Ciepły"  
                         FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0"/>
                 <RadioButton Style="{StaticResource OptionButton}" 
-                        Content="Zimny" 
+                        Content=" Zimny" 
                         VerticalAlignment="Top" 
                         FontSize="18px"
                         Height="40"
                         Margin="60,0,0,0" />
                 <RadioButton Style="{StaticResource OptionButton}" 
-                        Content="Czarno-biały" 
+                        Content=" Czarno-biały" 
                         VerticalAlignment="Top" 
                         FontSize="18px"
                         Height="40"
