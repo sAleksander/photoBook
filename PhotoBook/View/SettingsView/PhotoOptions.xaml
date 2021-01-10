@@ -28,8 +28,7 @@
                 ButtonContent="Dodaj zdjęcie"
                 Filter="{Binding ImageFilter, Mode=OneWay}"
                 ChosenFile="{Binding ChosenFilePath, Mode=OneWayToSource}"
-                FileChosenCommand="{Binding FileChosen}"
-                />
+                FileChosenCommand="{Binding FileChosen}" />
 
             <!--Add Description-->
             <Button Click="addDescription" 
@@ -40,20 +39,17 @@
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Visibility="Collapsed" Name="addDescStackPanel">
                 <Label Content="Wpisz opis"
-                               Foreground="White" 
-                               FontFamily="Segoe UI Light" FontSize="14px"
-                                Margin="60,0,0,0"/>
+                       FontSize="14px"
+                       Margin="60,0,0,0"/>
                 <TextBox Name="DescriptionTextBox"
-                                Background="#e8e8e8"
-                                Foreground="#686d76" FontFamily="Segoe UI Light" FontSize="18px"
                                 Height="70"
                                 Margin="60,0,15,0"
                                 Text="{Binding Description, Mode=TwoWay}"/>
                 <Button Content="Zatwierdź" 
-                                HorizontalAlignment="Right"
-                                Margin="0,0,30,0"
-                                FontSize="14px"
-                                Command="{Binding ApplyDescription}"/>
+                        HorizontalAlignment="Right"
+                        Margin="0,5,30,5"
+                        FontSize="14px"
+                        Command="{Binding ApplyDescription}"/>
             </StackPanel>
 
 
@@ -72,13 +68,10 @@
                     UpdateSourceTrigger=PropertyChanged}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <RadioButton Style="{DynamicResource {x:Type ToggleButton}}"
+                            <RadioButton Style="{DynamicResource OptionButton}"
                                      GroupName="filter"
                                      Content="{Binding Name}"
-                                     HorizontalContentAlignment="Left"
-                                     Background="Transparent" 
-                                     BorderBrush="Transparent"
-                                     Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                                     FontSize="18px"
                                      Height="40"
                                      Margin="60,0,0,0"
                                      IsChecked="{Binding IsChecked}"
@@ -87,8 +80,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
-
-
         </StackPanel>
     </StackPanel>
 </UserControl>
