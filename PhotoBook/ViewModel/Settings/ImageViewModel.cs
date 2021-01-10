@@ -1,6 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Pages;
+using System.Collections.ObjectModel;
+using PhotoBook.Model.Graphics;
+using System.Collections.Generic;
 
 namespace PhotoBook.ViewModel.Settings
 {
@@ -27,6 +30,21 @@ namespace PhotoBook.ViewModel.Settings
         {
             get => chosenFilePath;
             set => Set(nameof(ChosenFilePath), ref chosenFilePath, value);
+        }
+
+        private Dictionary<Filter.Type, string> filterTypeToName = new Dictionary<Filter.Type, string>()
+        {
+            { Filter.Type.None, "Brak" },
+            { Filter.Type.Warm, "Ciepły" },
+            { Filter.Type.Cold, "Zimny" },
+            { Filter.Type.Greyscale, "Czarno-biały" }
+        };
+
+        private ObservableCollection<SelectableFilterViewModel> filters;
+        public ObservableCollection<SelectableFilterViewModel> Filters
+        {
+            get => filters;
+            set => Set(nameof(Filters), ref filters, value);
         }
 
         private RelayCommand fileChosen;
@@ -59,6 +77,25 @@ namespace PhotoBook.ViewModel.Settings
             this.imageIndex = imageIndex;
 
             Description = page.GetComment(imageIndex);
+            BuildFilters();
+        }
+
+        private void BuildFilters()
+        {
+            var image = page.GetImage(ImageIndex);
+            var currentFilterType = image.CurrentFilter.currentType;
+
+            filters = new ObservableCollection<SelectableFilterViewModel>();
+
+            foreach (var item in filterTypeToName)
+            {
+                var filterType = item.Key;
+                var filterName = filterTypeToName[filterType];
+                var filterVM = new SelectableFilterViewModel(image, filterType, filterName);
+                filterVM.IsChecked = filterType == currentFilterType;
+
+                filters.Add(filterVM);
+            }
         }
     }
 }
