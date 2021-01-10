@@ -108,6 +108,7 @@
     <Compile Include="ViewModel\CropPhotoViewModel.cs" />
     <Compile Include="ViewModel\Dialogs\DialogResultEnum.cs" />
     <Compile Include="ViewModel\Dialogs\DialogYesNoViewModel.cs" />
+    <Compile Include="ViewModel\Settings\SelectableFilterViewModel.cs" />
     <Compile Include="View\Dialogs\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>

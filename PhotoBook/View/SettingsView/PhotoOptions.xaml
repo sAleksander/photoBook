@@ -66,40 +66,26 @@
                         Height="40"
                         Margin="40,0,0,0" HorizontalContentAlignment="Left"/>
             <StackPanel Visibility="Collapsed" Background="Transparent" Name="filterStackPanel">
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
-                        Content="Brak"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        Height="40"
-                        Margin="60,0,0,0"/>
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Content="Ciepły"  
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        HorizontalContentAlignment="Left"
-                        Height="40"
-                        Margin="60,0,0,0"/>
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Content="Zimny" 
-                        VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        HorizontalContentAlignment="Left"
-                        Height="40"
-                        Margin="60,0,0,0" />
-                <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Content="Czarno-biały" 
-                        VerticalAlignment="Top" 
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        HorizontalContentAlignment="Left"
-                        Height="40"
-                        Margin="60,0,0,0"/>
+                <ItemsControl ItemsSource="{
+                    Binding Path=Filters,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Style="{DynamicResource {x:Type ToggleButton}}"
+                                     GroupName="filter"
+                                     Content="{Binding Name}"
+                                     HorizontalContentAlignment="Left"
+                                     Background="Transparent" 
+                                     BorderBrush="Transparent"
+                                     Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                                     Height="40"
+                                     Margin="60,0,0,0"
+                                     IsChecked="{Binding IsChecked}"
+                                     Command="{Binding Check}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
 
 
