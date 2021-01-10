@@ -71,10 +71,9 @@ namespace PhotoBook.Model.Graphics
 
         public Bitmap applyFilter(Bitmap originalBitmap)
         {
-
             Bitmap editedBitmap = originalBitmap;
             BitmapData bitmapData = editedBitmap.LockBits(new Rectangle(0, 0, editedBitmap.Width, editedBitmap.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);            
+            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             unsafe
             {
@@ -96,13 +95,15 @@ namespace PhotoBook.Model.Graphics
                     default:
                         while ((int)pixelPointer != endPixelAddress)
                         {
-                            pixelPointer[2] = (byte)(_settings["R"] * pixelPointer[2]);
-                            pixelPointer[1] = (byte)(_settings["G"] * pixelPointer[1]);
                             pixelPointer[0] = (byte)(_settings["B"] * pixelPointer[0]);
+                            pixelPointer[1] = (byte)(_settings["G"] * pixelPointer[1]);
+                            pixelPointer[2] = (byte)(_settings["R"] * pixelPointer[2]);
+                            pixelPointer += 3;
                         }
                         break;
                 }
             }
+            editedBitmap.UnlockBits(bitmapData);
             return editedBitmap;
         }
 
@@ -123,23 +124,12 @@ namespace PhotoBook.Model.Graphics
 
             string filter = objectData.Get<string>(nameof(currentType));
 
-            switch (filter)
-            {
-                case "Cold":
-                    currentType = Filter.Type.Cold;
-                    break;
-                case "Greyscale":
-                    currentType = Filter.Type.Greyscale;
-                    break;
-                case "None":
-                    currentType = Filter.Type.None;
-                    break;
-                case "Warm":
-                    currentType = Filter.Type.Warm;
-                    break;
-                default:
-                    throw new Exception("Wrong filter type while deserialising");
-            }
+            Enum.TryParse(filter, out Filter.Type filterEnum);
+
+            if (filterEnum != Filter.Type.None && filterEnum != Filter.Type.Cold && filterEnum != Filter.Type.Warm && filterEnum != Filter.Type.Greyscale)
+                throw new Exception("Wrong filter type met while deserialising");
+            else
+                currentType = filterEnum;
 
             return this;
         }

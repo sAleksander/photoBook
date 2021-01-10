@@ -88,20 +88,16 @@ namespace PhotoBook.Model.Arrangement
 
             Dictionary<Type, Layout> tempDictionary = CreateAvailableLayouts();
 
-             string layout = objectData.Get<string>("currentLayout");
+            string layout = objectData.Get<string>("currentLayout");
 
-            switch (layout)
+            Enum.TryParse(layout, out Layout.Type layoutEnum);
+
+            if(layoutEnum != Layout.Type.OnePicture && layoutEnum != Layout.Type.TwoPictures)
+                throw new Exception("Wrong layout type met when deserializing layout!");
+            else
             {
-                case "OnePicture":
-                    _numOfImages = tempDictionary[Layout.Type.OnePicture]._numOfImages;
-                    _imageConstraints= tempDictionary[Layout.Type.OnePicture]._imageConstraints;
-                    break;
-                case "TwoPictures":
-                    _numOfImages = tempDictionary[Layout.Type.TwoPictures]._numOfImages;
-                    _imageConstraints = tempDictionary[Layout.Type.TwoPictures]._imageConstraints;
-                    break;
-                default:
-                    throw new Exception("Wrong layout type when deserializing layout!");
+                _numOfImages = tempDictionary[layoutEnum]._numOfImages;
+                _imageConstraints = tempDictionary[layoutEnum]._imageConstraints;
             }
 
             return this;

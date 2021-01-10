@@ -4,11 +4,14 @@ using Rectangle = PhotoBook.Model.Arrangement.Rectangle;
 using PhotoBook.Model.Serialization;
 using System.IO;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace PhotoBook.Model.Graphics
 {
     public class Image : SerializeInterface<Image>
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private Bitmap originalBitmap { get; set;}
         private Bitmap editedBitmap { get; set; }
 
@@ -76,10 +79,17 @@ namespace PhotoBook.Model.Graphics
                 editedBitmap = CurrentFilter.applyFilter(originalBitmap.Clone(rectangle, format));
             }
 
-            if (File.Exists(DisplayedPath))
-                File.Delete(DisplayedPath);
+            string oldFilePath = DisplayedPath;
+            var extension = Path.GetExtension(DisplayedPath);
+            var editedImageName = GenerateRandomFilename(extension);
 
-            editedBitmap.Save(DisplayedPath);
+            Directory.CreateDirectory("EditedImages");
+
+            editedBitmap.Save($"EditedImages\\{editedImageName}");
+
+            DisplayedPath = $"EditedImages\\{editedImageName}";
+
+            // TODO: Inform about changes
         }
 
         public int SerializeObject(Serializer serializer)
