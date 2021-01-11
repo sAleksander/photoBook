@@ -99,7 +99,7 @@ namespace PhotoBook.ViewModel.Settings
             {
                 var filterType = item.Key;
                 var filterName = filterTypeToName[filterType];
-                var filterVM = new SelectableFilterViewModel(image, filterType, filterName);
+                var filterVM = new SelectableFilterViewModel(page, ImageIndex, filterType, filterName);
                 filterVM.IsChecked = filterType == currentFilterType;
 
                 filters.Add(filterVM);

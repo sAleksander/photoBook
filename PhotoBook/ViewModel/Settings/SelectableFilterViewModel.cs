@@ -10,8 +10,9 @@ namespace PhotoBook.ViewModel.Settings
 {
     public class SelectableFilterViewModel : ViewModelBase
     {
-        private Model.Graphics.Image image;
-        Model.Graphics.Filter.Type filterType;
+        private Model.Pages.ContentPage contentPage;
+        private int imageIndex;
+        private Model.Graphics.Filter.Type filterType;
 
         private bool isChecked;
         public bool IsChecked
@@ -35,17 +36,19 @@ namespace PhotoBook.ViewModel.Settings
                 return check ?? (check = new RelayCommand(
                     () =>
                     {
-                        image.SetFilter(filterType);
+                        contentPage.GetImage(imageIndex).SetFilter(filterType);
                     }));
             }
         }
 
         public SelectableFilterViewModel(
-            Model.Graphics.Image image,
+            Model.Pages.ContentPage contentPage,
+            int imageIndex,
             Model.Graphics.Filter.Type filterType,
             string name)
         {
-            this.image = image;
+            this.contentPage = contentPage;
+            this.imageIndex = imageIndex;
             this.filterType = filterType;
 
             Name = name;
