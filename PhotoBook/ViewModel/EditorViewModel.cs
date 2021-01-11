@@ -30,11 +30,7 @@ namespace PhotoBook.ViewModel
         public BookViewModel BookViewModel
         {
             get => bookViewModel;
-            set
-            {
-                bookViewModel?.UnregisterEventHandlers();
-                Set(nameof(BookViewModel), ref bookViewModel, value);
-            }
+            set => Set(nameof(BookViewModel), ref bookViewModel, value);
         }
 
         private SettingsViewModel settingsViewModel;

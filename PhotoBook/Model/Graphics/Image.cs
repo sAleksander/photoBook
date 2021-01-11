@@ -5,12 +5,13 @@ using PhotoBook.Model.Serialization;
 using System.IO;
 using System.Diagnostics;
 using System.ComponentModel;
+using SmartWeakEvent;
 
 namespace PhotoBook.Model.Graphics
 {
-    public class Image : SerializeInterface<Image>, INotifyPropertyChanged
+    public class Image : SerializeInterface<Image>
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public FastSmartWeakEvent<EventHandler> DisplayPathChanged = new FastSmartWeakEvent<EventHandler>();
 
         private Bitmap originalBitmap { get; set;}
         private Bitmap editedBitmap { get; set; }
@@ -26,7 +27,7 @@ namespace PhotoBook.Model.Graphics
             set
             {
                 displayedPath = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedPath)));
+                DisplayPathChanged.Raise(this, EventArgs.Empty);
             }
         }
         public string DisplayedAbsolutePath { get => Path.GetFullPath(DisplayedPath); }

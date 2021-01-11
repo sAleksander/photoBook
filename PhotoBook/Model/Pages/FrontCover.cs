@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using PhotoBook.Model.Backgrounds;
 using PhotoBook.Model.Serialization;
+using SmartWeakEvent;
 
 namespace PhotoBook.Model.Pages
 {
     public class FrontCover : Page, SerializeInterface<FrontCover>
     {
+        public FastSmartWeakEvent<EventHandler> TitleChanged = new FastSmartWeakEvent<EventHandler>();
+
         public static int FontSize { get; private set; } = 64;
 
         private string title;
@@ -19,7 +22,7 @@ namespace PhotoBook.Model.Pages
             set
             {
                 title = value;
-                InvokePropertyChanged(nameof(Title));
+                TitleChanged.Raise(this, EventArgs.Empty);
             }
         }
 

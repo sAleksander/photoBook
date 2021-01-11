@@ -1,4 +1,5 @@
 ﻿using PhotoBook.Model.Backgrounds;
+using System;
 using System.ComponentModel;
 
 namespace PhotoBook.ViewModel.Pages
@@ -20,17 +21,18 @@ namespace PhotoBook.ViewModel.Pages
         {
             FrontCover = frontCover;
 
-            FrontCover.PropertyChanged += OnFrontCoverPropertyChanged;
+            FrontCover.BackgroundChanged.Add(OnFrontCoverBackgroundChanged);
+            FrontCover.TitleChanged.Add(OnFrontCoverTitleChanged);
         }
 
-        public void OnFrontCoverPropertyChanged(object s, PropertyChangedEventArgs args)
+        public void OnFrontCoverBackgroundChanged(object s, EventArgs args)
         {
-            RaisePropertyChanged(args.PropertyName);
+            RaisePropertyChanged(nameof(FrontCover.Background));
         }
 
-        public override void UnregisterEventHandlers()
+        public void OnFrontCoverTitleChanged(object s, EventArgs args)
         {
-            FrontCover.PropertyChanged -= OnFrontCoverPropertyChanged;
+            RaisePropertyChanged(nameof(FrontCover.Title));
         }
     }
 }

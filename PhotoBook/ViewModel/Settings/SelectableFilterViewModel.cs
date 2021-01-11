@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace PhotoBook.ViewModel.Settings
     {
         private Model.Pages.ContentPage contentPage;
         private int imageIndex;
+        //private Model.Graphics.Image image;
         private Model.Graphics.Filter.Type filterType;
 
         private bool isChecked;
@@ -36,6 +38,7 @@ namespace PhotoBook.ViewModel.Settings
                 return check ?? (check = new RelayCommand(
                     () =>
                     {
+                        //Debug.WriteLine(image.DisplayedAbsolutePath);
                         contentPage.GetImage(imageIndex).SetFilter(filterType);
                     }));
             }
@@ -50,6 +53,8 @@ namespace PhotoBook.ViewModel.Settings
             this.contentPage = contentPage;
             this.imageIndex = imageIndex;
             this.filterType = filterType;
+
+            //this.image = contentPage.GetImage(imageIndex);
 
             Name = name;
         }

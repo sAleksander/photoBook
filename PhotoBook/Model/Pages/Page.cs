@@ -1,4 +1,5 @@
 ﻿using PhotoBook.Model.Backgrounds;
+using SmartWeakEvent;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Pages
 {
-    public abstract class Page : INotifyPropertyChanged
+    public abstract class Page
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        public FastSmartWeakEvent<EventHandler> BackgroundChanged = new FastSmartWeakEvent<EventHandler>();
 
         private Background background;
         public Background Background
@@ -19,13 +20,8 @@ namespace PhotoBook.Model.Pages
             set
             {
                 background = value;
-                InvokePropertyChanged(nameof(Background));
+                BackgroundChanged.Raise(this, EventArgs.Empty);
             }
-        }
-
-        protected void InvokePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

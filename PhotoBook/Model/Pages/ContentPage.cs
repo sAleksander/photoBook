@@ -11,16 +11,21 @@ using System.Threading.Tasks;
 using Image = PhotoBook.Model.Graphics.Image;
 using PhotoBook.Model.Serialization;
 using PhotoBook.Model.Backgrounds;
+using SmartWeakEvent;
 
 namespace PhotoBook.Model.Pages
 {
     public class ContentPage : Page, SerializeInterface<ContentPage>
     {
-        public delegate void ImageChangedEventHandler(int layoutIndex);
-        public event ImageChangedEventHandler ImageChanged;
+        public FastSmartWeakEvent<EventHandler> LayoutChanged = new FastSmartWeakEvent<EventHandler>();
 
-        public delegate void CommentChangedEventHandler(int layoutIndex);
-        public event CommentChangedEventHandler CommentChanged;
+        public class ImageChangedEventArgs : EventArgs { public int LayoutIndex = 0; }
+        public FastSmartWeakEvent<EventHandler<ImageChangedEventArgs>> ImageChanged
+            = new FastSmartWeakEvent<EventHandler<ImageChangedEventArgs>>();
+
+        public class CommentChangedEventArgs : EventArgs { public int LayoutIndex = 0; }
+        public FastSmartWeakEvent<EventHandler<CommentChangedEventArgs>> CommentChanged
+            = new FastSmartWeakEvent<EventHandler<CommentChangedEventArgs>>();
 
         private Layout layout;
         public Layout Layout
@@ -31,7 +36,7 @@ namespace PhotoBook.Model.Pages
                 layout = value;
                 _images = new Image[layout.NumOfImages];
                 _comments = new string[layout.NumOfImages];
-                InvokePropertyChanged(nameof(Layout));
+                LayoutChanged.Raise(this, EventArgs.Empty);
             }
         }
 
@@ -84,7 +89,7 @@ namespace PhotoBook.Model.Pages
 
             _images[layoutImageIndex] = newImage;
 
-            ImageChanged?.Invoke(layoutImageIndex);
+            ImageChanged.Raise(this, new ImageChangedEventArgs() { LayoutIndex = layoutImageIndex });
 
             return newImage;
         }
@@ -110,8 +115,7 @@ namespace PhotoBook.Model.Pages
 
             _comments[commentIndex] = commentContent;
 
-            CommentChanged?.Invoke(commentIndex);
-
+            CommentChanged.Raise(this, new CommentChangedEventArgs() { LayoutIndex = commentIndex });
         }
 
         public string GetComment(int commentIndex)

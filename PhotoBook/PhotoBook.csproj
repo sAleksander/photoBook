@@ -89,6 +89,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\FastSmartWeakEvent.cs" />
     <Compile Include="Model\Exporters\ToHtml.cs" />
     <Compile Include="Model\Exporters\ToPdf.cs" />
     <Compile Include="Model\Graphics\Filter.cs" />
