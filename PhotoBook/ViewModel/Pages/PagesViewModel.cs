@@ -1,7 +1,9 @@
 ﻿using PhotoBook.Model.Pages;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using static PhotoBook.Model.Pages.ContentPage;
+using PhotoBook.Model.Graphics;
 
 namespace PhotoBook.ViewModel.Pages
 {
@@ -27,6 +29,7 @@ namespace PhotoBook.ViewModel.Pages
         }
 
         private PropertyChangedEventHandler[] pagePropertyChangedHandlers = new PropertyChangedEventHandler[2];
+        private PropertyChangedEventHandler[][] imagePropertyChangedHandlers = new PropertyChangedEventHandler[2][];
         private ImageChangedEventHandler[] imageChangedHandlers = new ImageChangedEventHandler[2];
         private CommentChangedEventHandler[] commentChangedHandlers = new CommentChangedEventHandler[2];
 
@@ -48,11 +51,13 @@ namespace PhotoBook.ViewModel.Pages
                 pagePropertyChangedHandlers[i] = (s, args) => OnPagePropertyChanged(curPageIndex, args.PropertyName);
                 ContentPages[i].PropertyChanged += pagePropertyChangedHandlers[i];
 
-                imageChangedHandlers[i] = (layoutIndex) => ImageChanged?.Invoke(curPageIndex, layoutIndex);
+                imageChangedHandlers[i] = (layoutIndex) => OnImageChanged(curPageIndex, layoutIndex);
                 ContentPages[i].ImageChanged += imageChangedHandlers[i];
 
                 commentChangedHandlers[i] = (layoutIndex) => CommentChanged?.Invoke(curPageIndex, layoutIndex);
                 ContentPages[i].CommentChanged += commentChangedHandlers[i];
+
+                RegisterImagePropertyChanged(i);
             }
             
         }
@@ -66,14 +71,8 @@ namespace PhotoBook.ViewModel.Pages
             else if (propertyName.Equals(nameof(ContentPage.Layout)))
             {
                 Redraw?.Invoke(pageIndex);
-            }
-        }
 
-        public void OnRightPagePropertyChanged(object s, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName.Equals(nameof(ContentPage.Background)))
-            {
-                BackgroundChanged?.Invoke(1);
+                RegisterImagePropertyChanged(pageIndex);
             }
         }
 
@@ -86,6 +85,67 @@ namespace PhotoBook.ViewModel.Pages
                 ContentPages[i].PropertyChanged -= pagePropertyChangedHandlers[i];
                 ContentPages[i].ImageChanged -= imageChangedHandlers[i];
                 ContentPages[i].CommentChanged -= commentChangedHandlers[i];
+
+                UnregisterImagePropertyChanged(i);
+            }
+        }
+
+        private void OnImageChanged(int pageIndex, int layoutIndex)
+        {
+            ImageChanged?.Invoke(pageIndex, layoutIndex);
+            RegisterImagePropertyChanged(pageIndex, layoutIndex);
+        }
+
+        private void RegisterImagePropertyChanged(int pageIndex)
+        {
+            var contentPage = ContentPages[pageIndex];
+            var numOfImages = contentPage.Layout.NumOfImages;
+            imagePropertyChangedHandlers[pageIndex] = new PropertyChangedEventHandler[numOfImages];
+
+            for (int i = 0; i < numOfImages; i++)
+            {
+                RegisterImagePropertyChanged(pageIndex, i);
+            }
+        }
+
+        private void RegisterImagePropertyChanged(int pageIndex, int layoutIndex)
+        {
+            var contentPage = ContentPages[pageIndex];
+            var image = contentPage.GetImage(layoutIndex);
+
+            if (image == null) return;
+
+            PropertyChangedEventHandler handler = (s, args) => OnImagePropertyChanged(
+                pageIndex, layoutIndex, args.PropertyName);
+
+            imagePropertyChangedHandlers[pageIndex][layoutIndex] = handler;
+            image.PropertyChanged += handler;
+        }
+
+        private void UnregisterImagePropertyChanged(int pageIndex)
+        {
+            var contentPage = ContentPages[pageIndex];
+            var numOfImages = contentPage.Layout.NumOfImages;
+            imagePropertyChangedHandlers[pageIndex] = new PropertyChangedEventHandler[numOfImages];
+
+            for (int imgIndex = 0; imgIndex < numOfImages; imgIndex++)
+            {
+                var handler = imagePropertyChangedHandlers[pageIndex][imgIndex];
+
+                if (handler != null)
+                {
+                    contentPage.GetImage(imgIndex).PropertyChanged -= handler;
+                }
+            }
+
+            imagePropertyChangedHandlers[pageIndex] = null;
+        }
+
+        private void OnImagePropertyChanged(int pageIndex, int imageIndex, string propertyName)
+        {
+            if (propertyName.Equals(nameof(Image.DisplayedPath)))
+            {
+                ImageChanged?.Invoke(pageIndex, imageIndex);
             }
         }
     }

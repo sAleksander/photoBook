@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 namespace PhotoBook.Model.Graphics
 {
-    public class Image : SerializeInterface<Image>
+    public class Image : SerializeInterface<Image>, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -18,7 +18,17 @@ namespace PhotoBook.Model.Graphics
         public Rectangle CroppingRectangle { get; set; }
         public string OriginalPath { get; private set; }
         public string OriginalAbsolutePath { get => Path.GetFullPath(OriginalPath); }
-        public string DisplayedPath { get; private set; }
+
+        private string displayedPath;
+        public string DisplayedPath
+        {
+            get => displayedPath;
+            set
+            {
+                displayedPath = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedPath)));
+            }
+        }
         public string DisplayedAbsolutePath { get => Path.GetFullPath(DisplayedPath); }
 
         public int Width { get; }
@@ -71,12 +81,12 @@ namespace PhotoBook.Model.Graphics
             System.Drawing.Imaging.PixelFormat format = originalBitmap.PixelFormat;
 
             if (filterType == Filter.Type.None)
-                editedBitmap = originalBitmap.Clone(rectangle, format);
+                editedBitmap = (Bitmap)originalBitmap.Clone();
 
             else
             {
                 CurrentFilter.SetFilterSettings(filterType);
-                editedBitmap = CurrentFilter.applyFilter(originalBitmap.Clone(rectangle, format));
+                editedBitmap = CurrentFilter.applyFilter((Bitmap)originalBitmap.Clone());
             }
 
             string oldFilePath = DisplayedPath;
