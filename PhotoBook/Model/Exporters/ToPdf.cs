@@ -34,12 +34,12 @@ namespace PhotoBook.Model.Exporters
         #region Percent functions
         private string percent(float percentage)
         {
-            return (A4_HEIGHT * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo) + "px";
+            return (Math.Floor(A4_HEIGHT * (percentage / 100))).ToString(NumberFormatInfo.InvariantInfo) + "px";
         }
 
         private string customPercent(float parentHeight, float percentage)
         {
-            return (parentHeight * (percentage / 100)).ToString(NumberFormatInfo.InvariantInfo) + "px";
+            return (Math.Floor(parentHeight * (percentage / 100))).ToString(NumberFormatInfo.InvariantInfo) + "px";
         }
         #endregion
 
