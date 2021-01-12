@@ -31,6 +31,17 @@ namespace PhotoBook.Model
             photoBook.SaveDirectory = Path.GetFullPath(projectDirPath);
             Directory.SetCurrentDirectory(projectDirPath);
 
+            photoBook.FrontCover.Title = "Moja fotoksiążka";
+
+            var (left, right) = photoBook.CreateNewPages();
+
+            left.Layout = photoBook.AvailableLayouts[Layout.Type.TwoPictures];
+            left.SetComment(0, "Opis");
+            left.SetComment(1, "Opis");
+
+            right.Layout = photoBook.AvailableLayouts[Layout.Type.OnePicture];
+            right.SetComment(0, "Opis");
+
             return photoBook;
         }
 
@@ -57,11 +68,9 @@ namespace PhotoBook.Model
             PhotoBook photoBook = new PhotoBook();
             photoBook.SaveDirectory = Path.GetFullPath(Directory.GetCurrentDirectory());
 
-            photoBook.FrontCover = new Pages.FrontCover();
             photoBook.FrontCover.Title = "Moja fotoksiążka";
             photoBook.FrontCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
 
-            photoBook.BackCover = new Pages.BackCover();
             photoBook.BackCover.Background = new Backgrounds.BackgroundColor(112, 91, 91);
 
             photoBook._contentPages = new List<ContentPage>(6);
@@ -100,8 +109,8 @@ namespace PhotoBook.Model
 
         private List<ContentPage> _contentPages = new List<ContentPage>();
 
-        public FrontCover FrontCover { get; private set; }
-        public BackCover BackCover { get; private set; }
+        public FrontCover FrontCover { get; private set; } = new FrontCover();
+        public BackCover BackCover { get; private set; } = new BackCover();
         public int NumOfContentPages { get => _contentPages.Count; }
 
         public string SaveDirectory { get; private set; }

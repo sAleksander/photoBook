@@ -26,6 +26,11 @@ namespace PhotoBook.Model.Pages
             }
         }
 
+        public FrontCover()
+        {
+            Background = new BackgroundColor(112, 91, 91);
+        }
+
         public int SerializeObject(Serializer serializer)
         {
             string frontCover = "";

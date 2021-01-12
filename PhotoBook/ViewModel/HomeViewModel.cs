@@ -23,16 +23,18 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(ChosenFilePath), ref chosenFilePath, value);
         }
 
+        private string chosenDirPath;
+        public string ChosenDirPath
+        {
+            get => chosenDirPath;
+            set => Set(nameof(ChosenDirPath), ref chosenDirPath, value);
+        }
+
         public HomeViewModel(ViewModelLocator locator, PhotoBookProviderService photoBookProvider)
         {
             this.locator = locator;
             this.photoBookProvider = photoBookProvider;
         }
-
-        public RelayCommand Edit => new RelayCommand(() =>
-        {
-            MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
-        });
 
         private RelayCommand fileChosen;
         public RelayCommand FileChosen
@@ -48,5 +50,18 @@ namespace PhotoBook.ViewModel
             }
         }
 
+        private RelayCommand dirChosen;
+        public RelayCommand DirChosen
+        {
+            get
+            {
+                return dirChosen ?? (dirChosen = new RelayCommand(
+                    () =>
+                    {
+                        photoBookProvider.Model = Model.PhotoBook.CreateNew(ChosenDirPath);
+                        MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
+                    }));
+            }
+        }
     }
 }

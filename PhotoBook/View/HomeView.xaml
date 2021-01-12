@@ -36,10 +36,12 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-            <Button Content="Stwórz nową"
-                Style="{StaticResource HomeButton}"
-                Command="{Binding Edit}">
-            </Button>
+            <settings:FolderPickerButton
+                ButtonContent="Stwórz nową"
+                ButtonStyle="{StaticResource HomeButton}"
+                ChosenDir="{Binding ChosenDirPath, Mode=OneWayToSource}"
+                DirChosenCommand="{Binding DirChosen}"
+                />
             <settings:FilePickerButton
                 ButtonContent="Otwórz istniejącą"
                 ButtonStyle="{StaticResource HomeButton}"

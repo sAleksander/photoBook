@@ -11,6 +11,11 @@ namespace PhotoBook.Model.Pages
 {
     public class BackCover : Page, SerializeInterface<BackCover>
     {
+        public BackCover()
+        {
+            Background = new BackgroundColor(112, 91, 91);
+        }
+
         public int SerializeObject(Serializer serializer)
         {
             string backCover = "";
