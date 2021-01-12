@@ -39,6 +39,7 @@ namespace PhotoBook.ViewModel
             SimpleIoc.Default.Register<CropPhotoViewModel>();
 
             SimpleIoc.Default.Register<IDialogService>(() => new WPFDialogService());
+            SimpleIoc.Default.Register<PhotoBookProviderService>();
 
             // Used to pass ViewModelLocator to view models so that they can navigate
             // to other VMs.

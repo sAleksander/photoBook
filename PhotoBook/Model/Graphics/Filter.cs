@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PhotoBook.Model.Serialization;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBook.Model.Graphics
 {
-    public class Filter
+    public class Filter : SerializeInterface<Filter>
     {
         public Filter() {
             SetFilterSettings(Filter.Type.None);
@@ -54,11 +56,11 @@ namespace PhotoBook.Model.Graphics
                     break;
 
                 case Filter.Type.Greyscale:
-                    _settings.Clear();
                     _settings.Add("R", 0.114);
                     _settings.Add("G", 0.587);
                     _settings.Add("B", 0.299);
                     break;
+
                 case Filter.Type.None:
                     _settings.Add("R", 1);
                     _settings.Add("G", 1);
@@ -67,42 +69,80 @@ namespace PhotoBook.Model.Graphics
             }
         }
 
-        public Bitmap applyFilter(Bitmap originalBitmap)
+        public Bitmap applyFilter(Bitmap bitmap)
         {
-            Bitmap editedBitmap = originalBitmap;
-            BitmapData bitmapData = editedBitmap.LockBits(new Rectangle(0, 0, editedBitmap.Width, editedBitmap.Height),
-            ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            BitmapData bitmapData = bitmap.LockBits(
+                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             unsafe
             {
-                byte* pixelPointer = (byte*)bitmapData.Scan0.ToPointer();
-                int endPixelAddress = (int)pixelPointer + bitmapData.Stride * bitmapData.Height;
+                byte* pixelPtr = (byte*)bitmapData.Scan0.ToPointer();
+                int offset = bitmapData.Stride - 3 * bitmapData.Width;
 
-                switch (currentType)
+                if (currentType == Filter.Type.Greyscale)
                 {
-                    case (Filter.Type.Greyscale):
-                        while ((int)pixelPointer != endPixelAddress)
+                    for (int y = 0; y < bitmapData.Height; y++)
+                    {
+                        for (int x = 0; x < bitmapData.Width; x++)
                         {
-                            pixelPointer[0] = (byte)(_settings["R"] * pixelPointer[2] + _settings["G"] * pixelPointer[1] + _settings["B"] * pixelPointer[0]);
-                            pixelPointer[1] = pixelPointer[0];
-                            pixelPointer[2] = pixelPointer[0];
-                            pixelPointer += 3;
-                        }
-                        break;
+                            pixelPtr[0] = (byte)(_settings["R"] * pixelPtr[2] + _settings["G"] * pixelPtr[1] + _settings["B"] * pixelPtr[0]);
+                            pixelPtr[1] = pixelPtr[0];
+                            pixelPtr[2] = pixelPtr[0];
 
-                    default:
-                        while ((int)pixelPointer != endPixelAddress)
-                        {
-                            pixelPointer[2] = (byte)(_settings["R"] * pixelPointer[2]);
-                            pixelPointer[1] = (byte)(_settings["G"] * pixelPointer[1]);
-                            pixelPointer[0] = (byte)(_settings["B"] * pixelPointer[0]);
+                            pixelPtr += 3;
                         }
-                        break;
+
+                        pixelPtr += offset;
+                    }
+                }
+                else
+                {
+                    for (int y = 0; y < bitmapData.Height; y++)
+                    {
+                        for (int x = 0; x < bitmapData.Width; x++)
+                        {
+                            pixelPtr[0] = (byte)(_settings["B"] * pixelPtr[0]);
+                            pixelPtr[1] = (byte)(_settings["G"] * pixelPtr[1]);
+                            pixelPtr[2] = (byte)(_settings["R"] * pixelPtr[2]);
+
+                            pixelPtr += 3;
+                        }
+
+                        pixelPtr += offset;
+                    }
                 }
             }
-            return editedBitmap;
+
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
         }
 
         public static Type[] GetAvailableTypes() => new Type[] { Type.Cold, Type.Warm, Type.Greyscale, Type.None };
+
+        public int SerializeObject(Serializer serializer)
+        {
+            string filter = $"{nameof(currentType)}:{currentType}";
+
+            int filterTypeID = serializer.AddObject(filter);
+
+            return filterTypeID;
+        }
+
+        public Filter DeserializeObject(Serializer serializer, int objectID)
+        {
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
+
+            string filter = objectData.Get<string>(nameof(currentType));
+
+            Enum.TryParse(filter, out Filter.Type filterEnum);
+
+            if (filterEnum != Filter.Type.None && filterEnum != Filter.Type.Cold && filterEnum != Filter.Type.Warm && filterEnum != Filter.Type.Greyscale)
+                throw new Exception("Wrong filter type met while deserialising");
+            else
+                currentType = filterEnum;
+
+            return this;
+        }
     }
 }

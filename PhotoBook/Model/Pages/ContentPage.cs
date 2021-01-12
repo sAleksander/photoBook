@@ -9,16 +9,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Image = PhotoBook.Model.Graphics.Image;
+using PhotoBook.Model.Serialization;
+using PhotoBook.Model.Backgrounds;
+using SmartWeakEvent;
 
 namespace PhotoBook.Model.Pages
 {
-    public class ContentPage : Page
+    public class ContentPage : Page, SerializeInterface<ContentPage>
     {
-        public delegate void ImageChangedEventHandler(int layoutIndex);
-        public event ImageChangedEventHandler ImageChanged;
+        public FastSmartWeakEvent<EventHandler> LayoutChanged = new FastSmartWeakEvent<EventHandler>();
 
-        public delegate void CommentChangedEventHandler(int layoutIndex);
-        public event CommentChangedEventHandler CommentChanged;
+        public class ImageChangedEventArgs : EventArgs { public int LayoutIndex = 0; }
+        public FastSmartWeakEvent<EventHandler<ImageChangedEventArgs>> ImageChanged
+            = new FastSmartWeakEvent<EventHandler<ImageChangedEventArgs>>();
+
+        public class CommentChangedEventArgs : EventArgs { public int LayoutIndex = 0; }
+        public FastSmartWeakEvent<EventHandler<CommentChangedEventArgs>> CommentChanged
+            = new FastSmartWeakEvent<EventHandler<CommentChangedEventArgs>>();
 
         private Layout layout;
         public Layout Layout
@@ -29,15 +36,28 @@ namespace PhotoBook.Model.Pages
                 layout = value;
                 _images = new Image[layout.NumOfImages];
                 _comments = new string[layout.NumOfImages];
-                InvokePropertyChanged(nameof(Layout));
+                LayoutChanged.Raise(this, EventArgs.Empty);
             }
         }
 
         private Image[] _images;
-        public Image[] Images { get => _images; }
+        public Image[] Images {
+            get => _images;
+            private set
+            {
+                _images = value;
+            }
+        }
 
         private string[] _comments;
-        public string[] Comments { get; private set; }
+        public string[] Comments
+        {
+            get => _comments;
+            private set
+            {
+                _comments = value;
+            }
+        }
 
         // TOOD: Should layout be required for creating a ContentPage?
         public ContentPage()
@@ -69,7 +89,7 @@ namespace PhotoBook.Model.Pages
 
             _images[layoutImageIndex] = newImage;
 
-            ImageChanged?.Invoke(layoutImageIndex);
+            ImageChanged.Raise(this, new ImageChangedEventArgs() { LayoutIndex = layoutImageIndex });
 
             return newImage;
         }
@@ -95,7 +115,7 @@ namespace PhotoBook.Model.Pages
 
             _comments[commentIndex] = commentContent;
 
-            CommentChanged?.Invoke(commentIndex);
+            CommentChanged.Raise(this, new CommentChangedEventArgs() { LayoutIndex = commentIndex });
         }
 
         public string GetComment(int commentIndex)
@@ -130,6 +150,92 @@ namespace PhotoBook.Model.Pages
                     (int)(image.Height)
                 );
             }
+        }
+
+        public int SerializeObject(Serializer serializer)
+        {
+            string contentPage = $"{nameof(Images)}:\n";
+
+            if (_images.Length > 0)
+                foreach (Image image in _images)
+                {
+                    if (image != null)
+                        contentPage += $"-&{image.SerializeObject(serializer)}\n";
+                    else
+                        contentPage += $"-&-1\n";
+                }
+
+            contentPage += $"{nameof(Layout)}:{Layout.SerializeObject(serializer)}\n";
+
+            contentPage += $"{nameof(Comments)}:\n";
+
+            foreach (string comment in _comments)
+                contentPage += $"-\"{comment}\"\n";
+
+            int backgroundID = 0;
+            string resultType = "";
+
+            switch (Background)
+            {
+                case BackgroundColor bgc:
+                    backgroundID = bgc.SerializeObject(serializer);
+                    resultType = "BackgroundColor";
+                    break;
+
+                case BackgroundImage bgi:
+                    backgroundID = bgi.SerializeObject(serializer);
+                    resultType = "BackgroundImage";
+                    break;
+            }
+
+            contentPage += $"Background:&{backgroundID},{resultType}";
+
+            int contentPageID = serializer.AddObject(contentPage);
+
+            return contentPageID;
+        }
+
+        public ContentPage DeserializeObject(Serializer serializer, int objectID)
+        {
+            ObjectDataRelay objectData = serializer.GetObjectData(objectID);
+
+            Layout = serializer.Deserialize<Layout>(objectData.Get<int>(nameof(Layout)));
+
+            List<Image> tempImageList = new List<Image>();
+            List<int> tempImageIndexesList = objectData.Get<List<int>>(nameof(Images));
+
+            foreach (int tempImageIndex in tempImageIndexesList)
+                tempImageList.Add(serializer.Deserialize<Image>(tempImageIndex));
+
+            // Checking if image list contains only null values;
+            var nullImagesCount = 0;
+
+            for(int i = 0; i < tempImageList.Count; i++)
+                if(tempImageList[i].DisplayedPath == null)
+                {
+                    nullImagesCount++;
+                    tempImageList[i] = null;
+                }
+
+            if (nullImagesCount != tempImageList.Count)
+                _images = tempImageList.ToArray();
+
+            Comments = objectData.Get<List<string>>(nameof(Comments)).ToArray();
+
+            string backgroundType = objectData.Get<string>(nameof(Background));
+            int backgroundIndex = objectData.Get<int>(nameof(Background));
+
+            switch (backgroundType)
+            {
+                case "BackgroundColor":
+                    Background = serializer.Deserialize<BackgroundColor>(backgroundIndex);
+                    break;
+                case "BackgroundImage":
+                    Background = serializer.Deserialize<BackgroundImage>(backgroundIndex);
+                    break;
+            }
+
+            return this;
         }
     }
 }

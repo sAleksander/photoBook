@@ -59,6 +59,10 @@ namespace PhotoBook.ViewModel.Settings
 
                         var cropPhotoVM = locator.CropPhoto;
                         cropPhotoVM.ImageToCrop = page.GetImage(imageIndex);
+
+                        if(filters == null)
+                            BuildFilters();
+
                         MainViewModel.Navigator.ChangeCurrentVM(cropPhotoVM);
                     }));
             }
@@ -83,6 +87,10 @@ namespace PhotoBook.ViewModel.Settings
         private void BuildFilters()
         {
             var image = page.GetImage(ImageIndex);
+
+            if (image == null)
+                return;
+
             var currentFilterType = image.CurrentFilter.currentType;
 
             filters = new ObservableCollection<SelectableFilterViewModel>();
@@ -91,7 +99,7 @@ namespace PhotoBook.ViewModel.Settings
             {
                 var filterType = item.Key;
                 var filterName = filterTypeToName[filterType];
-                var filterVM = new SelectableFilterViewModel(image, filterType, filterName);
+                var filterVM = new SelectableFilterViewModel(page, ImageIndex, filterType, filterName);
                 filterVM.IsChecked = filterType == currentFilterType;
 
                 filters.Add(filterVM);

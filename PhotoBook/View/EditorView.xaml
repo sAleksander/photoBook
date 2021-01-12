@@ -17,8 +17,8 @@
               FontFamily="Segoe UI Light">
             <MenuItem Header="Fotoksiążka" Height="25" VerticalAlignment="Center">
                 <MenuItem Header="Utwórz nową"/>
-                <MenuItem Header="Otwórz istniejącą"/>
-                <MenuItem Header="Zapisz"/>
+                <MenuItem Header="Otwórz istniejącą" Command="{Binding Load}"/>
+                <MenuItem Header="Zapisz" Command="{Binding Save}"/>
                 <MenuItem Header="Wyjdź" Command="{Binding Exit}"/>
             </MenuItem>
         </Menu>

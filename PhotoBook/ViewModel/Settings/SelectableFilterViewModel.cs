@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,10 @@ namespace PhotoBook.ViewModel.Settings
 {
     public class SelectableFilterViewModel : ViewModelBase
     {
-        private Model.Graphics.Image image;
-        Model.Graphics.Filter.Type filterType;
+        private Model.Pages.ContentPage contentPage;
+        private int imageIndex;
+        //private Model.Graphics.Image image;
+        private Model.Graphics.Filter.Type filterType;
 
         private bool isChecked;
         public bool IsChecked
@@ -35,18 +38,23 @@ namespace PhotoBook.ViewModel.Settings
                 return check ?? (check = new RelayCommand(
                     () =>
                     {
-                        image.SetFilter(filterType);
+                        //Debug.WriteLine(image.DisplayedAbsolutePath);
+                        contentPage.GetImage(imageIndex).SetFilter(filterType);
                     }));
             }
         }
 
         public SelectableFilterViewModel(
-            Model.Graphics.Image image,
+            Model.Pages.ContentPage contentPage,
+            int imageIndex,
             Model.Graphics.Filter.Type filterType,
             string name)
         {
-            this.image = image;
+            this.contentPage = contentPage;
+            this.imageIndex = imageIndex;
             this.filterType = filterType;
+
+            //this.image = contentPage.GetImage(imageIndex);
 
             Name = name;
         }

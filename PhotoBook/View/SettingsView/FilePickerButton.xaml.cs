@@ -35,6 +35,19 @@ namespace PhotoBook.View.SettingsView
             set { SetValue(ButtonContentProperty, value); }
         }
 
+        public static readonly DependencyProperty ButtonStyleProperty = DependencyProperty.Register(
+            nameof(ButtonStyle),
+            typeof(Style),
+            typeof(FilePickerButton),
+            new PropertyMetadata(null)
+        );
+
+        public Style ButtonStyle
+        {
+            get { return (Style)GetValue(ButtonStyleProperty); }
+            set { SetValue(ButtonStyleProperty, value); }
+        }
+
         public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(
             nameof(Filter),
             typeof(string),

@@ -18,9 +18,10 @@ namespace PhotoBook.ViewModel
 
     public class EditorViewModel : ViewModelBase
     {
-        private PhotoBookModel model = PhotoBookModel.CreateMockup();
+        private PhotoBookModel model;
         private IDialogService dialogService;
         private ViewModelLocator locator;
+        private PhotoBookProviderService photoBookProvider;
 
         private int currentContentPageIndex = 0;
         private PageType currentPageType = PageType.FrontCover;
@@ -30,11 +31,7 @@ namespace PhotoBook.ViewModel
         public BookViewModel BookViewModel
         {
             get => bookViewModel;
-            set
-            {
-                bookViewModel?.UnregisterEventHandlers();
-                Set(nameof(BookViewModel), ref bookViewModel, value);
-            }
+            set => Set(nameof(BookViewModel), ref bookViewModel, value);
         }
 
         private SettingsViewModel settingsViewModel;
@@ -44,10 +41,15 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(SettingsViewModel), ref settingsViewModel, value);
         }
 
-        public EditorViewModel(ViewModelLocator locator, IDialogService dialogService)
+        public EditorViewModel(
+            ViewModelLocator locator,
+            IDialogService dialogService,
+            PhotoBookProviderService photoBookProvider)
         {
             this.locator = locator;
             this.dialogService = dialogService;
+            this.photoBookProvider = photoBookProvider;
+            this.model = this.photoBookProvider.Model;
 
             UpdateView();
         }
@@ -160,6 +162,33 @@ namespace PhotoBook.ViewModel
                         left.Layout = model.AvailableLayouts[Layout.Type.TwoPictures];
                         right.Layout = model.AvailableLayouts[Layout.Type.TwoPictures];
 
+                        UpdateView();
+                    }));
+            }
+        }
+
+        private RelayCommand save;
+        public RelayCommand Save
+        {
+            get
+            {
+                return save ?? (save = new RelayCommand(
+                    () =>
+                    {
+                        model.SavePhotoBook();
+                    }));
+            }
+        }
+
+        private RelayCommand load;
+        public RelayCommand Load
+        {
+            get
+            {
+                return load ?? (load = new RelayCommand(
+                    () =>
+                    {
+                        model.LoadPhotoBook();
                         UpdateView();
                     }));
             }

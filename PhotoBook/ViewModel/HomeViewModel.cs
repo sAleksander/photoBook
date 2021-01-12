@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using PhotoBook.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +12,56 @@ namespace PhotoBook.ViewModel
     public class HomeViewModel : ViewModelBase
     {
         private ViewModelLocator locator;
+        private PhotoBookProviderService photoBookProvider;
 
-        public HomeViewModel(ViewModelLocator locator)
+        public string FileFilter { get; } = "PhotoBookFile|*.pbf";
+
+        private string chosenFilePath;
+        public string ChosenFilePath
         {
-            this.locator = locator;
+            get => chosenFilePath;
+            set => Set(nameof(ChosenFilePath), ref chosenFilePath, value);
         }
 
-        public RelayCommand Edit => new RelayCommand(() =>
+        private string chosenDirPath;
+        public string ChosenDirPath
         {
-            MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
-        });
+            get => chosenDirPath;
+            set => Set(nameof(ChosenDirPath), ref chosenDirPath, value);
+        }
+
+        public HomeViewModel(ViewModelLocator locator, PhotoBookProviderService photoBookProvider)
+        {
+            this.locator = locator;
+            this.photoBookProvider = photoBookProvider;
+        }
+
+        private RelayCommand fileChosen;
+        public RelayCommand FileChosen
+        {
+            get
+            {
+                return fileChosen ?? (fileChosen = new RelayCommand(
+                    () =>
+                    {
+                        photoBookProvider.Model = Model.PhotoBook.Load(chosenFilePath);
+                        MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
+                    }));
+            }
+        }
+
+        private RelayCommand dirChosen;
+        public RelayCommand DirChosen
+        {
+            get
+            {
+                return dirChosen ?? (dirChosen = new RelayCommand(
+                    () =>
+                    {
+                        photoBookProvider.Model = Model.PhotoBook.CreateNew(ChosenDirPath);
+                        MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
+                    }));
+            }
+        }
     }
 }

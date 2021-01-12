@@ -4,13 +4,22 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PhotoBook.View"
+      xmlns:settings="clr-namespace:PhotoBook.View.SettingsView"
       mc:Ignorable="d" 
       DataContext="{Binding Source={StaticResource Locator}, Path=Home}"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="HomeView">
 
+    <Page.Resources>
+        <Style x:Key="HomeButton" TargetType="Button" BasedOn="{StaticResource RoundBorderButton}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Margin" Value="10,-50,0,0"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+    </Page.Resources>
+
     <Grid Style="{StaticResource GridBackground}">
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="2*"/>
@@ -27,32 +36,19 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
-            <Button Content="Stwórz nową"
-                Style="{StaticResource BorderButton}"
-                FontSize="20"
-                Height="50"
-                Margin="10,-50,0,0"
-                Width="200"
-                Command="{Binding Edit}">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="7"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button Content="Otwórz istniejącą"
-                Style="{StaticResource BorderButton}"
-                FontSize="20"
-                Height="50"
-                Margin="10,-50,0,0"
-                Width="200"
-                Command="">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="7"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+            <settings:FolderPickerButton
+                ButtonContent="Stwórz nową"
+                ButtonStyle="{StaticResource HomeButton}"
+                ChosenDir="{Binding ChosenDirPath, Mode=OneWayToSource}"
+                DirChosenCommand="{Binding DirChosen}"
+                />
+            <settings:FilePickerButton
+                ButtonContent="Otwórz istniejącą"
+                ButtonStyle="{StaticResource HomeButton}"
+                Filter="{Binding FileFilter, Mode=OneWay}"
+                ChosenFile="{Binding ChosenFilePath, Mode=OneWayToSource}"
+                FileChosenCommand="{Binding FileChosen}"
+                />
         </StackPanel>
 
     </Grid>

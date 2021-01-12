@@ -1,7 +1,9 @@
 ﻿using PhotoBook.Model.Pages;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using static PhotoBook.Model.Pages.ContentPage;
+using PhotoBook.Model.Graphics;
 
 namespace PhotoBook.ViewModel.Pages
 {
@@ -26,9 +28,11 @@ namespace PhotoBook.ViewModel.Pages
             private set => Set(nameof(ContentPages), ref contentPages, value);
         }
 
-        private PropertyChangedEventHandler[] pagePropertyChangedHandlers = new PropertyChangedEventHandler[2];
-        private ImageChangedEventHandler[] imageChangedHandlers = new ImageChangedEventHandler[2];
-        private CommentChangedEventHandler[] commentChangedHandlers = new CommentChangedEventHandler[2];
+        private EventHandler[] pageBackgroundChangedHandlers = new EventHandler[2];
+        private EventHandler[] pageLayoutChangedHandlers = new EventHandler[2];
+        private EventHandler[][] imagePropertyChangedHandlers = new EventHandler[2][];
+        private EventHandler<ImageChangedEventArgs>[] imageChangedHandlers = new EventHandler<ImageChangedEventArgs>[2];
+        private EventHandler<CommentChangedEventArgs>[] commentChangedHandlers = new EventHandler<CommentChangedEventArgs>[2];
 
         public PagesViewModel(ContentPage[] contentPages)
         {
@@ -37,56 +41,60 @@ namespace PhotoBook.ViewModel.Pages
 
         public void ResetPages(ContentPage[] contentPages)
         {
-            UnregisterEventHandlers();
-
             ContentPages = contentPages;
 
             for (int i = 0; i < 2; i++)
             {
                 var curPageIndex = i;
 
-                pagePropertyChangedHandlers[i] = (s, args) => OnPagePropertyChanged(curPageIndex, args.PropertyName);
-                ContentPages[i].PropertyChanged += pagePropertyChangedHandlers[i];
+                pageBackgroundChangedHandlers[i] = (s, args) => BackgroundChanged?.Invoke(curPageIndex);
+                ContentPages[i].BackgroundChanged.Add(pageBackgroundChangedHandlers[i]);
 
-                imageChangedHandlers[i] = (layoutIndex) => ImageChanged?.Invoke(curPageIndex, layoutIndex);
-                ContentPages[i].ImageChanged += imageChangedHandlers[i];
+                pageLayoutChangedHandlers[i] = (s, args) =>
+                {
+                    Redraw?.Invoke(curPageIndex);
+                    RegisterImagePropertyChanged(curPageIndex);
+                };
+                ContentPages[i].BackgroundChanged.Add(pageLayoutChangedHandlers[i]);
 
-                commentChangedHandlers[i] = (layoutIndex) => CommentChanged?.Invoke(curPageIndex, layoutIndex);
-                ContentPages[i].CommentChanged += commentChangedHandlers[i];
-            }
-            
-        }
+                imageChangedHandlers[i] = (s, args) => OnImageChanged(curPageIndex, args.LayoutIndex);
+                ContentPages[i].ImageChanged.Add(imageChangedHandlers[i]);
 
-        public void OnPagePropertyChanged(int pageIndex, string propertyName)
-        {
-            if (propertyName.Equals(nameof(ContentPage.Background)))
-            {
-                BackgroundChanged?.Invoke(pageIndex);
-            }
-            else if (propertyName.Equals(nameof(ContentPage.Layout)))
-            {
-                Redraw?.Invoke(pageIndex);
+                commentChangedHandlers[i] = (s, args) => CommentChanged?.Invoke(curPageIndex, args.LayoutIndex);
+                ContentPages[i].CommentChanged.Add(commentChangedHandlers[i]);
+
+                RegisterImagePropertyChanged(i);
             }
         }
 
-        public void OnRightPagePropertyChanged(object s, PropertyChangedEventArgs args)
+        private void OnImageChanged(int pageIndex, int layoutIndex)
         {
-            if (args.PropertyName.Equals(nameof(ContentPage.Background)))
+            ImageChanged?.Invoke(pageIndex, layoutIndex);
+            RegisterImagePropertyChanged(pageIndex, layoutIndex);
+        }
+
+        private void RegisterImagePropertyChanged(int pageIndex)
+        {
+            var contentPage = ContentPages[pageIndex];
+            var numOfImages = contentPage.Layout.NumOfImages;
+            imagePropertyChangedHandlers[pageIndex] = new EventHandler[numOfImages];
+
+            for (int i = 0; i < numOfImages; i++)
             {
-                BackgroundChanged?.Invoke(1);
+                RegisterImagePropertyChanged(pageIndex, i);
             }
         }
 
-        public override void UnregisterEventHandlers()
+        private void RegisterImagePropertyChanged(int pageIndex, int layoutIndex)
         {
-            if (contentPages == null) return;
+            var contentPage = ContentPages[pageIndex];
+            var image = contentPage.GetImage(layoutIndex);
 
-            for (int i = 0; i < 2; i++)
-            {
-                ContentPages[i].PropertyChanged -= pagePropertyChangedHandlers[i];
-                ContentPages[i].ImageChanged -= imageChangedHandlers[i];
-                ContentPages[i].CommentChanged -= commentChangedHandlers[i];
-            }
+            if (image == null) return;
+
+            imagePropertyChangedHandlers[pageIndex][layoutIndex] =
+                (s, args) => ImageChanged?.Invoke(pageIndex, layoutIndex);
+            image.DisplayPathChanged.Add(imagePropertyChangedHandlers[pageIndex][layoutIndex]);
         }
     }
 }
