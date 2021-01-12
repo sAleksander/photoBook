@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using PhotoBook.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace PhotoBook.ViewModel
     public class HomeViewModel : ViewModelBase
     {
         private ViewModelLocator locator;
+        private PhotoBookProviderService photoBookProvider;
 
         public string FileFilter { get; } = "PhotoBookFile|*.pbf";
 
@@ -21,6 +23,17 @@ namespace PhotoBook.ViewModel
             set => Set(nameof(ChosenFilePath), ref chosenFilePath, value);
         }
 
+        public HomeViewModel(ViewModelLocator locator, PhotoBookProviderService photoBookProvider)
+        {
+            this.locator = locator;
+            this.photoBookProvider = photoBookProvider;
+        }
+
+        public RelayCommand Edit => new RelayCommand(() =>
+        {
+            MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
+        });
+
         private RelayCommand fileChosen;
         public RelayCommand FileChosen
         {
@@ -29,18 +42,11 @@ namespace PhotoBook.ViewModel
                 return fileChosen ?? (fileChosen = new RelayCommand(
                     () =>
                     {
+                        photoBookProvider.Model = Model.PhotoBook.Load(chosenFilePath);
+                        MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
                     }));
             }
         }
 
-        public HomeViewModel(ViewModelLocator locator)
-        {
-            this.locator = locator;
-        }
-
-        public RelayCommand Edit => new RelayCommand(() =>
-        {
-            MainViewModel.Navigator.ChangeCurrentVM(locator.Editor);
-        });
     }
 }

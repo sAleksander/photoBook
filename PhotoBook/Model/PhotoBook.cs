@@ -38,7 +38,7 @@ namespace PhotoBook.Model
         {
             PhotoBook photoBook = new PhotoBook();
             photoBook.SaveDirectory = Path.GetDirectoryName(Path.GetFullPath(configFilePath));
-            Directory.SetCurrentDirectory(configFilePath);
+            Directory.SetCurrentDirectory(photoBook.SaveDirectory);
 
             photoBook.LoadPhotoBook();
 
@@ -98,7 +98,7 @@ namespace PhotoBook.Model
         public static int PageWidthInPixels { get; } = 790;
         public static int PageHeightInPixels { get; } = 1120;
 
-        private List<ContentPage> _contentPages;
+        private List<ContentPage> _contentPages = new List<ContentPage>();
 
         public FrontCover FrontCover { get; private set; }
         public BackCover BackCover { get; private set; }

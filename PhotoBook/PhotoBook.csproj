@@ -125,6 +125,7 @@
     <Compile Include="Model\Serialization\ObjectDataRetrieverInterface.cs" />
     <Compile Include="Model\Serialization\SerializeInterface.cs" />
     <Compile Include="Model\Serialization\Serializer.cs" />
+    <Compile Include="Services\PhotoBookProviderService.cs" />
     <Compile Include="ViewModel\CropPhotoViewModel.cs" />
     <Compile Include="ViewModel\Dialogs\DialogResultEnum.cs" />
     <Compile Include="ViewModel\Dialogs\DialogYesNoViewModel.cs" />
