@@ -12,21 +12,17 @@
 
         <!--Right/left side options-->
         <StackPanel Orientation="Horizontal">
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
+            <RadioButton Style="{StaticResource OptionButton}"
                         Name="btnLeftSide"
-                        Content="Lewa strona"
-                        BorderBrush="White" 
-                        Background="Transparent"
-                        FontSize="20" Foreground="White" FontFamily="Segoe UI Light"
-                        Width="130"
+                        Content=" Lewa strona"
+                        FontSize="20"
+                        Width="120"
                         IsChecked="{Binding IsLeftPageChecked, Mode=TwoWay}"/>
-            <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
+            <RadioButton Style="{StaticResource OptionButton}" 
                         Name="btnRightSide"
-                        Content="Prawa strona"
-                        BorderBrush="White" 
-                        Background="Transparent"
-                        FontSize="20" Foreground="White" FontFamily="Segoe UI Light" 
-                        Width="130"
+                        Content=" Prawa strona"
+                        FontSize="20" 
+                        Width="120"
                         IsChecked="{Binding IsRightPageChecked, Mode=TwoWay}"/>
         </StackPanel>
 
@@ -48,27 +44,23 @@
         </Button>
         <StackPanel Name="layoutStackPanel" 
                         Background="Transparent">
-
             <ItemsControl ItemsSource="{
                     Binding Path=Layouts,
                     Mode=TwoWay,
                     UpdateSourceTrigger=PropertyChanged}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <RadioButton Style="{DynamicResource {x:Type ToggleButton}}"
+                        <RadioButton Style="{DynamicResource OptionButton}"
                                      GroupName="layout"
                                      Content="{Binding Name}"
-                                     HorizontalContentAlignment="Left"
-                                     Background="Transparent" 
-                                     BorderBrush="Transparent"
-                                     Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
+                                     FontSize="18px"
                                      Height="40"
                                      Margin="40,0,0,0"
                                      IsChecked="{Binding IsChecked}"
                                      Command="{Binding Check}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ItemsControl>
         </StackPanel>
 
 
@@ -83,51 +75,13 @@
                     Height="50"
                     Margin="0,1,0,1"/>
         <StackPanel Visibility="Collapsed" Background="Transparent" Name="themeStackPanel">
-            <!--
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}"
-                        Checked="showColorPicker"
-                        Name="btnColor"
-                        Content="Kolor"
-                        HorizontalContentAlignment="Left"
-                        Background="Transparent" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px"
-                        Height="40"
-                        Margin="40,0,0,0"/>
-                    -->
+
             <settingsview:ColorPicker x:Name="BackgroundColorPicker"
                                               BackgroundColor="{Binding BackgroundColor, Mode=TwoWay}"/>
-
+            
             <!-- TODO: Bind it to view model somehow
-                    <Label Content="Motyw 1"
-                           Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
-                           Margin="45,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Name="btnTheme1"
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light" FontSize="18px" 
-                        Height="70"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left">
-                        <RadioButton.Background>
-                            <ImageBrush ImageSource="/PhotoBook;component/View/Images/Motyw1.png" TileMode="Tile"/>
-                        </RadioButton.Background>
-                    </RadioButton>
+                    Themes buttons are in userContol -> ChangeBackgroundImage.xaml -->
                     
-                    <Label Content="Motyw 2"
-                           Foreground="White" FontFamily="Segoe UI Light" FontSize="14px"
-                           Margin="45,0,0,0"/>
-                    <RadioButton Style="{StaticResource {x:Type ToggleButton}}" 
-                        Name="btnTheme2"
-                        VerticalAlignment="Top" 
-                        BorderBrush="Transparent"
-                        Foreground="White" FontFamily="Segoe UI Light"  FontSize="18px"
-                        Height="70"
-                        Margin="40,0,0,0" HorizontalContentAlignment="Left">
-                        <RadioButton.Background>
-                            <ImageBrush ImageSource="/PhotoBook;component/View/Images/Motyw2.png"/>
-                        </RadioButton.Background>
-                    </RadioButton>
-                    -->
         </StackPanel>
 
         <ItemsControl ItemsSource="{

@@ -10,13 +10,7 @@
       Title="CropPhotoView"
       >
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="#a6a6a4" Offset="1"/>
-                <GradientStop Color="#4e8d7c"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Style="{StaticResource GridBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="4*"/>

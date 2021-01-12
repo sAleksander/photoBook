@@ -32,7 +32,6 @@ namespace PhotoBook.View
             double percentage = (ActualWidth / defaultWidth);
 
             btnPdf.SetValue(FontSizeProperty, 25 * percentage);
-            btnDocs.SetValue(FontSizeProperty, 25 * percentage);
             btnHtml.SetValue(FontSizeProperty, 25 * percentage);
         }
 

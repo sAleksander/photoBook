@@ -19,13 +19,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="#a6a6a4" Offset="1"/>
-                <GradientStop Color="#4e8d7c"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Style="{StaticResource GridBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="2*"/>
@@ -36,10 +30,8 @@
                    Width="220"
                    Margin="0,40,0,0"/>
             <TextBlock Text="Fotoksiążka"
-                       HorizontalAlignment="Center"
                        FontSize="75" 
-                       FontFamily="Comic Sans MS"
-                       Foreground="White"
+                       Style="{StaticResource HeaderText}"
                        Margin="0,0,0,10"/>
         </StackPanel>
 
