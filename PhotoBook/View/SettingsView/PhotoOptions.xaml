@@ -8,6 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="500">
     <UserControl.Resources>
         <local:ImageIndexToStringConverter x:Key="ImageIndexToStringConverter"/>
+        <Style x:Key="ButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="40"/>
+        </Style>
     </UserControl.Resources>
 
     <StackPanel CanVerticallyScroll="True">
@@ -29,6 +34,7 @@
                 Filter="{Binding ImageFilter, Mode=OneWay}"
                 ChosenFile="{Binding ChosenFilePath, Mode=OneWayToSource}"
                 FileChosenCommand="{Binding FileChosen}"
+                ButtonStyle="{StaticResource ButtonStyle}"
                 />
 
             <!--Add Description-->

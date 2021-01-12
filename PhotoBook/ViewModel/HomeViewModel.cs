@@ -12,6 +12,27 @@ namespace PhotoBook.ViewModel
     {
         private ViewModelLocator locator;
 
+        public string FileFilter { get; } = "PhotoBookFile|*.pbf";
+
+        private string chosenFilePath;
+        public string ChosenFilePath
+        {
+            get => chosenFilePath;
+            set => Set(nameof(ChosenFilePath), ref chosenFilePath, value);
+        }
+
+        private RelayCommand fileChosen;
+        public RelayCommand FileChosen
+        {
+            get
+            {
+                return fileChosen ?? (fileChosen = new RelayCommand(
+                    () =>
+                    {
+                    }));
+            }
+        }
+
         public HomeViewModel(ViewModelLocator locator)
         {
             this.locator = locator;

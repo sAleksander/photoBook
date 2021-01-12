@@ -24,6 +24,5 @@ namespace PhotoBook.View
         {
             InitializeComponent();
         }
-
     }
 }

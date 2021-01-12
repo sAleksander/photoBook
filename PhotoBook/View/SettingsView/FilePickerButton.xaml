@@ -8,8 +8,6 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Button Name="PickFileButton"
             Content="{Binding ButtonContent, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-            HorizontalContentAlignment="Left"
-            FontSize="18px"
-            Height="40"
+            Style="{Binding ButtonStyle, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
             Click="PickFileButton_Click"/>
 </UserControl>

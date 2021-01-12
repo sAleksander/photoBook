@@ -53,6 +53,7 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="1"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Border.CornerRadius" Value="0"/>
 
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -66,6 +67,7 @@
                             <Border Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding Border.CornerRadius}"
                                     Padding="{TemplateBinding Padding}">
                                 <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   RecognizesAccessKey="True"
@@ -90,6 +92,10 @@
         <Style x:Key="BorderButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="White"/>
+        </Style>
+
+        <Style x:Key="RoundBorderButton" TargetType="Button" BasedOn="{StaticResource BorderButton}">
+            <Setter Property="Border.CornerRadius" Value="7"/>
         </Style>
     </Application.Resources>
 </Application>
