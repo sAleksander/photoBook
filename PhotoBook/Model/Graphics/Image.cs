@@ -40,7 +40,7 @@ namespace PhotoBook.Model.Graphics
         public Image(string path, int x, int y, int width, int height)
         {
             System.IO.FileAttributes attr = File.GetAttributes(path);
-            var extension = Path.GetExtension(path);
+            var extension = Path.GetExtension(path).ToLower();
 
             if (attr.HasFlag(FileAttributes.Directory))
                 throw new Exception("Correct image path was not provided");
