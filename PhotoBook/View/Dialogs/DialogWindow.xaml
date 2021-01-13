@@ -8,14 +8,7 @@
         Title="Uwaga!" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush>
-                <GradientStop Color="#a6a6a4" Offset="1"/>
-                <GradientStop Color="#4e8d7c"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-        
+    <Grid Background="#a6a6a4">
         <ContentPresenter x:Name="ContentPresenter" Content="{Binding}"/>
     </Grid>
 </Window>

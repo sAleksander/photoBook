@@ -3,6 +3,8 @@ using PhotoBook.Model.Arrangement;
 using PhotoBook.Model.Exporters;
 using PhotoBook.Model.Helpers;
 using PhotoBook.Model.Pages;
+using PhotoBook.Services;
+using PhotoBook.ViewModel.Dialogs;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PhotoBookModel = PhotoBook.Model.PhotoBook;
@@ -11,6 +13,7 @@ namespace PhotoBook.ViewModel.Settings
 {
     public class BackCoverSettingsViewModel : SettingsViewModel
     {
+        private IDialogService dialogService;
         private BackCover backCover;
         public BackCover BackCover
         {
@@ -20,9 +23,11 @@ namespace PhotoBook.ViewModel.Settings
 
         private PhotoBookModel model;
 
-        public BackCoverSettingsViewModel(PhotoBookModel model)
+        public BackCoverSettingsViewModel(PhotoBookModel model, IDialogService dialogService)
         {
             BackCover = model.BackCover;
+
+            this.dialogService = dialogService;
             this.model = model;
         }
 
@@ -160,6 +165,8 @@ namespace PhotoBook.ViewModel.Settings
             }
 
             ob.GeneratePdf();
+
+            dialogService.OpenDialog(new DialogOKViewModel("Fotoksiążka została poprawnie wyeksportowana"));
         });
 
         public RelayCommand ExportToHtml => new RelayCommand(() =>
@@ -258,6 +265,8 @@ namespace PhotoBook.ViewModel.Settings
                     ob.CreateBackCover(ToHtml.CssBackground(fileNameExporter(bgImage.Image.DisplayedPath)));
                     break;
             }
+
+            dialogService.OpenDialog(new DialogOKViewModel("Fotoksiążka została poprawnie wyeksportowana"));
         });
 
     }
