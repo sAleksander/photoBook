@@ -60,8 +60,7 @@ namespace PhotoBook.ViewModel.Settings
                         var cropPhotoVM = locator.CropPhoto;
                         cropPhotoVM.ImageToCrop = page.GetImage(imageIndex);
 
-                        if(filters == null)
-                            BuildFilters();
+                        BuildFilters();
 
                         MainViewModel.Navigator.ChangeCurrentVM(cropPhotoVM);
                     }));
