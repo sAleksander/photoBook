@@ -55,7 +55,7 @@ namespace PhotoBook.ViewModel.Pages
                     Redraw?.Invoke(curPageIndex);
                     RegisterImagePropertyChanged(curPageIndex);
                 };
-                ContentPages[i].BackgroundChanged.Add(pageLayoutChangedHandlers[i]);
+                ContentPages[i].LayoutChanged.Add(pageLayoutChangedHandlers[i]);
 
                 imageChangedHandlers[i] = (s, args) => OnImageChanged(curPageIndex, args.LayoutIndex);
                 ContentPages[i].ImageChanged.Add(imageChangedHandlers[i]);
