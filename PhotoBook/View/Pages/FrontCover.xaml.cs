@@ -57,12 +57,17 @@ namespace PhotoBook.View.Pages
             }
             else if (args.PropertyName.Equals(nameof(viewModel.Background)))
             {
-                var fill = backgroundRectangle.Fill as SolidColorBrush;
-                var newColor = viewModel.Background;
-                fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
-
-                FontAdjuster.AdjustFont(titleLabel, newColor.R, newColor.G, newColor.B);
+                AdjustFontColor();
             }
+        }
+
+        private void AdjustFontColor()
+        {
+            var fill = backgroundRectangle.Fill as SolidColorBrush;
+            var newColor = viewModel.Background;
+            fill.Color = Color.FromRgb(newColor.R, newColor.G, newColor.B);
+
+            FontAdjuster.AdjustFont(titleLabel, newColor.R, newColor.G, newColor.B);
         }
 
         private void DrawFrontCover()
@@ -90,6 +95,8 @@ namespace PhotoBook.View.Pages
                 // TODO: Should we hardcode it in the model or let the user change it?
                 Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255)),
             };
+
+            AdjustFontColor();
 
             canvas.Children.Add(titleLabel);
         }
