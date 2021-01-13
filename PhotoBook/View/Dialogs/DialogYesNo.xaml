@@ -7,9 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
     <StackPanel Margin="4">
-        <Label Foreground="White"
-               FontSize="20px"
-               FontFamily="Segoe UI Light"
+        <Label FontSize="20px"
                Content="{Binding Message}"/>
 
         <Grid>
@@ -24,7 +22,7 @@
                     FontSize="20px"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Width="75"   
+                    Width="75"
                     Command="{Binding YesCommand}"/>
             <Button Grid.Column="1"
                     Style="{StaticResource BorderButton}"
@@ -32,7 +30,7 @@
                     FontSize="20px"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
-                    Width="75"   
+                    Width="75"
                     Command="{Binding NoCommand}"/>
         </Grid>
     </StackPanel>
