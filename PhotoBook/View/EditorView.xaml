@@ -33,7 +33,7 @@
             <DockPanel Grid.Column="0">
                 <StackPanel DockPanel.Dock="Top">
                     <Image Name="logoImage"
-                           Source="Images/logoWhite.png"
+                           Source="Images/noweLogo2.png"
                            Width="120"
                            Margin="20"/>
                     <TextBlock Name="headerName"

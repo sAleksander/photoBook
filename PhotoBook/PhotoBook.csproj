@@ -313,12 +313,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\Images\logoBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="View\Images\logoWhite.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="View\Images\arrow.png" />
   </ItemGroup>
   <ItemGroup>
@@ -331,10 +325,7 @@
     <Resource Include="View\Images\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\Images\Motyw1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="View\Images\Motyw2.png" />
+    <Resource Include="View\Images\noweLogo2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

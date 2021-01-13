@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" VerticalAlignment="Center">
-            <Image Source="Images/logoWhite.png" 
+            <Image Source="Images/noweLogo2.png" 
                    Width="220"
                    Margin="0,40,0,0"/>
             <TextBlock Text="Fotoksiążka"
