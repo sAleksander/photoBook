@@ -90,7 +90,7 @@ namespace PhotoBook.ViewModel.Settings
         private void RefreshPageSettings(ContentPage page)
         {
             // TODO: Handle BackgroundImage as well
-            BackgroundColor = selectedPage.Background as BackgroundColor;
+            BackgroundColor = page.Background as BackgroundColor;
 
             var newImages = new ObservableCollection<ImageViewModel>();
             for (int imageIndex = 0; imageIndex < page.Layout.NumOfImages; imageIndex++)
