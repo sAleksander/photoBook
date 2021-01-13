@@ -23,6 +23,8 @@ namespace PhotoBook.ViewModel.Settings
             set => Set(nameof(IsChecked), ref isChecked, value);
         }
 
+        public string ImageName { get => contentPage.GetImage(imageIndex).DisplayedPath; }
+
         private string name;
         public string Name
         {

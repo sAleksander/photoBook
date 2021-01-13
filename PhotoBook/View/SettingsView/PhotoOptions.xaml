@@ -52,7 +52,7 @@
                                 Height="70"
                                 Margin="60,0,15,0"
                                 Text="{Binding Description, Mode=TwoWay}"/>
-                <Button Content="Zatwierdź" 
+                <Button Content="Zatwierdź"
                         HorizontalAlignment="Right"
                         Margin="0,5,30,5"
                         FontSize="14px"
@@ -76,7 +76,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <RadioButton Style="{DynamicResource OptionButton}"
-                                     GroupName="filter"
+                                     GroupName="{Binding ImageName}"
                                      Content="{Binding Name}"
                                      FontSize="18px"
                                      Height="40"
