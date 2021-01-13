@@ -62,12 +62,21 @@ namespace PhotoBook.Model.Graphics
 
             OriginalPath = destinationFilename;
             DisplayedPath = destinationFilename;
-            originalBitmap = new Bitmap(path);
 
-            Width = originalBitmap.Width;
-            Height = originalBitmap.Height;
+            try
+            {
+                originalBitmap = new Bitmap(path);
 
-            CurrentFilter = new Filter();
+                Width = originalBitmap.Width;
+                Height = originalBitmap.Height;
+
+                CurrentFilter = new Filter();
+            }
+            catch
+            {
+                throw new FailedToLoadImageException();
+            }
+            
         }
 
         public Image(string path) : this(path, 0, 0, 0, 0) { }

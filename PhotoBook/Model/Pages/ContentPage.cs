@@ -99,7 +99,7 @@ namespace PhotoBook.Model.Pages
             if (layout is null)
                 throw new Exception("Can't get image - no layout");
             if (layoutImageIndex < 0 || layoutImageIndex >= _images.Length)
-                throw new Exception("Getting an image from an index of out range is not possible!");
+                throw new IndexOutOfRangeException("Getting an image from an index of out range is not possible!");
 
             return _images[layoutImageIndex];
         }
