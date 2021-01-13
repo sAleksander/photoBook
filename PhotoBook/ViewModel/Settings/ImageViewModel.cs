@@ -4,12 +4,16 @@ using PhotoBook.Model.Pages;
 using System.Collections.ObjectModel;
 using PhotoBook.Model.Graphics;
 using System.Collections.Generic;
+using System;
+using PhotoBook.Services;
+using PhotoBook.ViewModel.Dialogs;
 
 namespace PhotoBook.ViewModel.Settings
 {
     public class ImageViewModel : ViewModelBase
     {
         private ViewModelLocator locator;
+        private IDialogService dialogService;
 
         private ContentPage page;
 
@@ -55,7 +59,17 @@ namespace PhotoBook.ViewModel.Settings
                 return fileChosen ?? (fileChosen = new RelayCommand(
                     () =>
                     {
-                        page.LoadImage(imageIndex, ChosenFilePath);
+                        try
+                        {
+                            page.LoadImage(imageIndex, ChosenFilePath);
+                        }
+                        catch (FailedToLoadImageException e)
+                        {
+                            dialogService.OpenDialog(
+                                new DialogOKViewModel("Błąd: nieobsługiwany format zdjęcia")
+                            );
+                            return;
+                        }
 
                         var cropPhotoVM = locator.CropPhoto;
                         cropPhotoVM.ImageToCrop = page.GetImage(imageIndex);
@@ -73,9 +87,14 @@ namespace PhotoBook.ViewModel.Settings
             page.SetComment(imageIndex, Description);
         });
 
-        public ImageViewModel(ViewModelLocator locator, ContentPage page, int imageIndex)
+        public ImageViewModel(
+            ViewModelLocator locator,
+            IDialogService dialogService,
+            ContentPage page,
+            int imageIndex)
         {
             this.locator = locator;
+            this.dialogService = dialogService;
             this.page = page;
             this.imageIndex = imageIndex;
 

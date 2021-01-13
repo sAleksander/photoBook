@@ -95,7 +95,7 @@ namespace PhotoBook.ViewModel.Settings
             var newImages = new ObservableCollection<ImageViewModel>();
             for (int imageIndex = 0; imageIndex < page.Layout.NumOfImages; imageIndex++)
             {
-                newImages.Add(new ImageViewModel(locator, page, imageIndex));
+                newImages.Add(new ImageViewModel(locator, dialogService, page, imageIndex));
             }
             Images = newImages;
 
