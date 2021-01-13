@@ -47,6 +47,9 @@
         <DataTemplate DataType="{x:Type viewModelDialogs:DialogYesNoViewModel}">
             <viewDialogs:DialogYesNo/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModelDialogs:DialogOKViewModel}">
+            <viewDialogs:DialogOK/>
+        </DataTemplate>
 
         <!--Buttons-->
         <Style TargetType="Button">

@@ -129,9 +129,13 @@
     <Compile Include="Model\Serialization\Serializer.cs" />
     <Compile Include="Services\PhotoBookProviderService.cs" />
     <Compile Include="ViewModel\CropPhotoViewModel.cs" />
+    <Compile Include="ViewModel\Dialogs\DialogOKViewModel.cs" />
     <Compile Include="ViewModel\Dialogs\DialogResultEnum.cs" />
     <Compile Include="ViewModel\Dialogs\DialogYesNoViewModel.cs" />
     <Compile Include="ViewModel\Settings\SelectableFilterViewModel.cs" />
+    <Compile Include="View\Dialogs\DialogOK.xaml.cs">
+      <DependentUpon>DialogOK.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Dialogs\DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
@@ -215,6 +219,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\CropPhotoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dialogs\DialogOK.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
