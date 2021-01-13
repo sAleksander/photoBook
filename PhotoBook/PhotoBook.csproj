@@ -180,9 +180,6 @@
     <Compile Include="View\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SettingsView\ChangeBackgroundImage.xaml.cs">
-      <DependentUpon>ChangeBackgroundImage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\SettingsView\ColorPicker.xaml.cs">
       <DependentUpon>ColorPicker.xaml</DependentUpon>
     </Compile>
@@ -255,10 +252,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SettingsView\ChangeBackgroundImage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\SettingsView\ColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -320,12 +313,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\Images\logoBlack.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="View\Images\logoWhite.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="View\Images\arrow.png" />
   </ItemGroup>
   <ItemGroup>
@@ -338,13 +325,7 @@
     <Resource Include="View\Images\add.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\Images\Motyw1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="View\Images\Motyw2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="View\Images\Witoldus.PNG" />
+    <Resource Include="View\Images\noweLogo2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -26,7 +26,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <StackPanel Name="titleStackPanel" >
+        <StackPanel Name="titleStackPanel">
             <Label Content="Wpisz tytuł"
                        FontSize="14px"
                        Margin="40,0,0,0"/>

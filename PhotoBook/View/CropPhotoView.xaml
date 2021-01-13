@@ -38,7 +38,7 @@
             <Canvas x:Name="canvas"
                     Width="{Binding ElementName=originalImage, Path=Width}"
                     Height="{Binding ElementName=originalImage, Path=Height}">
-                <Image x:Name="originalImage" Source="Images/Witoldus.PNG"/>
+                <Image x:Name="originalImage"/>
             
                 <!-- Do width i Height z rectangla bindingi z Modelu -->
                 <Rectangle x:Name="croppRectangle"

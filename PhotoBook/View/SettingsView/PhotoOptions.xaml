@@ -15,7 +15,7 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel CanVerticallyScroll="True">
+    <StackPanel CanVerticallyScroll="True" >
         <!--Photo options-->
 
         <Button Name="btnPhoto"

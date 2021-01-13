@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using PhotoBook.Model.Arrangement;
 using PhotoBook.Services;
+using PhotoBook.ViewModel.Dialogs;
 using PhotoBook.ViewModel.Pages;
 using PhotoBook.ViewModel.Settings;
 using Page = PhotoBook.Model.Pages.Page;
@@ -176,6 +177,7 @@ namespace PhotoBook.ViewModel
                     () =>
                     {
                         model.SavePhotoBook();
+                        dialogService.OpenDialog(new DialogOKViewModel("Fotoksiążka została zapisana"));
                     }));
             }
         }
@@ -234,7 +236,7 @@ namespace PhotoBook.ViewModel
         private void CreateBackCoverViewModels()
         {
             var bookVM = new BackCoverViewModel(model.BackCover);
-            var settingsVM = new BackCoverSettingsViewModel(model);
+            var settingsVM = new BackCoverSettingsViewModel(model, dialogService);
 
             SettingsViewModel = settingsVM;
             BookViewModel = bookVM;
